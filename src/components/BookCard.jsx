@@ -1,188 +1,217 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Heart, Star, BookOpen, Eye } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-function StarRating({ rating, size = 'sm' }) {
-  const sz = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4';
+const categoryColors = {
+  'Poetry':            'border-forest-800 text-forest-800',
+  'Prose':             'border-burgundy-700 text-burgundy-700',
+  'Philosophy':        'border-charcoal text-charcoal',
+  'Literary Criticism':'border-gold text-gold',
+  'Audiobooks':        'border-forest-600 text-forest-600',
+};
+
+function StarRow({ rating }) {
   return (
-    <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map(star => (
-        <Star
-          key={star}
-          className={`${sz} ${star <= Math.floor(rating) ? 'text-yellow-400 fill-yellow-400' : star - 0.5 <= rating ? 'text-yellow-400 fill-yellow-200' : 'text-gray-300 fill-gray-100'}`}
-        />
-      ))}
-    </div>
+    <span className="text-gold text-sm tracking-tighter font-sans" aria-label={`${rating} out of 5`}>
+      {'★'.repeat(Math.floor(rating))}{'☆'.repeat(5 - Math.floor(rating))}
+    </span>
   );
 }
 
-const categoryColors = {
-  'Poetry': 'bg-purple-100 text-purple-700',
-  'Prose': 'bg-blue-100 text-blue-700',
-  'Philosophy': 'bg-gray-100 text-gray-700',
-  'Literary Criticism': 'bg-amber-100 text-amber-700',
-  'Audiobooks': 'bg-green-100 text-green-700',
-};
-
-export default function BookCard({ book, view = 'grid' }) {
+/* ── Grid card ─────────────────────────────────────────────────────── */
+function GridCard({ book }) {
   const { addToCart, toggleWishlist, wishlist } = useApp();
   const isWishlisted = wishlist.some(b => b.id === book.id);
-
-  if (view === 'list') {
-    return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 flex gap-4 p-4">
-        <Link to={`/product/${book.id}`} className="flex-shrink-0">
-          <div className={`w-20 h-28 rounded-lg bg-gradient-to-br ${book.gradient} flex items-center justify-center shadow-sm`}>
-            <BookOpen className="w-8 h-8 text-white/70" />
-          </div>
-        </Link>
-        <div className="flex-1 min-w-0 flex flex-col justify-between">
-          <div>
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <span className={`badge text-xs ${categoryColors[book.category] || 'bg-gray-100 text-gray-700'} mb-1`}>
-                  {book.category}
-                </span>
-                <Link to={`/product/${book.id}`}>
-                  <h3 className="font-semibold text-gray-900 hover:text-purple-800 transition-colors text-sm sm:text-base leading-snug" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    {book.title}
-                  </h3>
-                </Link>
-                <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{book.author}</p>
-              </div>
-              <button
-                onClick={() => toggleWishlist(book)}
-                className={`p-2 rounded-lg transition-colors flex-shrink-0 ${isWishlisted ? 'text-red-500 bg-red-50' : 'text-gray-400 hover:text-red-500 hover:bg-red-50'}`}
-              >
-                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500' : ''}`} />
-              </button>
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <StarRating rating={book.rating} />
-              <span className="text-xs text-gray-500">({book.reviewCount})</span>
-            </div>
-            <p className="text-xs text-gray-500 mt-1.5 line-clamp-2 hidden sm:block">{book.description}</p>
-          </div>
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold text-purple-800">{book.price.toFixed(2)} lei</span>
-              {book.originalPrice && (
-                <span className="text-sm text-gray-400 line-through">{book.originalPrice.toFixed(2)} lei</span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${book.stock > 5 ? 'bg-green-100 text-green-700' : book.stock > 0 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
-                {book.stock > 5 ? 'În stoc' : book.stock > 0 ? `Ultimele ${book.stock}` : 'Indisponibil'}
-              </span>
-              <button
-                onClick={() => addToCart(book)}
-                disabled={book.stock === 0}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-purple-800 to-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ShoppingCart className="w-3.5 h-3.5" />
-                Adaugă
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const colorClass = categoryColors[book.category] || 'border-charcoal text-charcoal';
 
   return (
-    <div className="book-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
-      {/* Cover */}
-      <div className="relative">
-        <Link to={`/product/${book.id}`}>
-          <div className={`h-52 bg-gradient-to-br ${book.gradient} flex items-center justify-center relative overflow-hidden`}>
-            <BookOpen className="w-16 h-16 text-white/40" />
-            {/* Decorative lines */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-4 left-4 right-4 h-0.5 bg-white rounded"></div>
-              <div className="absolute top-8 left-4 right-8 h-0.5 bg-white rounded"></div>
-              <div className="absolute bottom-8 left-4 right-4 h-0.5 bg-white rounded"></div>
-            </div>
-            {book.originalPrice && (
-              <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
-                -{Math.round((1 - book.price / book.originalPrice) * 100)}%
-              </div>
-            )}
-            {book.bestseller && (
-              <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
-                Bestseller
-              </div>
-            )}
-          </div>
-        </Link>
+    <article className="bg-cream border border-paper flex flex-col
+                        transition-shadow duration-300 hover:shadow-classic-md group">
 
-        {/* Quick actions overlay */}
-        <div className="book-overlay absolute inset-0 bg-black/40 flex items-center justify-center gap-3">
-          <Link
-            to={`/product/${book.id}`}
-            className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-purple-100 transition-colors shadow-lg"
-            title="Vezi detalii"
-          >
-            <Eye className="w-4 h-4" />
-          </Link>
-          <button
-            onClick={() => addToCart(book)}
-            className="w-9 h-9 bg-purple-700 rounded-full flex items-center justify-center text-white hover:bg-purple-800 transition-colors shadow-lg"
-            title="Adaugă în coș"
-          >
-            <ShoppingCart className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => toggleWishlist(book)}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors shadow-lg ${isWishlisted ? 'bg-red-500 text-white' : 'bg-white text-gray-900 hover:bg-red-50'}`}
-            title="Lista de dorințe"
-          >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-white' : ''}`} />
-          </button>
+      {/* Cover */}
+      <Link to={`/product/${book.id}`} className="block relative overflow-hidden">
+        <div className="h-52 bg-forest-800 relative flex flex-col items-center
+                        justify-center text-cream/30 select-none">
+          {/* Classic spine lines */}
+          <div className="absolute inset-0 flex flex-col justify-between px-6 py-5 pointer-events-none">
+            <div className="h-px bg-cream/15" />
+            <div className="text-center">
+              <p className="font-serif text-sm text-cream/50 italic leading-snug px-2 line-clamp-3">
+                {book.title}
+              </p>
+              <p className="font-sans text-xs text-cream/30 mt-2 uppercase tracking-widest">
+                {book.author.split(' ').pop()}
+              </p>
+            </div>
+            <div className="h-px bg-cream/15" />
+          </div>
+          <span className="font-serif text-5xl text-cream/10 absolute top-4 right-4">❧</span>
+
+          {book.originalPrice && (
+            <span className="absolute top-2 left-2 bg-burgundy-700 text-cream
+                             text-xs font-sans font-bold px-2 py-0.5 uppercase tracking-wider">
+              Sale
+            </span>
+          )}
+          {book.bestseller && (
+            <span className="absolute top-2 right-2 bg-gold text-forest-900
+                             text-xs font-sans font-bold px-2 py-0.5 uppercase tracking-wider">
+              Bestseller
+            </span>
+          )}
         </div>
-      </div>
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-forest-900/60 opacity-0 group-hover:opacity-100
+                        transition-opacity duration-300 flex items-center justify-center gap-3">
+          <span className="text-cream text-sm font-sans font-bold uppercase tracking-widest
+                           border border-cream px-4 py-2 hover:bg-cream hover:text-forest-800
+                           transition-colors duration-200">
+            View Details
+          </span>
+        </div>
+      </Link>
 
       {/* Content */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-4 flex flex-col flex-1 border-t border-paper">
         <div className="mb-2">
-          <span className={`badge text-xs ${categoryColors[book.category] || 'bg-gray-100 text-gray-700'}`}>
+          <span className={`badge-classic bg-transparent ${colorClass} text-xs`}>
             {book.category}
           </span>
         </div>
+
         <Link to={`/product/${book.id}`} className="flex-1">
-          <h3 className="font-semibold text-gray-900 hover:text-purple-800 transition-colors text-sm leading-snug line-clamp-2 mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h3 className="font-serif text-base text-charcoal leading-snug mb-1
+                         group-hover:text-forest-800 transition-colors duration-200
+                         line-clamp-2">
             {book.title}
           </h3>
         </Link>
-        <p className="text-xs text-gray-500 mb-2">{book.author}</p>
+        <p className="text-xs font-sans text-charcoal-light uppercase tracking-wider mb-2">
+          {book.author}
+        </p>
 
-        <div className="flex items-center gap-1.5 mb-3">
-          <StarRating rating={book.rating} />
-          <span className="text-xs text-gray-500">({book.reviewCount})</span>
+        <div className="flex items-center gap-2 mb-3">
+          <StarRow rating={book.rating} />
+          <span className="text-xs text-charcoal-lighter font-sans">({book.reviewCount})</span>
         </div>
 
-        <div className="flex items-center justify-between mt-auto">
+        <div className="flex items-center justify-between mt-auto pt-3 border-t border-paper">
           <div>
-            <span className="text-base font-bold text-purple-800">{book.price.toFixed(2)} lei</span>
+            <span className="font-serif text-lg text-burgundy-700 font-semibold">
+              {book.price.toFixed(2)} lei
+            </span>
             {book.originalPrice && (
-              <span className="text-xs text-gray-400 line-through ml-1">{book.originalPrice.toFixed(2)}</span>
+              <span className="text-xs text-charcoal-lighter line-through ml-1.5 font-sans">
+                {book.originalPrice.toFixed(2)}
+              </span>
             )}
           </div>
-          <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${book.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
-            {book.stock > 0 ? 'În stoc' : 'Epuizat'}
+          <span className={`text-xs font-sans ${book.stock > 0 ? 'text-forest-700' : 'text-charcoal-lighter'}`}>
+            {book.stock > 0 ? 'In Stock' : 'Out of Stock'}
           </span>
         </div>
 
-        <button
-          onClick={() => addToCart(book)}
-          disabled={book.stock === 0}
-          className="mt-3 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-800 to-blue-700 text-white py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-md"
-        >
-          <ShoppingCart className="w-3.5 h-3.5" />
-          Adaugă în Coș
-        </button>
+        <div className="flex gap-2 mt-3">
+          <button
+            onClick={() => addToCart(book)}
+            disabled={book.stock === 0}
+            className="flex-1 flex items-center justify-center gap-2
+                       bg-forest-800 text-cream text-xs font-sans font-bold
+                       uppercase tracking-widest py-2.5 border border-forest-800
+                       hover:bg-forest-900 transition-colors duration-200
+                       disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            Add to Cart
+          </button>
+          <button
+            onClick={() => toggleWishlist(book)}
+            className={`p-2.5 border transition-colors duration-200
+              ${isWishlisted
+                ? 'border-burgundy-700 bg-burgundy-50 text-burgundy-700'
+                : 'border-paper text-charcoal-lighter hover:border-burgundy-700 hover:text-burgundy-700'
+              }`}
+          >
+            <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-burgundy-700' : ''}`} />
+          </button>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 
-export { StarRating };
+/* ── List card ─────────────────────────────────────────────────────── */
+function ListCard({ book }) {
+  const { addToCart, toggleWishlist, wishlist } = useApp();
+  const isWishlisted = wishlist.some(b => b.id === book.id);
+  const colorClass = categoryColors[book.category] || 'border-charcoal text-charcoal';
+
+  return (
+    <article className="bg-cream border border-paper flex gap-0
+                        transition-shadow duration-300 hover:shadow-classic-md">
+      <Link to={`/product/${book.id}`} className="flex-shrink-0">
+        <div className="w-24 h-full min-h-[9rem] bg-forest-800
+                        flex items-center justify-center text-cream/20">
+          <span className="font-serif text-4xl">❧</span>
+        </div>
+      </Link>
+
+      <div className="flex-1 p-4 flex flex-col justify-between border-l border-paper">
+        <div>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <span className={`badge-classic bg-transparent ${colorClass} text-xs mb-2 inline-block`}>
+                {book.category}
+              </span>
+              <Link to={`/product/${book.id}`}>
+                <h3 className="font-serif text-lg text-charcoal hover:text-forest-800
+                               transition-colors leading-snug">
+                  {book.title}
+                </h3>
+              </Link>
+              <p className="text-xs font-sans text-charcoal-light uppercase tracking-wider mt-1">
+                {book.author}
+              </p>
+            </div>
+            <button onClick={() => toggleWishlist(book)} className="flex-shrink-0 mt-1">
+              <Heart className={`w-4 h-4 transition-colors ${
+                isWishlisted ? 'text-burgundy-700 fill-burgundy-700' : 'text-charcoal-lighter hover:text-burgundy-700'
+              }`} />
+            </button>
+          </div>
+          <p className="text-sm font-sans text-charcoal-light mt-2 line-clamp-2">
+            {book.description}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-paper">
+          <div className="flex items-center gap-4">
+            <span className="font-serif text-xl text-burgundy-700 font-semibold">
+              {book.price.toFixed(2)} lei
+            </span>
+            <StarRow rating={book.rating} />
+          </div>
+          <button
+            onClick={() => addToCart(book)}
+            disabled={book.stock === 0}
+            className="flex items-center gap-2 bg-forest-800 text-cream
+                       text-xs font-sans font-bold uppercase tracking-widest
+                       px-4 py-2 border border-forest-800
+                       hover:bg-forest-900 transition-colors duration-200
+                       disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export default function BookCard({ book, view = 'grid' }) {
+  return view === 'list' ? <ListCard book={book} /> : <GridCard book={book} />;
+}
+
+export { StarRow };

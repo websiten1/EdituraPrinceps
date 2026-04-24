@@ -1,142 +1,100 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import {
-  ShoppingCart, Heart, Share2, Star, BookOpen, Package,
-  ChevronLeft, ChevronRight, Minus, Plus, Check, AlertCircle,
-  Copy, ThumbsUp, User, Calendar, Hash
-} from 'lucide-react';
-import { FacebookIcon, TwitterIcon } from '../components/SocialIcons';
+import { ShoppingCart, Heart, Minus, Plus, Check, AlertCircle, ThumbsUp, ChevronRight } from 'lucide-react';
 import { books } from '../data/books';
 import { useApp } from '../context/AppContext';
 import Breadcrumb from '../components/Breadcrumb';
-import BookCard from '../components/BookCard';
+import BookCard, { StarRow } from '../components/BookCard';
 
-function StarRating({ rating, size = 'sm', interactive = false, onRate }) {
+/* ── Stars (interactive or static) ──────────────────────────────── */
+function Stars({ value, size = 'sm', interactive = false, onChange }) {
   const [hover, setHover] = useState(0);
-  const sz = size === 'lg' ? 'w-6 h-6' : size === 'md' ? 'w-5 h-5' : 'w-4 h-4';
-
+  const sz = size === 'lg' ? 'text-2xl' : size === 'md' ? 'text-lg' : 'text-base';
   return (
-    <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map(star => (
-        <Star
-          key={star}
-          className={`${sz} transition-colors ${
-            star <= (interactive ? (hover || rating) : Math.floor(rating))
-              ? 'text-yellow-400 fill-yellow-400'
-              : 'text-gray-300 fill-gray-100'
+    <span className={`tracking-tighter ${sz}`}>
+      {[1, 2, 3, 4, 5].map(s => (
+        <span
+          key={s}
+          className={`transition-colors ${
+            s <= (interactive ? hover || value : Math.floor(value))
+              ? 'text-gold' : 'text-paper-dark'
           } ${interactive ? 'cursor-pointer' : ''}`}
-          onMouseEnter={() => interactive && setHover(star)}
+          onMouseEnter={() => interactive && setHover(s)}
           onMouseLeave={() => interactive && setHover(0)}
-          onClick={() => interactive && onRate && onRate(star)}
-        />
+          onClick={() => interactive && onChange?.(s)}
+        >★</span>
       ))}
-    </div>
+    </span>
   );
 }
 
-const mockReviews = [
-  {
-    id: 1,
-    author: 'Maria I.',
-    rating: 5,
-    date: '15 Mar 2024',
-    title: 'O capodoperă a literaturii române',
-    content: 'Am citit această carte cu sufletul la gură. Fiecare pagină este o descoperire, un univers nou. Recomand cu căldură tuturor iubitorilor de literatură!',
-    helpful: 12,
-    verified: true,
-  },
-  {
-    id: 2,
-    author: 'Alexandru P.',
-    rating: 4,
-    date: '3 Feb 2024',
-    title: 'Lectură obligatorie',
-    content: 'O carte care te face să gândești. Limbajul este curat și expresiv, ideile sunt profunde. Ușoară scădere pentru că aș fi vrut mai multe pagini!',
-    helpful: 8,
-    verified: true,
-  },
-  {
-    id: 3,
-    author: 'Elena G.',
-    rating: 5,
-    date: '20 Ian 2024',
-    title: 'Fascinantă',
-    content: 'Am descoperit această editură recent și sunt impresionată de calitatea edițiilor. Hârtie de calitate, design elegant, un produs premium.',
-    helpful: 5,
-    verified: false,
-  },
-];
-
+/* ── Review modal ────────────────────────────────────────────────── */
 function ReviewModal({ onClose, onSubmit }) {
-  const [form, setForm] = useState({ rating: 0, title: '', content: '', name: '' });
+  const [form, setForm]     = useState({ rating: 0, title: '', content: '', name: '' });
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const e = {};
-    if (!form.rating) e.rating = 'Selectează un rating.';
-    if (!form.title.trim()) e.title = 'Titlul este obligatoriu.';
-    if (form.content.length < 20) e.content = 'Recenzia trebuie să aibă cel puțin 20 de caractere.';
-    if (!form.name.trim()) e.name = 'Numele este obligatoriu.';
+    if (!form.rating)              e.rating  = 'Please select a rating.';
+    if (!form.title.trim())        e.title   = 'Title is required.';
+    if (form.content.length < 20)  e.content = 'Review must be at least 20 characters.';
+    if (!form.name.trim())         e.name    = 'Name is required.';
     return e;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const e2 = validate();
-    if (Object.keys(e2).length) { setErrors(e2); return; }
+    const err = validate();
+    if (Object.keys(err).length) { setErrors(err); return; }
     onSubmit(form);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-bold text-gray-900 mb-5" style={{ fontFamily: 'Playfair Display, serif' }}>
-          Scrie o Recenzie
-        </h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="absolute inset-0 bg-charcoal/50" onClick={onClose} />
+      <div className="relative bg-cream border border-paper shadow-classic-lg w-full max-w-lg
+                      max-h-[90vh] overflow-y-auto">
+        <div className="bg-cream-dark border-b border-paper px-6 py-4 flex items-center justify-between">
+          <h3 className="font-serif text-h3 text-charcoal">Write a Review</h3>
+          <button onClick={onClose} className="text-charcoal-light hover:text-charcoal font-sans text-xs uppercase tracking-widest">
+            Close
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Rating *</label>
-            <StarRating rating={form.rating} size="lg" interactive onRate={r => setForm(f => ({ ...f, rating: r }))} />
-            {errors.rating && <p className="text-red-500 text-xs mt-1">{errors.rating}</p>}
+            <label className="field-label">Your Rating *</label>
+            <Stars value={form.rating} size="lg" interactive onChange={r => setForm(f => ({ ...f, rating: r }))} />
+            {errors.rating && <p className="text-burgundy-700 text-xs font-sans mt-1">{errors.rating}</p>}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Titlul recenziei *</label>
-            <input
-              type="text"
-              value={form.title}
-              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-              className="input-field"
-              placeholder="Rezumă experiența ta"
-            />
-            {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Recenzie *</label>
-            <textarea
-              rows={4}
-              value={form.content}
-              onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
-              className="input-field resize-none"
-              placeholder="Spune-ne ce crezi despre această carte..."
-            />
-            {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content}</p>}
-            <p className="text-xs text-gray-400 mt-1">{form.content.length} caractere (minim 20)</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Numele tău *</label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-              className="input-field"
-              placeholder="Prenume sau inițiale"
-            />
-            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-          </div>
+          {[
+            { name: 'title',   label: 'Review Title *',  type: 'input',    ph: 'Summarise your thoughts' },
+            { name: 'name',    label: 'Your Name *',     type: 'input',    ph: 'First name or initials' },
+            { name: 'content', label: 'Your Review *',   type: 'textarea', ph: 'Share your reading experience…' },
+          ].map(field => (
+            <div key={field.name}>
+              <label className="field-label">{field.label}</label>
+              {field.type === 'input' ? (
+                <input
+                  type="text" value={form[field.name]}
+                  onChange={e => setForm(f => ({ ...f, [field.name]: e.target.value }))}
+                  className={`field ${errors[field.name] ? 'border-burgundy-600' : ''}`}
+                  placeholder={field.ph}
+                />
+              ) : (
+                <textarea rows={4} value={form[field.name]}
+                  onChange={e => setForm(f => ({ ...f, [field.name]: e.target.value }))}
+                  className={`field resize-none ${errors[field.name] ? 'border-burgundy-600' : ''}`}
+                  placeholder={field.ph}
+                />
+              )}
+              {errors[field.name] && (
+                <p className="text-burgundy-700 text-xs font-sans mt-1">{errors[field.name]}</p>
+              )}
+            </div>
+          ))}
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="flex-1 btn-secondary">Anulează</button>
-            <button type="submit" className="flex-1 btn-primary">Publică Recenzia</button>
+            <button type="button" onClick={onClose} className="btn-secondary flex-1">Cancel</button>
+            <button type="submit" className="btn-primary flex-1">Submit Review</button>
           </div>
         </form>
       </div>
@@ -144,396 +102,407 @@ function ReviewModal({ onClose, onSubmit }) {
   );
 }
 
-export default function ProductDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart, toggleWishlist, wishlist, addToRecentlyViewed, addToast } = useApp();
-  const [quantity, setQuantity] = useState(1);
-  const [expandDesc, setExpandDesc] = useState(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [reviews, setReviews] = useState(mockReviews);
-  const [copied, setCopied] = useState(false);
+const seedReviews = [
+  { id: 1, author: 'Maria I.',     rating: 5, date: '15 Mar 2024', title: 'A masterpiece of Romanian literature',
+    content: 'I read this with great concentration and immense pleasure. Every page reveals new layers of meaning and beauty. Highly recommended.',
+    helpful: 12, verified: true },
+  { id: 2, author: 'Alexandru P.', rating: 4, date: '3 Feb 2024',  title: 'Essential reading',
+    content: 'A beautifully produced volume with a thoughtful critical apparatus. The edition is well-prepared and the text impeccably rendered.',
+    helpful: 8,  verified: true },
+  { id: 3, author: 'Elena G.',     rating: 5, date: '20 Jan 2024', title: 'Exquisite edition',
+    content: 'Prince\'s Multimedia consistently produce editions of the highest quality. The paper is fine, the binding sturdy, the presentation elegant.',
+    helpful: 5,  verified: false },
+];
 
-  const book = books.find(b => b.id === parseInt(id));
-  const related = books.filter(b => b.id !== book?.id && b.category === book?.category).slice(0, 4);
-  const isWishlisted = wishlist.some(b => b.id === book?.id);
+export default function ProductDetail() {
+  const { id }        = useParams();
+  const navigate      = useNavigate();
+  const { addToCart, toggleWishlist, wishlist, addToRecentlyViewed, addToast } = useApp();
+  const [quantity,    setQuantity]    = useState(1);
+  const [expanded,    setExpanded]    = useState(false);
+  const [showModal,   setShowModal]   = useState(false);
+  const [reviews,     setReviews]     = useState(seedReviews);
+  const [copied,      setCopied]      = useState(false);
+
+  const book      = books.find(b => b.id === parseInt(id));
+  const related   = books.filter(b => b.id !== book?.id && b.category === book?.category).slice(0, 4);
+  const inWish    = wishlist.some(b => b.id === book?.id);
 
   useEffect(() => {
-    if (book) addToRecentlyViewed(book);
+    if (book) { addToRecentlyViewed(book); }
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!book) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
-        <div className="text-center">
-          <div className="text-6xl mb-4">📚</div>
-          <h2 className="text-2xl font-bold text-gray-700 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Carte negăsită
-          </h2>
-          <p className="text-gray-500 mb-6">Cartea pe care o cauți nu există sau a fost eliminată.</p>
-          <button onClick={() => navigate('/collections')} className="btn-primary">
-            Înapoi la Colecții
-          </button>
-        </div>
+  if (!book) return (
+    <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+      <div className="text-center">
+        <p className="font-serif text-3xl text-charcoal-light italic mb-4">Title not found</p>
+        <button onClick={() => navigate('/collections')} className="btn-primary">
+          Return to Collections
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 
-  const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-  const ratingDist = [5, 4, 3, 2, 1].map(r => ({
+  const avg       = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const dist      = [5, 4, 3, 2, 1].map(r => ({
     star: r,
-    count: reviews.filter(rev => rev.rating === r).length,
-    percent: Math.round((reviews.filter(rev => rev.rating === r).length / reviews.length) * 100),
+    count: reviews.filter(x => x.rating === r).length,
+    pct: Math.round(reviews.filter(x => x.rating === r).length / reviews.length * 100),
   }));
+  const discount  = book.originalPrice ? Math.round((1 - book.price / book.originalPrice) * 100) : null;
 
-  const handleAddReview = (form) => {
-    setReviews(prev => [{
-      id: Date.now(),
-      author: form.name,
-      rating: form.rating,
-      date: new Date().toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' }),
-      title: form.title,
-      content: form.content,
-      helpful: 0,
-      verified: false,
-    }, ...prev]);
-    setShowReviewModal(false);
-    addToast('Recenzia ta a fost publicată!', 'success');
-  };
-
-  const handleCopyLink = () => {
+  const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    addToast('Link copiat în clipboard!', 'info');
+    addToast('Link copied to clipboard.', 'info');
   };
 
-  const discountPercent = book.originalPrice
-    ? Math.round((1 - book.price / book.originalPrice) * 100)
-    : null;
+  const handleReview = form => {
+    setReviews(prev => [{
+      id: Date.now(), author: form.name,
+      rating: form.rating,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      title: form.title, content: form.content, helpful: 0, verified: false,
+    }, ...prev]);
+    setShowModal(false);
+    addToast('Your review has been published.', 'success');
+  };
 
   return (
-    <div className="page-transition min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-100 pt-20">
+    <div className="fade-in min-h-screen bg-cream">
+
+      {/* Breadcrumb strip */}
+      <div className="bg-cream-dark border-b border-paper">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb items={[
-            { label: 'Colecții', to: '/collections' },
+            { label: 'Collections', to: '/collections' },
             { label: book.category, to: `/collections?category=${book.category}` },
             { label: book.title },
           ]} />
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Main Product Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-            {/* Left: Cover */}
-            <div className="p-8 lg:p-12 flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 border-b lg:border-b-0 lg:border-r border-gray-100">
-              <div className={`relative w-56 h-80 rounded-xl bg-gradient-to-br ${book.gradient} shadow-2xl flex items-center justify-center group cursor-zoom-in`}>
-                <BookOpen className="w-24 h-24 text-white/40" />
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-6 left-6 right-6 h-0.5 bg-white rounded" />
-                  <div className="absolute top-10 left-6 right-10 h-0.5 bg-white rounded" />
-                  <div className="absolute top-14 left-6 right-8 h-0.5 bg-white rounded" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        {/* ── Main product block ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 bg-cream border border-paper p-6 sm:p-10">
+
+          {/* LEFT: Cover */}
+          <div className="lg:col-span-2 flex flex-col items-center gap-5">
+            {/* Main cover */}
+            <div className="w-52 h-72 bg-forest-800 relative flex flex-col items-center
+                            justify-center text-cream/20 shadow-classic-lg">
+              <div className="absolute inset-0 px-7 py-6 flex flex-col justify-between">
+                <div className="h-px bg-cream/15" />
+                <div className="text-center">
+                  <p className="font-serif text-sm text-cream/60 italic leading-snug px-1">
+                    {book.title}
+                  </p>
+                  <div className="h-px bg-cream/15 mt-3 mx-4" />
+                  <p className="font-sans text-xs text-cream/30 mt-2 uppercase tracking-widest">
+                    {book.author.split(' ').pop()}
+                  </p>
                 </div>
-                {discountPercent && (
-                  <div className="absolute -top-3 -right-3 w-14 h-14 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">-{discountPercent}%</span>
-                  </div>
-                )}
+                <div className="h-px bg-cream/15" />
               </div>
+              <span className="font-serif text-7xl text-cream/10 absolute">❧</span>
+              {discount && (
+                <span className="absolute top-2 left-2 bg-burgundy-700 text-cream
+                                 text-xs font-sans font-bold px-2 py-0.5">
+                  -{discount}%
+                </span>
+              )}
+            </div>
 
-              {/* Thumbnails placeholder */}
-              <div className="flex items-center gap-2 mt-6">
-                {[1, 2, 3].map(i => (
-                  <div
-                    key={i}
-                    className={`w-12 h-16 rounded-lg bg-gradient-to-br ${book.gradient} opacity-${i === 1 ? '100' : i === 2 ? '70' : '40'} cursor-pointer border-2 ${i === 1 ? 'border-purple-500' : 'border-transparent'} shadow-sm`}
-                  />
-                ))}
-              </div>
+            {/* Thumbnails */}
+            <div className="flex items-center gap-2">
+              {[1, 2, 3].map((_, i) => (
+                <div key={i}
+                     className={`w-12 h-16 bg-forest-800 cursor-pointer border-2 transition-colors
+                       ${i === 0 ? 'border-gold' : 'border-transparent hover:border-forest-600'}`} />
+              ))}
+            </div>
 
-              {/* Social share */}
-              <div className="flex items-center gap-2 mt-5">
-                <span className="text-xs text-gray-500">Distribuie:</span>
-                <a href="#" className="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <FacebookIcon className="w-3.5 h-3.5" />
-                </a>
-                <a href="#" className="w-7 h-7 bg-sky-500 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-opacity">
-                  <TwitterIcon className="w-3.5 h-3.5" />
-                </a>
-                <button
-                  onClick={handleCopyLink}
-                  className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-300 transition-colors"
-                >
-                  {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+            {/* Share */}
+            <div className="text-center">
+              <p className="text-xs font-sans text-charcoal-lighter uppercase tracking-widest mb-2">
+                Share this title
+              </p>
+              <div className="flex items-center justify-center gap-4 text-xs font-sans">
+                <a href="#" className="text-burgundy-700 hover:underline uppercase tracking-wider">Facebook</a>
+                <span className="text-paper-dark">|</span>
+                <a href="#" className="text-burgundy-700 hover:underline uppercase tracking-wider">Twitter</a>
+                <span className="text-paper-dark">|</span>
+                <button onClick={handleCopy} className="text-burgundy-700 hover:underline uppercase tracking-wider">
+                  {copied ? 'Copied!' : 'Copy link'}
                 </button>
               </div>
             </div>
+          </div>
 
-            {/* Right: Details */}
-            <div className="p-8 lg:p-10">
-              {/* Category & badges */}
-              <div className="flex items-center flex-wrap gap-2 mb-4">
-                <Link
-                  to={`/collections?category=${book.category}`}
-                  className="badge bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors text-xs"
-                >
-                  {book.category}
-                </Link>
-                {book.bestseller && (
-                  <span className="badge bg-yellow-100 text-yellow-700 text-xs">Bestseller</span>
-                )}
-                {discountPercent && (
-                  <span className="badge bg-red-100 text-red-600 text-xs">-{discountPercent}% Reducere</span>
-                )}
-              </div>
+          {/* RIGHT: Info */}
+          <div className="lg:col-span-3">
 
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-                {book.title}
-              </h1>
-              <p className="text-gray-600 font-medium text-lg mb-4">{book.author}</p>
-
-              {/* Rating */}
-              <div className="flex items-center gap-3 mb-6">
-                <StarRating rating={book.rating} size="md" />
-                <span className="text-sm font-semibold text-gray-700">{book.rating}</span>
-                <span className="text-sm text-gray-500">({book.reviewCount} recenzii)</span>
-                <a href="#reviews" className="text-sm text-purple-700 hover:underline">
-                  Citește recenziile
-                </a>
-              </div>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-3 mb-6 p-4 bg-gray-50 rounded-xl">
-                <span className="text-4xl font-bold text-purple-800">{book.price.toFixed(2)}</span>
-                <span className="text-lg text-gray-500 font-medium">lei</span>
-                {book.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">{book.originalPrice.toFixed(2)} lei</span>
-                )}
-              </div>
-
-              {/* Stock */}
-              <div className="flex items-center gap-2 mb-6">
-                {book.stock > 5 ? (
-                  <><Check className="w-4 h-4 text-green-500" /><span className="text-sm text-green-700 font-medium">În stoc — livrare în 3-5 zile</span></>
-                ) : book.stock > 0 ? (
-                  <><AlertCircle className="w-4 h-4 text-yellow-500" /><span className="text-sm text-yellow-700 font-medium">Ultimele {book.stock} exemplare!</span></>
-                ) : (
-                  <><AlertCircle className="w-4 h-4 text-red-500" /><span className="text-sm text-red-600 font-medium">Momentan indisponibil</span></>
-                )}
-              </div>
-
-              {/* Quantity */}
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-sm font-medium text-gray-700">Cantitate:</span>
-                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                  <button
-                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                    className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-12 text-center font-semibold text-gray-900 text-sm">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(q => Math.min(book.stock, q + 1))}
-                    disabled={quantity >= book.stock}
-                    className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-40"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-                <span className="text-sm text-gray-500">Total: <strong className="text-purple-800">{(book.price * quantity).toFixed(2)} lei</strong></span>
-              </div>
-
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                <button
-                  onClick={() => addToCart(book, quantity)}
-                  disabled={book.stock === 0}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-800 to-blue-700 text-white py-3.5 px-6 rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Adaugă în Coș
-                </button>
-                <button
-                  onClick={() => toggleWishlist(book)}
-                  className={`flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-semibold border-2 transition-all ${
-                    isWishlisted
-                      ? 'bg-red-50 border-red-300 text-red-600'
-                      : 'border-gray-200 text-gray-700 hover:border-red-300 hover:text-red-500'
-                  }`}
-                >
-                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
-                  {isWishlisted ? 'Salvat' : 'Salvează'}
-                </button>
-              </div>
-
-              {/* Quick checkout */}
-              <Link
-                to="/checkout"
-                onClick={() => addToCart(book, quantity)}
-                className="block w-full text-center py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-colors mb-6"
-              >
-                Cumpără Acum
+            {/* Category + badges */}
+            <div className="flex items-center flex-wrap gap-2 mb-4">
+              <Link to={`/collections?category=${book.category}`}
+                    className="badge-classic border-forest-800 text-forest-800 bg-transparent text-xs
+                               hover:bg-forest-800 hover:text-cream transition-colors">
+                {book.category}
               </Link>
+              {book.bestseller && (
+                <span className="badge-classic border-gold text-gold bg-transparent text-xs">
+                  Bestseller
+                </span>
+              )}
+            </div>
 
-              {/* Specs */}
-              <div className="border-t border-gray-100 pt-6">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">Specificații</h3>
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-                  {[
-                    { label: 'ISBN', value: book.isbn, icon: Hash },
-                    { label: 'An apariție', value: book.publicationDate, icon: Calendar },
-                    { label: 'Pagini', value: book.pages, icon: BookOpen },
-                    { label: 'Limbă', value: book.language, icon: null },
-                    { label: 'Copertă', value: book.binding, icon: Package },
-                    { label: 'Categorie', value: book.category, icon: null },
-                  ].map(spec => (
-                    <div key={spec.label} className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400 font-medium w-24">{spec.label}:</span>
-                      <span className="text-xs text-gray-700 font-semibold">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
+            <h1 className="font-serif text-h1 text-charcoal leading-tight mb-2">{book.title}</h1>
+            <p className="font-sans text-base text-charcoal-light uppercase tracking-widest mb-4">{book.author}</p>
+
+            {/* Rating row */}
+            <div className="flex items-center gap-3 mb-6">
+              <Stars value={book.rating} size="md" />
+              <span className="font-sans text-sm text-charcoal-light">
+                {book.rating} · {book.reviewCount} reviews
+              </span>
+              <a href="#reviews" className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+                Read reviews
+              </a>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3 py-4 border-t border-b border-paper mb-6">
+              <span className="font-serif text-4xl text-burgundy-700">{book.price.toFixed(2)}</span>
+              <span className="font-sans text-base text-charcoal-light">lei</span>
+              {book.originalPrice && (
+                <span className="font-sans text-lg text-charcoal-lighter line-through">
+                  {book.originalPrice.toFixed(2)} lei
+                </span>
+              )}
+            </div>
+
+            {/* Stock */}
+            <div className="flex items-center gap-2 mb-5">
+              {book.stock > 5 ? (
+                <><Check className="w-4 h-4 text-forest-700" />
+                  <span className="text-sm font-sans text-forest-700">In Stock — ships in 3–5 business days</span></>
+              ) : book.stock > 0 ? (
+                <><AlertCircle className="w-4 h-4 text-gold" />
+                  <span className="text-sm font-sans text-gold">Only {book.stock} copies remaining</span></>
+              ) : (
+                <><AlertCircle className="w-4 h-4 text-charcoal-lighter" />
+                  <span className="text-sm font-sans text-charcoal-lighter">Currently out of stock</span></>
+              )}
+            </div>
+
+            {/* Quantity */}
+            <div className="flex items-center gap-4 mb-5">
+              <span className="text-xs font-sans font-bold text-charcoal uppercase tracking-widest">Quantity</span>
+              <div className="flex items-center border border-paper">
+                <button onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                        className="w-9 h-9 flex items-center justify-center text-charcoal-light
+                                   hover:text-charcoal hover:bg-cream-dark transition-colors border-r border-paper">
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
+                <span className="w-12 text-center text-sm font-sans font-bold text-charcoal">{quantity}</span>
+                <button onClick={() => setQuantity(q => Math.min(book.stock || 1, q + 1))}
+                        className="w-9 h-9 flex items-center justify-center text-charcoal-light
+                                   hover:text-charcoal hover:bg-cream-dark transition-colors border-l border-paper">
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
               </div>
+              <span className="text-sm font-sans text-charcoal-light">
+                Total: <strong className="text-charcoal">{(book.price * quantity).toFixed(2)} lei</strong>
+              </span>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+              <button
+                onClick={() => addToCart(book, quantity)}
+                disabled={book.stock === 0}
+                className="flex-1 btn-primary py-3.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Add to Cart
+              </button>
+              <button
+                onClick={() => toggleWishlist(book)}
+                className={`flex items-center justify-center gap-2 py-3.5 px-6 border-2 font-sans
+                            font-bold text-sm uppercase tracking-widest transition-colors duration-200
+                            ${inWish
+                              ? 'border-burgundy-700 bg-burgundy-50 text-burgundy-700'
+                              : 'border-paper text-charcoal hover:border-burgundy-700 hover:text-burgundy-700'
+                            }`}
+              >
+                <Heart className={`w-4 h-4 ${inWish ? 'fill-burgundy-700' : ''}`} />
+                {inWish ? 'In Wishlist' : 'Add to Wishlist'}
+              </button>
+            </div>
+
+            <Link to="/checkout" onClick={() => addToCart(book, quantity)}
+                  className="block w-full text-center py-3 bg-charcoal text-cream
+                             font-sans font-bold text-sm uppercase tracking-widest
+                             border border-charcoal hover:bg-forest-950 transition-colors mb-6">
+              Buy Now
+            </Link>
+
+            {/* Specifications */}
+            <div className="border-t border-paper pt-5">
+              <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-charcoal mb-3">
+                Bibliographic Details
+              </h3>
+              <table className="w-full text-sm">
+                <tbody>
+                  {[
+                    { label: 'ISBN',            value: book.isbn },
+                    { label: 'Published',       value: book.publicationDate },
+                    { label: 'Pages',           value: book.pages },
+                    { label: 'Language',        value: book.language },
+                    { label: 'Binding',         value: book.binding },
+                    { label: 'Category',        value: book.category },
+                  ].map(row => (
+                    <tr key={row.label} className="border-b border-paper last:border-0">
+                      <td className="py-2 pr-4 font-sans text-xs text-charcoal-light uppercase tracking-wider w-1/3">
+                        {row.label}
+                      </td>
+                      <td className="py-2 font-sans text-sm text-charcoal font-medium">
+                        {row.value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mt-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Despre această carte
-          </h2>
-          <div className={`text-gray-600 leading-relaxed text-sm sm:text-base ${!expandDesc ? 'line-clamp-4' : ''}`}>
+        <div className="bg-cream border border-paper border-t-0 px-6 sm:px-10 py-8">
+          <h2 className="font-serif text-h3 text-charcoal mb-4">About This Book</h2>
+          <div className={`font-sans text-sm text-charcoal leading-reading ${!expanded ? 'line-clamp-4' : ''}`}>
             <p className="mb-3">{book.description}</p>
             {book.longDescription && <p>{book.longDescription}</p>}
           </div>
-          <button
-            onClick={() => setExpandDesc(e => !e)}
-            className="mt-3 text-purple-700 text-sm font-medium hover:underline"
-          >
-            {expandDesc ? 'Citește mai puțin ↑' : 'Citește mai mult ↓'}
+          <button onClick={() => setExpanded(e => !e)}
+                  className="mt-3 btn-ghost text-sm">
+            {expanded ? 'Read less ↑' : 'Read more ↓'}
           </button>
         </div>
 
-        {/* Author Info */}
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border border-purple-100 p-8 mt-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Despre Autor
-          </h2>
-          <div className="flex items-start gap-4">
-            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${book.gradient} flex items-center justify-center flex-shrink-0`}>
-              <User className="w-8 h-8 text-white/70" />
+        {/* Author box */}
+        <div className="bg-cream-dark border border-paper border-t-0 px-6 sm:px-10 py-8">
+          <h2 className="font-serif text-h3 text-charcoal mb-4">About the Author</h2>
+          <div className="flex items-start gap-5">
+            <div className="w-14 h-14 bg-forest-800 flex items-center justify-center
+                            text-cream/30 font-serif text-2xl flex-shrink-0">
+              {book.author.charAt(0)}
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-lg mb-1">{book.author}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                {book.author} este unul dintre reprezentanții de marcă ai literaturii române. Operele sale sunt studiate în școlile din România și republicate constant de edituri de prestigiu. Prin creația sa, a contribuit esențial la patrimoniul cultural românesc.
+              <h3 className="font-serif text-h4 text-charcoal mb-1">{book.author}</h3>
+              <p className="font-sans text-sm text-charcoal-light leading-reading mb-3">
+                {book.author} is one of the distinguished voices of Romanian literature.
+                Their work has been studied and celebrated across Romania and beyond,
+                contributing significantly to the cultural heritage of the Romanian people.
               </p>
-              <Link
-                to={`/collections?search=${encodeURIComponent(book.author)}`}
-                className="inline-flex items-center gap-1.5 text-purple-700 text-sm font-medium hover:underline"
-              >
-                Vezi toate cărțile autorului <ChevronRight className="w-4 h-4" />
+              <Link to={`/collections?search=${encodeURIComponent(book.author)}`}
+                    className="btn-ghost text-sm">
+                View all titles by this author →
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Reviews Section */}
-        <div id="reviews" className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mt-6">
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Recenzii ({reviews.length})
+        {/* Reviews */}
+        <div id="reviews" className="bg-cream border border-paper border-t-0 px-6 sm:px-10 py-8">
+          <div className="flex items-center justify-between flex-wrap gap-4 mb-7">
+            <h2 className="font-serif text-h3 text-charcoal">
+              Reader Reviews <span className="text-charcoal-lighter font-sans text-base">({reviews.length})</span>
             </h2>
-            <button onClick={() => setShowReviewModal(true)} className="btn-primary text-sm px-4 py-2">
-              Scrie o Recenzie
+            <button onClick={() => setShowModal(true)} className="btn-ghost text-sm">
+              Write a review →
             </button>
           </div>
 
-          {/* Rating Summary */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 p-6 bg-gray-50 rounded-xl mb-8">
-            <div className="text-center">
-              <div className="text-5xl font-bold text-gray-900">{avgRating.toFixed(1)}</div>
-              <StarRating rating={avgRating} size="md" />
-              <div className="text-sm text-gray-500 mt-1">{reviews.length} recenzii</div>
+          {/* Rating summary */}
+          <div className="flex flex-col sm:flex-row gap-8 p-6 bg-cream-dark border border-paper mb-7">
+            <div className="text-center flex-shrink-0">
+              <div className="font-serif text-6xl text-charcoal">{avg.toFixed(1)}</div>
+              <Stars value={avg} size="md" />
+              <p className="text-xs font-sans text-charcoal-light mt-1">
+                {reviews.length} reviews
+              </p>
             </div>
-            <div className="flex-1 space-y-2 w-full sm:w-auto">
-              {ratingDist.map(({ star, count, percent }) => (
+            <div className="flex-1 space-y-2">
+              {dist.map(({ star, count, pct }) => (
                 <div key={star} className="flex items-center gap-3">
-                  <span className="text-xs text-gray-500 w-4">{star}</span>
-                  <Star className="w-3 h-3 text-yellow-400 fill-yellow-400 flex-shrink-0" />
-                  <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                    <div
-                      className="h-full bg-yellow-400 rounded-full transition-all duration-500"
-                      style={{ width: `${percent}%` }}
-                    />
+                  <span className="text-xs font-sans text-charcoal-light w-4">{star}</span>
+                  <span className="text-gold text-xs">★</span>
+                  <div className="flex-1 bg-paper h-2">
+                    <div className="h-full bg-gold transition-all duration-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="text-xs text-gray-500 w-8">{count}</span>
+                  <span className="text-xs font-sans text-charcoal-light w-5">{count}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Individual Reviews */}
-          <div className="space-y-5">
-            {reviews.map(review => (
-              <div key={review.id} className="border-b border-gray-100 last:border-0 pb-5 last:pb-0">
+          {/* Review list */}
+          <div className="space-y-6">
+            {reviews.map(r => (
+              <div key={r.id} className="border-b border-paper last:border-0 pb-6 last:pb-0">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-                      {review.author.charAt(0)}
+                    <div className="w-9 h-9 bg-forest-800 flex items-center justify-center
+                                    text-cream text-sm font-serif flex-shrink-0">
+                      {r.author.charAt(0)}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-gray-900">{review.author}</span>
-                        {review.verified && (
-                          <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-medium">
-                            Cumpărare verificată
+                        <span className="text-sm font-sans font-bold text-charcoal uppercase tracking-wider">
+                          {r.author}
+                        </span>
+                        {r.verified && (
+                          <span className="text-xs font-sans text-forest-700 border border-forest-700 px-1.5 py-0.5">
+                            Verified
                           </span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <StarRating rating={review.rating} />
-                        <span className="text-xs text-gray-400">{review.date}</span>
+                        <Stars value={r.rating} />
+                        <span className="text-xs font-sans text-charcoal-light">{r.date}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <h4 className="text-sm font-semibold text-gray-900 mb-1">{review.title}</h4>
-                <p className="text-sm text-gray-600 leading-relaxed mb-3">{review.content}</p>
-                <button className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-purple-700 transition-colors">
-                  <ThumbsUp className="w-3.5 h-3.5" />
-                  Util ({review.helpful})
+                <h4 className="font-serif text-base text-charcoal mb-1">{r.title}</h4>
+                <p className="text-sm font-sans text-charcoal-light leading-reading mb-3">{r.content}</p>
+                <button className="flex items-center gap-1.5 text-xs font-sans text-charcoal-lighter
+                                   hover:text-forest-800 transition-colors uppercase tracking-wider">
+                  <ThumbsUp className="w-3 h-3" /> Helpful ({r.helpful})
                 </button>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Related Products */}
+        {/* Related */}
         {related.length > 0 && (
-          <div className="mt-10">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Cărți Similare
+          <div className="mt-12">
+            <h2 className="font-serif text-h3 text-charcoal mb-6 pb-3 border-b border-paper">
+              Related Titles
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {related.map(b => (
-                <BookCard key={b.id} book={b} />
-              ))}
+              {related.map(b => <BookCard key={b.id} book={b} />)}
             </div>
           </div>
         )}
       </div>
 
-      {showReviewModal && (
-        <ReviewModal onClose={() => setShowReviewModal(false)} onSubmit={handleAddReview} />
-      )}
+      {showModal && <ReviewModal onClose={() => setShowModal(false)} onSubmit={handleReview} />}
     </div>
   );
 }

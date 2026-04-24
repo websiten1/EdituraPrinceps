@@ -1,56 +1,52 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  CreditCard, Truck, MapPin, Check, ChevronRight, BookOpen,
-  Shield, Lock, AlertCircle, CheckCircle
-} from 'lucide-react';
+import { Check, ChevronRight, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import Breadcrumb from '../components/Breadcrumb';
 
-const steps = [
-  { id: 1, label: 'Adresă' },
-  { id: 2, label: 'Livrare' },
-  { id: 3, label: 'Plată' },
-  { id: 4, label: 'Confirmare' },
+const STEPS = [
+  { id: 1, label: 'Billing' },
+  { id: 2, label: 'Shipping' },
+  { id: 3, label: 'Payment' },
+  { id: 4, label: 'Review' },
 ];
 
 const shippingMethods = [
-  { id: 'standard', label: 'Livrare Standard', desc: '3-5 zile lucrătoare', price: 15, icon: Truck },
-  { id: 'express', label: 'Livrare Express', desc: '1-2 zile lucrătoare', price: 25, icon: Truck },
-  { id: 'pickup', label: 'Ridicare Personală', desc: 'Iași — gratuit', price: 0, icon: MapPin },
+  { id: 'standard', label: 'Standard Delivery',   desc: '3–5 business days', price: 15 },
+  { id: 'express',  label: 'Express Delivery',     desc: '1–2 business days', price: 25 },
+  { id: 'pickup',   label: 'Collect in Store',     desc: 'Iași — No charge',  price: 0  },
 ];
 
 const paymentMethods = [
-  { id: 'card', label: 'Card Bancar', desc: 'Visa, Mastercard, Maestro' },
-  { id: 'paypal', label: 'PayPal', desc: 'Plată rapidă și securizată' },
-  { id: 'transfer', label: 'Transfer Bancar', desc: 'Procesare în 1-2 zile bancare' },
-  { id: 'ramburs', label: 'Ramburs la Livrare', desc: 'Plătești la primirea coletului' },
+  { id: 'card',     label: 'Credit / Debit Card', desc: 'Visa, Mastercard, Maestro' },
+  { id: 'transfer', label: 'Bank Transfer',        desc: 'Processed in 1–2 banking days' },
+  { id: 'paypal',   label: 'PayPal',               desc: 'Fast, secure checkout' },
+  { id: 'ramburs',  label: 'Cash on Delivery',     desc: 'Pay upon receipt of parcel' },
 ];
 
-function ProgressBar({ currentStep }) {
+/* ── Progress bar ──────────────────────────────────────────────────── */
+function Progress({ current }) {
   return (
-    <div className="flex items-center justify-between mb-8">
-      {steps.map((step, i) => (
-        <div key={step.id} className="flex items-center flex-1">
-          <div className={`flex items-center gap-2 ${i > 0 ? 'flex-1' : ''}`}>
-            {i > 0 && (
-              <div className={`flex-1 h-0.5 ${step.id <= currentStep ? 'bg-purple-600' : 'bg-gray-200'}`} />
-            )}
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold transition-all ${
-              step.id < currentStep
-                ? 'bg-purple-600 text-white'
-                : step.id === currentStep
-                ? 'bg-purple-800 text-white ring-4 ring-purple-200'
-                : 'bg-gray-100 text-gray-400'
-            }`}>
-              {step.id < currentStep ? <Check className="w-4 h-4" /> : step.id}
+    <div className="flex items-center gap-0 mb-10">
+      {STEPS.map((step, i) => (
+        <div key={step.id} className={`flex items-center ${i < STEPS.length - 1 ? 'flex-1' : ''}`}>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div className={`w-7 h-7 flex items-center justify-center text-xs font-sans font-bold
+                             border-2 transition-colors
+                             ${step.id < current  ? 'border-forest-800 bg-forest-800 text-cream'
+                             : step.id === current ? 'border-forest-800 bg-cream text-forest-800'
+                                                   : 'border-paper text-charcoal-lighter'}`}>
+              {step.id < current ? <Check className="w-3.5 h-3.5" /> : step.id}
             </div>
+            <span className={`hidden sm:block text-xs font-sans uppercase tracking-widest
+                              ${step.id === current ? 'text-forest-800 font-bold'
+                              : step.id < current  ? 'text-charcoal-light'
+                                                   : 'text-charcoal-lighter'}`}>
+              {step.label}
+            </span>
           </div>
-          <span className={`hidden sm:block ml-2 text-xs font-medium ${step.id === currentStep ? 'text-purple-800' : step.id < currentStep ? 'text-gray-600' : 'text-gray-400'}`}>
-            {step.label}
-          </span>
-          {i < steps.length - 1 && i === 0 && (
-            <div className={`flex-1 h-0.5 ml-2 ${2 <= currentStep ? 'bg-purple-600' : 'bg-gray-200'}`} />
+          {i < STEPS.length - 1 && (
+            <div className={`flex-1 h-px mx-3 ${step.id < current ? 'bg-forest-800' : 'bg-paper'}`} />
           )}
         </div>
       ))}
@@ -58,74 +54,70 @@ function ProgressBar({ currentStep }) {
   );
 }
 
-function AddressForm({ data, onChange, errors, sameAsBilling, setSameAsBilling, isBilling }) {
-  const Field = ({ name, label, type = 'text', required, half, children }) => (
-    <div className={half ? 'sm:col-span-1' : 'sm:col-span-2'}>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      {children || (
-        <input
-          type={type}
-          value={data[name] || ''}
-          onChange={e => onChange(name, e.target.value)}
-          className={`input-field ${errors[name] ? 'border-red-400' : ''}`}
-        />
-      )}
-      {errors[name] && <p className="text-red-500 text-xs mt-1">{errors[name]}</p>}
+/* ── Generic field ─────────────────────────────────────────────────── */
+function Field({ label, required, error, children }) {
+  return (
+    <div>
+      <label className="field-label">{label}{required && ' *'}</label>
+      {children}
+      {error && <p className="text-xs font-sans text-burgundy-700 mt-1">{error}</p>}
     </div>
   );
+}
 
+/* ── Address form ──────────────────────────────────────────────────── */
+function AddressForm({ data, setData, errors, showSameAs, sameAs, setSameAs }) {
+  const set = (k, v) => setData(d => ({ ...d, [k]: v }));
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Field name="firstName" label="Prenume" required half />
-      <Field name="lastName" label="Nume" required half />
-      <Field name="email" label="Email" type="email" required>
-        <input
-          type="email"
-          value={data.email || ''}
-          onChange={e => onChange('email', e.target.value)}
-          className={`input-field ${errors.email ? 'border-red-400' : ''}`}
-        />
-        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+      <Field label="First Name" required error={errors?.firstName}>
+        <input className={`field ${errors?.firstName ? 'border-burgundy-600' : ''}`}
+               value={data.firstName || ''} onChange={e => set('firstName', e.target.value)} />
       </Field>
-      <Field name="phone" label="Telefon" required half />
-      <Field name="address" label="Adresă" required>
-        <input
-          type="text"
-          value={data.address || ''}
-          onChange={e => onChange('address', e.target.value)}
-          className={`input-field ${errors.address ? 'border-red-400' : ''}`}
-          placeholder="Str. Exemplu, Nr. 1, Ap. 2"
-        />
-        {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+      <Field label="Last Name" required error={errors?.lastName}>
+        <input className={`field ${errors?.lastName ? 'border-burgundy-600' : ''}`}
+               value={data.lastName || ''} onChange={e => set('lastName', e.target.value)} />
       </Field>
-      <Field name="city" label="Oraș" required half />
-      <Field name="county" label="Județ" required half>
-        <select
-          value={data.county || ''}
-          onChange={e => onChange('county', e.target.value)}
-          className={`input-field ${errors.county ? 'border-red-400' : ''}`}
-        >
-          <option value="">Selectează județul</option>
-          {['Alba', 'Arad', 'Argeș', 'Bacău', 'Bihor', 'Brașov', 'București', 'Cluj', 'Constanța', 'Dolj', 'Galați', 'Iași', 'Ilfov', 'Mureș', 'Prahova', 'Sibiu', 'Suceava', 'Timiș', 'Vrancea'].map(j => (
-            <option key={j} value={j}>{j}</option>
-          ))}
+      <Field label="Email Address" required error={errors?.email}>
+        <input type="email" className={`field sm:col-span-2 ${errors?.email ? 'border-burgundy-600' : ''}`}
+               value={data.email || ''} onChange={e => set('email', e.target.value)} />
+      </Field>
+      <Field label="Phone Number" required error={errors?.phone}>
+        <input className={`field ${errors?.phone ? 'border-burgundy-600' : ''}`}
+               value={data.phone || ''} onChange={e => set('phone', e.target.value)}
+               placeholder="+40 7XX XXX XXX" />
+      </Field>
+      <div className="sm:col-span-2">
+        <Field label="Street Address" required error={errors?.address}>
+          <input className={`field ${errors?.address ? 'border-burgundy-600' : ''}`}
+                 value={data.address || ''} onChange={e => set('address', e.target.value)}
+                 placeholder="Street, number, apartment" />
+        </Field>
+      </div>
+      <Field label="City" required error={errors?.city}>
+        <input className={`field ${errors?.city ? 'border-burgundy-600' : ''}`}
+               value={data.city || ''} onChange={e => set('city', e.target.value)} />
+      </Field>
+      <Field label="County" required error={errors?.county}>
+        <select className={`field ${errors?.county ? 'border-burgundy-600' : ''}`}
+                value={data.county || ''} onChange={e => set('county', e.target.value)}>
+          <option value="">Select county</option>
+          {['Alba','Arad','Argeș','Bacău','Bihor','Brașov','București','Cluj',
+            'Constanța','Dolj','Galați','Iași','Ilfov','Mureș','Prahova',
+            'Sibiu','Suceava','Timiș'].map(c => <option key={c} value={c}>{c}</option>)}
         </select>
-        {errors.county && <p className="text-red-500 text-xs mt-1">{errors.county}</p>}
       </Field>
-      <Field name="zip" label="Cod Poștal" half />
-
-      {isBilling && (
-        <div className="sm:col-span-2">
+      <Field label="Postal Code">
+        <input className="field" value={data.zip || ''} onChange={e => set('zip', e.target.value)} />
+      </Field>
+      {showSameAs && (
+        <div className="sm:col-span-2 mt-1">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={sameAsBilling}
-              onChange={e => setSameAsBilling(e.target.checked)}
-              className="w-4 h-4 text-purple-700 rounded border-gray-300 focus:ring-purple-500"
-            />
-            <span className="text-sm text-gray-700">Adresa de livrare este aceeași cu adresa de facturare</span>
+            <input type="checkbox" checked={sameAs} onChange={e => setSameAs(e.target.checked)}
+                   className="w-4 h-4 border-paper-dark text-forest-800 focus:ring-forest-800" />
+            <span className="text-sm font-sans text-charcoal">
+              Shipping address same as billing address
+            </span>
           </label>
         </div>
       )}
@@ -134,374 +126,302 @@ function AddressForm({ data, onChange, errors, sameAsBilling, setSameAsBilling, 
 }
 
 export default function Checkout() {
-  const navigate = useNavigate();
-  const { cart, cartTotal, discountAmount, finalTotal, shippingCost, clearCart } = useApp();
-  const [step, setStep] = useState(1);
-  const [billing, setBilling] = useState({});
-  const [shipping, setShipping] = useState({});
-  const [sameAsBilling, setSameAsBilling] = useState(true);
-  const [shippingMethod, setShippingMethod] = useState('standard');
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [card, setCard] = useState({ number: '', expiry: '', cvv: '', name: '' });
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [billingErrors, setBillingErrors] = useState({});
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { cart, cartTotal, discountAmount, shippingCost, clearCart } = useApp();
+  const [step, setStep]               = useState(1);
+  const [billing,  setBilling]        = useState({});
+  const [shipping, setShipping]       = useState({});
+  const [sameAs,   setSameAs]         = useState(true);
+  const [shipMethod, setShipMethod]   = useState('standard');
+  const [payMethod,  setPayMethod]    = useState('card');
+  const [card,     setCard]           = useState({ number: '', expiry: '', cvv: '', name: '' });
+  const [terms,    setTerms]          = useState(false);
+  const [billingErr, setBillingErr]   = useState({});
+  const [errors,   setErrors]         = useState({});
+  const [loading,  setLoading]        = useState(false);
+  const [done,     setDone]           = useState(false);
 
-  const selectedShipping = shippingMethods.find(m => m.id === shippingMethod);
-  const shippingCostActual = selectedShipping?.price ?? shippingCost;
-  const total = cartTotal - discountAmount + shippingCostActual;
-  const orderNumber = `PM-${Date.now().toString().slice(-6)}`;
+  const selShip  = shippingMethods.find(m => m.id === shipMethod);
+  const shipCost = selShip?.price ?? shippingCost;
+  const total    = cartTotal - discountAmount + shipCost;
+  const orderNum = `PM-${Date.now().toString().slice(-6)}`;
 
   const validateBilling = () => {
     const e = {};
-    if (!billing.firstName) e.firstName = 'Câmp obligatoriu';
-    if (!billing.lastName) e.lastName = 'Câmp obligatoriu';
-    if (!billing.email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Email invalid';
-    if (!billing.phone) e.phone = 'Câmp obligatoriu';
-    if (!billing.address) e.address = 'Câmp obligatoriu';
-    if (!billing.city) e.city = 'Câmp obligatoriu';
-    if (!billing.county) e.county = 'Câmp obligatoriu';
+    ['firstName','lastName','phone','address','city','county'].forEach(k => {
+      if (!billing[k]) e[k] = 'Required';
+    });
+    if (!billing.email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Valid email required';
     return e;
   };
 
-  const handleNextStep = () => {
+  const nextStep = () => {
     if (step === 1) {
-      const errs = validateBilling();
-      if (Object.keys(errs).length) { setBillingErrors(errs); return; }
-      setBillingErrors({});
-    }
-    if (step === 3 && !termsAccepted) {
-      setErrors({ terms: 'Trebuie să accepți termenii și condițiile.' });
-      return;
+      const err = validateBilling();
+      if (Object.keys(err).length) { setBillingErr(err); return; }
+      setBillingErr({});
     }
     setStep(s => s + 1);
     setErrors({});
   };
 
-  const handlePlaceOrder = () => {
-    if (!termsAccepted) {
-      setErrors({ terms: 'Trebuie să accepți termenii și condițiile.' });
-      return;
-    }
+  const placeOrder = () => {
+    if (!terms) { setErrors({ terms: 'You must accept the terms and conditions.' }); return; }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOrderPlaced(true);
-      clearCart();
-    }, 2000);
+    setTimeout(() => { setLoading(false); setDone(true); clearCart(); }, 1800);
   };
 
-  if (cart.items.length === 0 && !orderPlaced) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20">
-        <div className="text-center">
-          <p className="text-gray-500 mb-4">Coșul tău este gol.</p>
-          <Link to="/collections" className="btn-primary">Explorează Colecțiile</Link>
-        </div>
+  if (cart.items.length === 0 && !done) return (
+    <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="text-center">
+        <p className="font-sans text-sm text-charcoal-light mb-4">Your cart is empty.</p>
+        <Link to="/collections" className="btn-primary">Browse the Collection</Link>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (orderPlaced) {
-    return (
-      <div className="page-transition min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 max-w-lg w-full text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <CheckCircle className="w-10 h-10 text-green-500" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Comandă Plasată cu Succes!
-          </h1>
-          <p className="text-gray-600 mb-2">Numărul comenzii tale: <strong className="text-purple-800">#{orderNumber}</strong></p>
-          <p className="text-gray-500 text-sm mb-6">
-            Vei primi o confirmare pe email. Comanda ta va fi procesată în cel mai scurt timp.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/" className="btn-primary">Înapoi Acasă</Link>
-            <Link to="/collections" className="btn-secondary">Continuă Cumpărăturile</Link>
-          </div>
+  if (done) return (
+    <div className="fade-in min-h-screen bg-cream flex items-center justify-center px-4">
+      <div className="bg-cream border border-paper max-w-lg w-full p-10 text-center">
+        <CheckCircle className="w-14 h-14 text-forest-700 mx-auto mb-5" />
+        <h1 className="font-serif text-h2 text-charcoal mb-2">Order Confirmed</h1>
+        <div className="flex items-center justify-center gap-3 mb-5">
+          <div className="h-px bg-gold/60 w-10" />
+          <span className="text-gold text-xs">◆</span>
+          <div className="h-px bg-gold/60 w-10" />
+        </div>
+        <p className="font-sans text-sm text-charcoal-light mb-2">
+          Order reference: <strong className="text-forest-800 font-mono">#{orderNum}</strong>
+        </p>
+        <p className="font-sans text-sm text-charcoal-light mb-8 leading-reading">
+          Thank you for your order. A confirmation has been sent to your email address.
+          Your books will be dispatched within 1–2 business days.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <Link to="/" className="btn-primary px-6">Return Home</Link>
+          <Link to="/collections" className="btn-secondary px-6">Continue Browsing</Link>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 
   return (
-    <div className="page-transition min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white pt-24 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb items={[
-            { label: 'Coș', to: '/cart' },
-            { label: 'Finalizare Comandă' },
-          ]} />
-          <h1 className="text-3xl font-bold mt-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Finalizare Comandă
-          </h1>
+    <div className="fade-in min-h-screen bg-cream">
+      <div className="bg-cream-dark border-b border-paper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <Breadcrumb items={[{ label: 'Cart', to: '/cart' }, { label: 'Checkout' }]} />
+          <h1 className="font-serif text-h1 text-charcoal mt-4">Checkout</h1>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ProgressBar currentStep={step} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <Progress current={step} />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
+
+          {/* ── Main panel ── */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Step 1: Address */}
+            {/* Step 1 */}
             {step === 1 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  <MapPin className="w-5 h-5 text-purple-700" /> Adresă de Facturare
-                </h2>
-                <AddressForm
-                  data={billing}
-                  onChange={(k, v) => { setBilling(b => ({ ...b, [k]: v })); setBillingErrors(e => ({ ...e, [k]: '' })); }}
-                  errors={billingErrors}
-                  sameAsBilling={sameAsBilling}
-                  setSameAsBilling={setSameAsBilling}
-                  isBilling
-                />
-                {!sameAsBilling && (
-                  <div className="mt-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Adresă de Livrare</h3>
-                    <AddressForm
-                      data={shipping}
-                      onChange={(k, v) => setShipping(s => ({ ...s, [k]: v }))}
-                      errors={{}}
-                      isBilling={false}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Step 2: Shipping Method */}
-            {step === 2 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  <Truck className="w-5 h-5 text-purple-700" /> Metodă de Livrare
-                </h2>
-                <div className="space-y-3">
-                  {shippingMethods.map(method => (
-                    <label
-                      key={method.id}
-                      className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                        shippingMethod === method.id
-                          ? 'border-purple-600 bg-purple-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        value={method.id}
-                        checked={shippingMethod === method.id}
-                        onChange={e => setShippingMethod(e.target.value)}
-                        className="w-4 h-4 text-purple-700"
-                      />
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${shippingMethod === method.id ? 'bg-purple-100' : 'bg-gray-100'}`}>
-                        <method.icon className={`w-5 h-5 ${shippingMethod === method.id ? 'text-purple-700' : 'text-gray-500'}`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900 text-sm">{method.label}</div>
-                        <div className="text-xs text-gray-500">{method.desc}</div>
-                      </div>
-                      <div className={`font-bold ${method.price === 0 ? 'text-green-600' : 'text-gray-900'}`}>
-                        {method.price === 0 ? 'Gratuit' : `${method.price} lei`}
-                      </div>
-                    </label>
-                  ))}
+              <div className="bg-cream border border-paper">
+                <div className="bg-cream-dark border-b border-paper px-6 py-4">
+                  <h2 className="font-serif text-h3 text-charcoal">Billing Address</h2>
                 </div>
-              </div>
-            )}
-
-            {/* Step 3: Payment */}
-            {step === 3 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  <CreditCard className="w-5 h-5 text-purple-700" /> Metodă de Plată
-                </h2>
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  {paymentMethods.map(method => (
-                    <label
-                      key={method.id}
-                      className={`flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
-                        paymentMethod === method.id
-                          ? 'border-purple-600 bg-purple-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        value={method.id}
-                        checked={paymentMethod === method.id}
-                        onChange={e => setPaymentMethod(e.target.value)}
-                        className="w-4 h-4 text-purple-700 mt-0.5"
-                      />
-                      <div>
-                        <div className="text-sm font-semibold text-gray-900">{method.label}</div>
-                        <div className="text-xs text-gray-500">{method.desc}</div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-
-                {paymentMethod === 'card' && (
-                  <div className="space-y-4 p-4 bg-gray-50 rounded-xl">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Număr Card *</label>
-                      <input
-                        type="text"
-                        value={card.number}
-                        onChange={e => setCard(c => ({ ...c, number: e.target.value.replace(/\D/g, '').slice(0, 16).replace(/(\d{4})/g, '$1 ').trim() }))}
-                        className="input-field font-mono"
-                        placeholder="1234 5678 9012 3456"
-                        maxLength={19}
-                      />
+                <div className="p-6">
+                  <AddressForm data={billing} setData={setBilling} errors={billingErr}
+                               showSameAs sameAs={sameAs} setSameAs={setSameAs} />
+                  {!sameAs && (
+                    <div className="mt-8 pt-6 border-t border-paper">
+                      <h3 className="font-serif text-h4 text-charcoal mb-5">Shipping Address</h3>
+                      <AddressForm data={shipping} setData={setShipping} errors={{}} showSameAs={false} />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Titular Card *</label>
-                      <input
-                        type="text"
-                        value={card.name}
-                        onChange={e => setCard(c => ({ ...c, name: e.target.value.toUpperCase() }))}
-                        className="input-field uppercase"
-                        placeholder="ION POPESCU"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Dată Expirare *</label>
-                        <input
-                          type="text"
-                          value={card.expiry}
-                          onChange={e => {
-                            let v = e.target.value.replace(/\D/g, '');
-                            if (v.length >= 2) v = v.slice(0, 2) + '/' + v.slice(2, 4);
-                            setCard(c => ({ ...c, expiry: v }));
-                          }}
-                          className="input-field font-mono"
-                          placeholder="MM/YY"
-                          maxLength={5}
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">CVV *</label>
-                        <input
-                          type="password"
-                          value={card.cvv}
-                          onChange={e => setCard(c => ({ ...c, cvv: e.target.value.replace(/\D/g, '').slice(0, 3) }))}
-                          className="input-field font-mono"
-                          placeholder="•••"
-                          maxLength={3}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="mt-5">
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={termsAccepted}
-                      onChange={e => { setTermsAccepted(e.target.checked); setErrors({}); }}
-                      className="w-4 h-4 text-purple-700 rounded border-gray-300 mt-0.5"
-                    />
-                    <span className="text-sm text-gray-600">
-                      Am citit și accept{' '}
-                      <Link to="#" className="text-purple-700 hover:underline font-medium">Termenii și Condițiile</Link>
-                      {' '}și{' '}
-                      <Link to="#" className="text-purple-700 hover:underline font-medium">Politica de Confidențialitate</Link>.
-                    </span>
-                  </label>
-                  {errors.terms && (
-                    <p className="flex items-center gap-1 text-red-500 text-xs mt-1 ml-7">
-                      <AlertCircle className="w-3 h-3" /> {errors.terms}
-                    </p>
                   )}
                 </div>
               </div>
             )}
 
-            {/* Navigation buttons */}
+            {/* Step 2 */}
+            {step === 2 && (
+              <div className="bg-cream border border-paper">
+                <div className="bg-cream-dark border-b border-paper px-6 py-4">
+                  <h2 className="font-serif text-h3 text-charcoal">Shipping Method</h2>
+                </div>
+                <div className="p-6 space-y-3">
+                  {shippingMethods.map(m => (
+                    <label key={m.id}
+                           className={`flex items-center gap-4 p-4 border-2 cursor-pointer
+                                       transition-colors duration-200
+                                       ${shipMethod === m.id
+                                         ? 'border-forest-800 bg-forest-50'
+                                         : 'border-paper hover:border-charcoal-lighter'}`}>
+                      <input type="radio" value={m.id} checked={shipMethod === m.id}
+                             onChange={e => setShipMethod(e.target.value)}
+                             className="w-4 h-4 text-forest-800 focus:ring-forest-800" />
+                      <div className="flex-1">
+                        <p className="font-sans text-sm font-bold text-charcoal uppercase tracking-wider">
+                          {m.label}
+                        </p>
+                        <p className="font-sans text-xs text-charcoal-light">{m.desc}</p>
+                      </div>
+                      <span className={`font-serif text-base font-semibold ${m.price === 0 ? 'text-forest-700' : 'text-charcoal'}`}>
+                        {m.price === 0 ? 'Free' : `${m.price} lei`}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 3 */}
+            {step === 3 && (
+              <div className="bg-cream border border-paper">
+                <div className="bg-cream-dark border-b border-paper px-6 py-4">
+                  <h2 className="font-serif text-h3 text-charcoal">Payment Method</h2>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {paymentMethods.map(m => (
+                      <label key={m.id}
+                             className={`flex items-start gap-3 p-4 border-2 cursor-pointer
+                                         transition-colors duration-200
+                                         ${payMethod === m.id
+                                           ? 'border-forest-800 bg-forest-50'
+                                           : 'border-paper hover:border-charcoal-lighter'}`}>
+                        <input type="radio" value={m.id} checked={payMethod === m.id}
+                               onChange={e => setPayMethod(e.target.value)}
+                               className="w-4 h-4 mt-0.5 text-forest-800 focus:ring-forest-800" />
+                        <div>
+                          <p className="font-sans text-sm font-bold text-charcoal">{m.label}</p>
+                          <p className="font-sans text-xs text-charcoal-light">{m.desc}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+
+                  {payMethod === 'card' && (
+                    <div className="bg-cream-dark border border-paper p-5 space-y-4">
+                      <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-charcoal mb-4">
+                        Card Details
+                      </h3>
+                      <Field label="Card Number *">
+                        <input className="field font-mono" placeholder="1234 5678 9012 3456"
+                               value={card.number}
+                               onChange={e => setCard(c => ({ ...c, number: e.target.value.replace(/\D/g,'').slice(0,16).replace(/(\d{4})/g,'$1 ').trim() }))}
+                               maxLength={19} />
+                      </Field>
+                      <Field label="Cardholder Name *">
+                        <input className="field uppercase"
+                               value={card.name}
+                               onChange={e => setCard(c => ({ ...c, name: e.target.value.toUpperCase() }))}
+                               placeholder="FULL NAME" />
+                      </Field>
+                      <div className="grid grid-cols-2 gap-4">
+                        <Field label="Expiry *">
+                          <input className="field font-mono" placeholder="MM/YY" maxLength={5}
+                                 value={card.expiry}
+                                 onChange={e => {
+                                   let v = e.target.value.replace(/\D/g,'');
+                                   if (v.length >= 2) v = v.slice(0,2)+'/'+v.slice(2,4);
+                                   setCard(c => ({ ...c, expiry: v }));
+                                 }} />
+                        </Field>
+                        <Field label="CVV *">
+                          <input type="password" className="field font-mono" placeholder="•••"
+                                 maxLength={3} value={card.cvv}
+                                 onChange={e => setCard(c => ({ ...c, cvv: e.target.value.replace(/\D/g,'').slice(0,3) }))} />
+                        </Field>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-5">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input type="checkbox" checked={terms} onChange={e => { setTerms(e.target.checked); setErrors({}); }}
+                             className="w-4 h-4 mt-0.5 border-paper-dark text-forest-800 focus:ring-forest-800" />
+                      <span className="text-sm font-sans text-charcoal-light leading-reading">
+                        I have read and agree to the{' '}
+                        <Link to="#" className="text-burgundy-700 hover:underline">Terms & Conditions</Link>
+                        {' '}and{' '}
+                        <Link to="#" className="text-burgundy-700 hover:underline">Privacy Policy</Link>.
+                      </span>
+                    </label>
+                    {errors.terms && (
+                      <p className="flex items-center gap-1 text-xs font-sans text-burgundy-700 mt-1 ml-7">
+                        <AlertCircle className="w-3 h-3" /> {errors.terms}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Navigation */}
             <div className="flex items-center justify-between">
-              {step > 1 ? (
-                <button onClick={() => setStep(s => s - 1)} className="btn-secondary px-5 py-2.5 text-sm">
-                  ← Înapoi
-                </button>
-              ) : (
-                <Link to="/cart" className="btn-secondary px-5 py-2.5 text-sm">
-                  ← Coș
-                </Link>
-              )}
-              {step < 3 ? (
-                <button onClick={handleNextStep} className="btn-primary flex items-center gap-2 px-6 py-2.5">
-                  Continuă <ChevronRight className="w-4 h-4" />
-                </button>
-              ) : (
-                <button
-                  onClick={handlePlaceOrder}
-                  disabled={loading}
-                  className="btn-primary flex items-center gap-2 px-6 py-2.5 disabled:opacity-70"
-                >
-                  {loading
-                    ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Procesare...</>
-                    : <><Lock className="w-4 h-4" /> Plasează Comanda</>
-                  }
-                </button>
-              )}
+              {step > 1
+                ? <button onClick={() => setStep(s => s - 1)} className="btn-secondary px-5 py-2.5 text-sm">← Back</button>
+                : <Link to="/cart" className="btn-secondary px-5 py-2.5 text-sm">← Return to Cart</Link>
+              }
+              {step < 3
+                ? <button onClick={nextStep} className="btn-primary flex items-center gap-2 px-6 py-2.5">
+                    Continue <ChevronRight className="w-4 h-4" />
+                  </button>
+                : <button onClick={placeOrder} disabled={loading}
+                          className="btn-primary flex items-center gap-2 px-6 py-2.5 disabled:opacity-60">
+                    <Lock className="w-4 h-4" />
+                    {loading ? 'Processing…' : 'Place Order'}
+                  </button>
+              }
             </div>
           </div>
 
-          {/* Order Summary Sidebar */}
+          {/* ── Order summary sidebar ── */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
-              <h2 className="text-lg font-bold text-gray-900 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Sumar Comandă
-              </h2>
-              <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
+            <div className="bg-cream border border-paper sticky top-24">
+              <div className="bg-cream-dark border-b border-paper px-5 py-4">
+                <h3 className="font-serif text-h4 text-charcoal">Order Summary</h3>
+              </div>
+              <div className="p-5 max-h-64 overflow-y-auto space-y-3 border-b border-paper scrollbar-thin">
                 {cart.items.map(item => (
                   <div key={item.id} className="flex items-center gap-3">
-                    <div className={`w-10 h-14 rounded-lg bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0`}>
-                      <BookOpen className="w-4 h-4 text-white/60" />
-                    </div>
+                    <div className="w-8 h-11 bg-forest-800 flex-shrink-0 flex items-center justify-center
+                                    text-cream/20 text-xs font-serif">❧</div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-gray-900 truncate">{item.title}</p>
-                      <p className="text-xs text-gray-400">{item.author}</p>
-                      <p className="text-xs text-gray-500">×{item.quantity}</p>
+                      <p className="text-xs font-serif text-charcoal truncate">{item.title}</p>
+                      <p className="text-xs font-sans text-charcoal-lighter">×{item.quantity}</p>
                     </div>
-                    <span className="text-xs font-bold text-gray-900 flex-shrink-0">
+                    <span className="text-xs font-sans font-bold text-charcoal flex-shrink-0">
                       {(item.price * item.quantity).toFixed(2)} lei
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="border-t border-gray-100 pt-4 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Subtotal</span>
+              <div className="p-5 space-y-2 border-b border-paper text-sm font-sans">
+                <div className="flex justify-between">
+                  <span className="text-charcoal-light">Subtotal</span>
                   <span>{cartTotal.toFixed(2)} lei</span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-green-600">Reducere</span>
-                    <span className="text-green-600">-{discountAmount.toFixed(2)} lei</span>
+                  <div className="flex justify-between text-forest-700">
+                    <span>Discount</span>
+                    <span>−{discountAmount.toFixed(2)} lei</span>
                   </div>
                 )}
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Livrare</span>
-                  <span className={shippingCostActual === 0 ? 'text-green-600' : ''}>
-                    {shippingCostActual === 0 ? 'Gratuită' : `${shippingCostActual} lei`}
+                <div className="flex justify-between">
+                  <span className="text-charcoal-light">Shipping</span>
+                  <span className={shipCost === 0 ? 'text-forest-700' : ''}>
+                    {shipCost === 0 ? 'Free' : `${shipCost} lei`}
                   </span>
                 </div>
-                <div className="border-t border-gray-100 pt-2 flex justify-between font-bold">
-                  <span>Total</span>
-                  <span className="text-purple-800">{total.toFixed(2)} lei</span>
-                </div>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-xs text-gray-500">
-                <Shield className="w-3.5 h-3.5 text-green-500" />
-                Plată securizată SSL 256-bit
+              <div className="p-5">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-sans text-xs font-bold uppercase tracking-widest">Total</span>
+                  <span className="font-serif text-2xl text-burgundy-700">{total.toFixed(2)} lei</span>
+                </div>
+                <p className="text-xs font-sans text-charcoal-lighter mt-4 flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-forest-700" />
+                  Secured by 256-bit SSL encryption
+                </p>
               </div>
             </div>
           </div>

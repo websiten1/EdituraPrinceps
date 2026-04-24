@@ -1,158 +1,114 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, ChevronDown, ChevronUp, Send, CheckCircle } from 'lucide-react';
-import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from '../components/SocialIcons';
+import { CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import Breadcrumb from '../components/Breadcrumb';
 import { faqs } from '../data/books';
 
 function ContactForm() {
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '', subject: '', message: '', captcha: ''
-  });
-  const [errors, setErrors] = useState({});
+  const [form, setForm]       = useState({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' });
+  const [errors, setErrors]   = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const captchaAnswer = 7;
-  const captchaQuestion = '3 + 4 = ?';
-
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Numele este obligatoriu.';
-    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Email invalid.';
-    if (form.phone && !form.phone.match(/^[0-9+\s\-()]{7,15}$/)) e.phone = 'Număr de telefon invalid.';
-    if (!form.subject) e.subject = 'Selectează un subiect.';
-    if (form.message.trim().length < 20) e.message = 'Mesajul trebuie să aibă cel puțin 20 de caractere.';
-    if (parseInt(form.captcha) !== captchaAnswer) e.captcha = 'Răspuns incorect. Încearcă din nou.';
+    if (!form.name.trim()) e.name = 'Full name is required.';
+    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'A valid email address is required.';
+    if (form.phone && !form.phone.match(/^[0-9+\s\-(). ]{7,15}$/)) e.phone = 'Please enter a valid phone number.';
+    if (!form.subject) e.subject = 'Please select a subject.';
+    if (form.message.trim().length < 20) e.message = 'Message must be at least 20 characters.';
+    if (parseInt(form.captcha) !== 8) e.captcha = 'Incorrect answer. Please try again.';
     return e;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    const err = validate();
+    if (Object.keys(err).length) { setErrors(err); return; }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1500);
+    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1400);
   };
 
-  const Field = ({ name, label, required, children, error }) => (
+  const Field = ({ name, label, required, error, children }) => (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
+      <label className="field-label">{label}{required && ' *'}</label>
       {children}
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {error && <p className="text-xs font-sans text-burgundy-700 mt-1">{error}</p>}
     </div>
   );
 
-  if (submitted) {
-    return (
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-          <CheckCircle className="w-10 h-10 text-green-500" />
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-          Mesaj Trimis!
-        </h3>
-        <p className="text-gray-600 mb-6 max-w-sm mx-auto">
-          Mulțumim pentru mesajul tău! Îți vom răspunde în cel mai scurt timp posibil, de obicei în 24 de ore.
-        </p>
-        <button
-          onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' }); }}
-          className="btn-primary"
-        >
-          Trimite Alt Mesaj
-        </button>
-      </div>
-    );
-  }
+  if (submitted) return (
+    <div className="bg-cream border border-forest-800 p-10 text-center">
+      <CheckCircle className="w-12 h-12 text-forest-700 mx-auto mb-4" />
+      <h3 className="font-serif text-h3 text-charcoal mb-2">Message Received</h3>
+      <p className="text-sm font-sans text-charcoal-light leading-reading max-w-xs mx-auto mb-6">
+        Thank you for writing to us. We will reply within one business day.
+      </p>
+      <button onClick={() => { setSubmitted(false); setForm({ name:'', email:'', phone:'', subject:'', message:'', captcha:'' }); }}
+              className="btn-secondary">
+        Send Another Message
+      </button>
+    </div>
+  );
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-        Trimite-ne un Mesaj
-      </h2>
+    <div className="bg-cream border border-paper p-6 sm:p-8">
+      <h2 className="font-serif text-h3 text-charcoal mb-1">Send Us a Message</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="h-px bg-gold/60 w-8" />
+        <span className="text-gold text-xs">◆</span>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <Field name="name" label="Nume Complet" required error={errors.name}>
-            <input
-              type="text"
-              value={form.name}
-              onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-              className={`input-field ${errors.name ? 'border-red-400' : ''}`}
-              placeholder="Ion Popescu"
-            />
+          <Field name="name" label="Full Name" required error={errors.name}>
+            <input type="text" value={form.name}
+                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                   className={`field ${errors.name ? 'border-burgundy-600' : ''}`}
+                   placeholder="Ioan Ionescu" />
           </Field>
-          <Field name="email" label="Adresă Email" required error={errors.email}>
-            <input
-              type="email"
-              value={form.email}
-              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-              className={`input-field ${errors.email ? 'border-red-400' : ''}`}
-              placeholder="ion@example.com"
-            />
+          <Field name="email" label="Email Address" required error={errors.email}>
+            <input type="email" value={form.email}
+                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                   className={`field ${errors.email ? 'border-burgundy-600' : ''}`}
+                   placeholder="email@example.com" />
           </Field>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <Field name="phone" label="Telefon (opțional)" error={errors.phone}>
-            <input
-              type="tel"
-              value={form.phone}
-              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              className={`input-field ${errors.phone ? 'border-red-400' : ''}`}
-              placeholder="+40 7XX XXX XXX"
-            />
+          <Field name="phone" label="Phone (optional)" error={errors.phone}>
+            <input type="tel" value={form.phone}
+                   onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                   className={`field ${errors.phone ? 'border-burgundy-600' : ''}`}
+                   placeholder="+40 7XX XXX XXX" />
           </Field>
-          <Field name="subject" label="Subiect" required error={errors.subject}>
-            <select
-              value={form.subject}
-              onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
-              className={`input-field ${errors.subject ? 'border-red-400' : ''}`}
-            >
-              <option value="">Selectează subiectul</option>
-              <option value="general">Întrebare Generală</option>
-              <option value="order">Problemă Comandă</option>
-              <option value="partnership">Parteneriat</option>
-              <option value="press">Presă & Media</option>
-              <option value="other">Altele</option>
+          <Field name="subject" label="Subject" required error={errors.subject}>
+            <select value={form.subject}
+                    onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+                    className={`field ${errors.subject ? 'border-burgundy-600' : ''}`}>
+              <option value="">Select a subject</option>
+              <option value="general">General Enquiry</option>
+              <option value="order">Order Issue</option>
+              <option value="partnership">Partnership Proposal</option>
+              <option value="press">Press & Media</option>
+              <option value="other">Other</option>
             </select>
           </Field>
         </div>
-
-        <Field name="message" label="Mesaj" required error={errors.message}>
-          <textarea
-            rows={5}
-            value={form.message}
-            onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-            className={`input-field resize-none ${errors.message ? 'border-red-400' : ''}`}
-            placeholder="Descrie în detaliu întrebarea sau solicitarea ta..."
-          />
-          <p className="text-xs text-gray-400 mt-1">{form.message.length} caractere (minim 20)</p>
+        <Field name="message" label="Message" required error={errors.message}>
+          <textarea rows={5} value={form.message}
+                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                    className={`field resize-none ${errors.message ? 'border-burgundy-600' : ''}`}
+                    placeholder="Please describe your enquiry in detail…" />
+          <p className="text-xs font-sans text-charcoal-lighter mt-1">{form.message.length} chars (min 20)</p>
         </Field>
-
-        <Field name="captcha" label={`Verificare: ${captchaQuestion}`} required error={errors.captcha}>
-          <input
-            type="number"
-            value={form.captcha}
-            onChange={e => setForm(f => ({ ...f, captcha: e.target.value }))}
-            className={`input-field w-32 ${errors.captcha ? 'border-red-400' : ''}`}
-            placeholder="Răspuns"
-          />
+        <Field name="captcha" label="Verification: What is 3 + 5?" required error={errors.captcha}>
+          <input type="number" value={form.captcha}
+                 onChange={e => setForm(f => ({ ...f, captcha: e.target.value }))}
+                 className={`field w-28 ${errors.captcha ? 'border-burgundy-600' : ''}`}
+                 placeholder="Answer" />
         </Field>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full flex items-center justify-center gap-2 btn-primary py-3.5 disabled:opacity-70"
-        >
-          {loading ? (
-            <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Se trimite...</>
-          ) : (
-            <><Send className="w-4 h-4" /> Trimite Mesajul</>
-          )}
+        <button type="submit" disabled={loading}
+                className="btn-primary w-full py-3.5 disabled:opacity-60">
+          {loading ? 'Sending…' : 'Send Message'}
         </button>
       </form>
     </div>
@@ -160,131 +116,125 @@ function ContactForm() {
 }
 
 function ContactInfo() {
-  const cards = [
-    {
-      icon: MapPin,
-      title: 'Adresă',
-      lines: ['Str. Literaturii, Nr. 12', 'Iași, 700XXX, România'],
-      action: { label: 'Vezi pe hartă', href: 'https://maps.google.com' },
-      color: 'bg-purple-100 text-purple-700',
-    },
-    {
-      icon: Phone,
-      title: 'Telefon',
-      lines: ['+40 232 XXX XXX', '+40 7XX XXX XXX (Mobil)'],
-      action: { label: 'Sună acum', href: 'tel:+40232XXXXXX' },
-      color: 'bg-blue-100 text-blue-700',
-    },
-    {
-      icon: Mail,
-      title: 'Email',
-      lines: ['contact@princesmultimedia.ro', 'comenzi@princesmultimedia.ro'],
-      action: { label: 'Trimite email', href: 'mailto:contact@princesmultimedia.ro' },
-      color: 'bg-amber-100 text-amber-700',
-    },
-    {
-      icon: Clock,
-      title: 'Program',
-      lines: ['Luni – Vineri: 09:00 – 18:00', 'Sâmbătă: 10:00 – 14:00'],
-      color: 'bg-green-100 text-green-700',
-    },
-  ];
-
   return (
     <div className="space-y-4">
-      {cards.map(card => (
-        <div key={card.title} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-          <div className="flex items-start gap-4">
-            <div className={`w-11 h-11 rounded-xl ${card.color} flex items-center justify-center flex-shrink-0`}>
-              <card.icon className="w-5 h-5" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-900 text-sm mb-1">{card.title}</h3>
-              {card.lines.map((line, i) => (
-                <p key={i} className="text-sm text-gray-600">{line}</p>
-              ))}
-              {card.action && (
-                <a
-                  href={card.action.href}
-                  target={card.action.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                  className="inline-block mt-2 text-xs text-purple-700 font-medium hover:underline"
-                >
-                  {card.action.label} →
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {/* Social */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <h3 className="font-semibold text-gray-900 text-sm mb-3">Urmărește-ne</h3>
-        <div className="flex items-center gap-3">
-          {[
-            { icon: FacebookIcon, href: '#', bg: 'bg-blue-600', label: 'Facebook' },
-            { icon: InstagramIcon, href: '#', bg: 'bg-gradient-to-br from-purple-600 to-pink-500', label: 'Instagram' },
-            { icon: LinkedinIcon, href: '#', bg: 'bg-blue-700', label: 'LinkedIn' },
-            { icon: YoutubeIcon, href: '#', bg: 'bg-red-600', label: 'YouTube' },
-          ].map(({ icon: Icon, href, bg, label }) => (
-            <a
-              key={label}
-              href={href}
-              aria-label={label}
-              className={`w-10 h-10 ${bg} rounded-xl flex items-center justify-center text-white hover:opacity-80 transition-opacity shadow-sm`}
-            >
-              <Icon className="w-4 h-4" />
-            </a>
-          ))}
+      <div>
+        <h2 className="font-serif text-h3 text-charcoal mb-1">Contact Information</h2>
+        <div className="flex items-center gap-3 mb-5">
+          <div className="h-px bg-gold/60 w-8" />
+          <span className="text-gold text-xs">◆</span>
         </div>
       </div>
 
+      {[
+        {
+          heading: 'Address',
+          lines: ['Str. Literaturii, Nr. 12', 'Iași, 700XXX', 'România'],
+          action: { label: 'View on Google Maps →', href: 'https://maps.google.com' },
+        },
+        {
+          heading: 'Telephone',
+          lines: ['+40 232 XXX XXX (Office)', '+40 7XX XXX XXX (Mobile)'],
+          action: { label: 'Call us →', href: 'tel:+40232XXXXXX' },
+        },
+        {
+          heading: 'Electronic Mail',
+          lines: ['contact@princesmultimedia.ro', 'comenzi@princesmultimedia.ro'],
+          action: { label: 'Send email →', href: 'mailto:contact@princesmultimedia.ro' },
+        },
+        {
+          heading: 'Office Hours',
+          lines: ['Monday – Friday: 9:00 – 18:00', 'Saturday: 10:00 – 14:00', 'Sunday: Closed'],
+        },
+      ].map(card => (
+        <div key={card.heading} className="bg-cream border border-paper p-5">
+          <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-gold mb-3 pb-2
+                         border-b border-gold/30">
+            {card.heading}
+          </h3>
+          {card.lines.map(line => (
+            <p key={line} className="text-sm font-sans text-charcoal">{line}</p>
+          ))}
+          {card.action && (
+            <a href={card.action.href}
+               target={card.action.href.startsWith('http') ? '_blank' : undefined}
+               rel="noreferrer"
+               className="inline-block mt-2 text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+              {card.action.label}
+            </a>
+          )}
+        </div>
+      ))}
+
       {/* Map placeholder */}
-      <div className="bg-gray-200 rounded-2xl overflow-hidden h-48 flex items-center justify-center relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400" />
+      <div className="bg-paper h-44 border border-paper flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-paper to-cream-dark" />
         <div className="relative z-10 text-center">
-          <MapPin className="w-8 h-8 text-gray-500 mx-auto mb-2" />
-          <p className="text-sm text-gray-600 font-medium">Iași, România</p>
-          <a
-            href="https://maps.google.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs text-purple-700 hover:underline mt-1 block"
-          >
-            Deschide Google Maps →
+          <p className="font-sans text-xs text-charcoal-light uppercase tracking-widest mb-1">Location</p>
+          <p className="font-serif text-lg text-charcoal-light italic">Iași, România</p>
+          <a href="https://maps.google.com" target="_blank" rel="noreferrer"
+             className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider mt-1 block">
+            Open Google Maps →
           </a>
+        </div>
+      </div>
+
+      {/* Social */}
+      <div className="bg-cream border border-paper p-5">
+        <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-gold mb-3 pb-2 border-b border-gold/30">
+          Follow Us
+        </h3>
+        <div className="space-y-2">
+          {[
+            { label: 'Follow us on Facebook', href: '#' },
+            { label: 'Follow us on Instagram', href: '#' },
+            { label: 'Connect on LinkedIn', href: '#' },
+          ].map(s => (
+            <a key={s.label} href={s.href}
+               className="block text-sm font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+              {s.label}
+            </a>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-function FAQSection() {
+function FAQ() {
   const [open, setOpen] = useState(null);
 
   return (
-    <section className="bg-gray-50 py-16">
+    <section className="bg-cream-dark border-t border-paper py-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <h2 className="section-title mb-3">Întrebări Frecvente</h2>
-          <p className="text-gray-500">Găsește rapid răspunsul la întrebarea ta</p>
+        <h2 className="font-serif text-h2 text-charcoal text-center mb-3">
+          Frequently Asked Questions
+        </h2>
+        <div className="flex justify-center mb-10">
+          <div className="flex items-center gap-3">
+            <div className="h-px bg-gold/60 w-12" />
+            <span className="text-gold text-xs">◆</span>
+            <div className="h-px bg-gold/60 w-12" />
+          </div>
         </div>
-        <div className="space-y-3">
+
+        <div className="space-y-2">
           {faqs.map((faq, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+            <div key={i} className="bg-cream border border-paper overflow-hidden">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 text-left
+                           hover:bg-cream-dark transition-colors duration-200"
               >
-                <span className="font-medium text-gray-900 pr-4 text-sm sm:text-base">{faq.question}</span>
+                <span className="font-serif text-base text-charcoal pr-4">{faq.question}</span>
                 {open === i
-                  ? <ChevronUp className="w-5 h-5 text-purple-700 flex-shrink-0" />
-                  : <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                  ? <ChevronUp className="w-4 h-4 text-burgundy-700 flex-shrink-0" />
+                  : <ChevronDown className="w-4 h-4 text-charcoal-lighter flex-shrink-0" />
                 }
               </button>
               {open === i && (
-                <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                <div className="px-6 pb-5 pt-1 text-sm font-sans text-charcoal-light
+                                leading-reading border-t border-paper">
                   {faq.answer}
                 </div>
               )}
@@ -298,21 +248,23 @@ function FAQSection() {
 
 export default function Contact() {
   return (
-    <div className="page-transition min-h-screen">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white pt-24 pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="fade-in min-h-screen bg-cream">
+      {/* Page header */}
+      <div className="bg-cream-dark border-b border-paper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Breadcrumb items={[{ label: 'Contact' }]} />
-          <h1 className="text-4xl md:text-5xl font-bold mt-4 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Contactează-ne
-          </h1>
-          <p className="text-blue-200 text-lg max-w-xl">
-            Suntem bucuroși să te ajutăm! Trimite-ne un mesaj și îți vom răspunde în cel mai scurt timp.
+          <h1 className="font-serif text-h1 text-charcoal mt-4 mb-1">Contact Us</h1>
+          <div className="flex items-center gap-3 mt-3 mb-3">
+            <div className="h-px bg-gold/60 w-12" />
+            <span className="text-gold text-xs">◆</span>
+          </div>
+          <p className="font-sans text-sm text-charcoal-light max-w-xl leading-reading">
+            We welcome your enquiries and correspondence. Our editorial team is here
+            to assist readers, authors, and partners.
           </p>
         </div>
       </div>
 
-      {/* Main */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
@@ -324,7 +276,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <FAQSection />
+      <FAQ />
     </div>
   );
 }

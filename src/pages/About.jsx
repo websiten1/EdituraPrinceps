@@ -1,287 +1,267 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Users, Award, Heart, Star, ArrowRight, CheckCircle, Mic, Library, Sparkles } from 'lucide-react';
 import { teamMembers } from '../data/books';
 import Breadcrumb from '../components/Breadcrumb';
 
+function GoldRule({ symbol = '◆' }) {
+  return (
+    <div className="flex items-center gap-3 my-4">
+      <div className="flex-1 h-px bg-gold/40" />
+      <span className="text-gold text-xs">{symbol}</span>
+      <div className="flex-1 h-px bg-gold/40" />
+    </div>
+  );
+}
+
 const milestones = [
-  { year: '1999', title: 'Fondarea Editurii', desc: 'Prince\'s Multimedia ia naștere cu misiunea de a promova literatura română de calitate.' },
-  { year: '2004', title: 'Prima Mare Colecție', desc: 'Lansăm prima colecție de referință dedicată poeziei clasice românești — 20 de volume.' },
-  { year: '2010', title: 'Extindere Națională', desc: 'Parteneri cu 200+ librării din toată România. Ajungem în fiecare colț al țării.' },
-  { year: '2015', title: 'Lansare Audiobooks', desc: 'Intrăm în era digitală cu prima colecție de audiobook-uri în limba română.' },
-  { year: '2019', title: '20 de Ani de Excelență', desc: 'Aniversăm două decenii cu lansarea a 500 de titluri și 10.000 de clienți fideli.' },
-  { year: '2024', title: 'Platforma Online', desc: 'Lansăm noua platformă digitală pentru o experiență de cumpărare premium.' },
+  { year: '1999', title: 'Founded in Iași',       desc: 'Prince\'s Multimedia is established with a singular mission: to publish and preserve the finest works of Romanian literary heritage.' },
+  { year: '2004', title: 'First Major Collection', desc: 'Our first collection of 20 volumes dedicated to classical Romanian poetry is received with critical acclaim.' },
+  { year: '2010', title: 'National Distribution',  desc: 'Partnership agreements with over 200 bookshops across Romania allow us to reach readers in every region.' },
+  { year: '2015', title: 'Audiobook Programme',    desc: 'We launch our premium audiobook collection, bringing Romanian literature to a new generation of listeners.' },
+  { year: '2019', title: '500 Titles Published',   desc: 'A milestone anniversary: five hundred titles published across poetry, prose, philosophy, and literary criticism.' },
+  { year: '2024', title: 'Digital Presence',       desc: 'We open our online catalogue, making our complete collection available to readers throughout Romania and the diaspora.' },
+];
+
+const values = [
+  {
+    name: 'Scholarly Integrity',
+    desc: 'Every title we publish is prepared with rigorous philological care. Our editorial team works closely with academics and specialists to ensure accuracy and completeness.',
+  },
+  {
+    name: 'Cultural Stewardship',
+    desc: 'We consider ourselves custodians of Romanian literary heritage — responsible for transmitting these works faithfully to present and future readers.',
+  },
+  {
+    name: 'Accessibility',
+    desc: 'We believe that great literature should be available to all. Our pricing reflects our commitment to making quality editions accessible without compromise.',
+  },
+  {
+    name: 'Craft & Quality',
+    desc: 'From selection to final bound copy, every detail is considered. Fine paper, careful typography, and durable bindings are our standard, not our exception.',
+  },
 ];
 
 export default function About() {
   return (
-    <div className="page-transition min-h-screen bg-gray-50">
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white pt-24 pb-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-purple-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb items={[{ label: 'Despre Noi' }]} />
-          <div className="max-w-3xl mt-6">
-            <h1 className="text-5xl sm:text-6xl font-bold mb-5 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Povestea Noastră
-            </h1>
-            <p className="text-xl text-blue-100 leading-relaxed mb-8">
-              De peste 25 de ani, Prince's Multimedia aduce în casele cititorilor români cele mai valoroase opere ale literaturii noastre naționale. O misiune, o pasiune, o moștenire.
+    <div className="fade-in min-h-screen bg-cream">
+
+      {/* ── Hero ── */}
+      <section className="bg-cream-dark border-b border-paper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <Breadcrumb items={[{ label: 'About' }]} />
+          <div className="max-w-2xl mt-6">
+            <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-4">
+              Established 1999
             </p>
-            <div className="flex flex-wrap gap-6">
-              {[
-                { value: '25+', label: 'Ani Experiență' },
-                { value: '500+', label: 'Titluri Publicate' },
-                { value: '10K+', label: 'Clienți Fericiți' },
-                { value: '50+', label: 'Autori Publicați' },
-              ].map(stat => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-3xl font-bold text-yellow-300">{stat.value}</div>
-                  <div className="text-sm text-blue-200">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            <h1 className="font-serif text-h1 text-charcoal leading-tight mb-4">
+              About Prince's Multimedia
+            </h1>
+            <GoldRule />
+            <p className="font-serif-italic text-xl text-charcoal-light leading-reading mt-4">
+              "A house dedicated to the preservation and celebration of Romanian literary
+              heritage, for readers who understand that literature is the memory of a people."
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Mission & Values */}
-      <section className="py-20 bg-white">
+      {/* ── Our Story ── */}
+      <section className="section bg-cream border-b border-paper">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
-              <p className="text-purple-700 font-semibold text-sm uppercase tracking-wider mb-3">Misiunea Noastră</p>
-              <h2 className="section-title mb-5">Custozi ai Literaturii Române</h2>
-              <p className="text-gray-600 leading-relaxed mb-5">
-                Prince's Multimedia s-a fondat cu o misiune simplă dar profundă: de a face accesibilă marea literatură română tuturor celor care iubesc cuvântul scris. Credem că literatura este cea mai importantă moștenire culturală a unui popor.
+              <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">
+                Since 1999
               </p>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                Fiecare carte pe care o publicăm este mai mult decât un produs — este un pod între trecut și prezent, între scriitor și cititor, între tradiție și modernitate.
-              </p>
-              <div className="space-y-3">
-                {[
-                  'Selecție riguroasă a titlurilor publicate',
-                  'Ediții îngrijite cu texte critice și note',
-                  'Design editorial premium și hârtie de calitate',
-                  'Prețuri accesibile pentru toți cititorii',
-                ].map(item => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{item}</span>
+              <h2 className="font-serif text-h2 text-charcoal mb-4">Our Story</h2>
+              <GoldRule />
+              <div className="space-y-4 mt-5 font-sans text-sm text-charcoal leading-reading">
+                <p>
+                  Prince's Multimedia was founded in Iași in 1999 by a group of scholars and
+                  literature enthusiasts who shared a common conviction: that the great works of
+                  Romanian literature deserved editions worthy of their significance.
+                </p>
+                <p>
+                  From modest beginnings — a handful of titles, a small team, a deep passion
+                  for the written word — we have grown into one of Romania's most respected
+                  literary publishers, with over 500 titles in our catalogue.
+                </p>
+                <p>
+                  Our editions are prepared with scholarly care, printed on quality paper, and
+                  bound to last. We publish classical authors alongside contemporary voices,
+                  always with the same commitment to quality and authenticity.
+                </p>
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="relative">
+              <div className="absolute left-4 top-0 bottom-0 w-px bg-gold/30" />
+              <div className="space-y-6 pl-12">
+                {milestones.map(m => (
+                  <div key={m.year} className="relative">
+                    <div className="absolute -left-12 top-1 w-4 h-4 bg-gold/20 border border-gold
+                                    flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-gold" />
+                    </div>
+                    <span className="text-xs font-sans font-bold text-gold uppercase tracking-widest">
+                      {m.year}
+                    </span>
+                    <h4 className="font-serif text-base text-charcoal mt-0.5 mb-1">{m.title}</h4>
+                    <p className="text-xs font-sans text-charcoal-light leading-reading">{m.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-5">
-              {[
-                { icon: BookOpen, title: 'Tradiție Literară', desc: 'Promovăm valorile perene ale literaturii române clasice și contemporane.', color: 'bg-purple-100 text-purple-700' },
-                { icon: Sparkles, title: 'Excelență Editorială', desc: 'Fiecare volum este tratat cu maximă grijă, de la manuscris la carte finisată.', color: 'bg-blue-100 text-blue-700' },
-                { icon: Heart, title: 'Pasiune Autentică', desc: 'Iubim literatura română și transmitem această iubire în fiecare pagină.', color: 'bg-rose-100 text-rose-700' },
-                { icon: Users, title: 'Comunitate', desc: 'Construim o comunitate de cititori pasionați de cultura română.', color: 'bg-amber-100 text-amber-700' },
-              ].map(val => (
-                <div key={val.title} className="bg-gray-50 rounded-2xl p-5 hover:shadow-md transition-shadow">
-                  <div className={`w-11 h-11 ${val.color} rounded-xl flex items-center justify-center mb-3`}>
-                    <val.icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm mb-2">{val.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{val.desc}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-purple-700 font-semibold text-sm uppercase tracking-wider mb-2">Drumul Nostru</p>
-            <h2 className="section-title">Istoria Editurii</h2>
+      {/* ── Mission ── */}
+      <section className="section bg-forest-800 border-b border-forest-700">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-4">
+            Our Purpose
+          </p>
+          <h2 className="font-serif text-h2 text-cream mb-5">Mission Statement</h2>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="h-px bg-gold/40 w-16" />
+            <span className="text-gold text-base">❧</span>
+            <div className="h-px bg-gold/40 w-16" />
           </div>
-          <div className="relative">
-            <div className="absolute left-6 sm:left-1/2 top-0 bottom-0 w-0.5 bg-purple-200 sm:-translate-x-0.5" />
-            <div className="space-y-8">
-              {milestones.map((m, i) => (
-                <div
-                  key={m.year}
-                  className={`relative flex items-start gap-6 sm:gap-0 ${i % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
-                >
-                  <div className={`hidden sm:block sm:w-1/2 ${i % 2 === 0 ? 'sm:pr-10 sm:text-right' : 'sm:pl-10'}`}>
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-                      <div className="text-purple-700 font-bold text-sm mb-1">{m.year}</div>
-                      <h3 className="font-bold text-gray-900 mb-1">{m.title}</h3>
-                      <p className="text-sm text-gray-600">{m.desc}</p>
-                    </div>
-                  </div>
-                  <div className="absolute left-3.5 sm:left-1/2 sm:-translate-x-1/2 w-5 h-5 bg-purple-700 rounded-full border-4 border-white shadow-md z-10" />
-                  <div className="pl-14 sm:hidden">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                      <div className="text-purple-700 font-bold text-sm mb-1">{m.year}</div>
-                      <h3 className="font-bold text-gray-900 mb-1">{m.title}</h3>
-                      <p className="text-sm text-gray-600">{m.desc}</p>
-                    </div>
-                  </div>
-                  <div className={`hidden sm:block sm:w-1/2 ${i % 2 === 0 ? 'sm:pl-10' : 'sm:pr-10'}`} />
-                </div>
-              ))}
-            </div>
-          </div>
+          <p className="font-serif-italic text-2xl text-cream/90 leading-relaxed max-w-2xl mx-auto">
+            "To make the treasures of Romanian literature available to every reader who seeks
+            them — in editions that honour the authors, respect the reader, and endure with time."
+          </p>
         </div>
       </section>
 
-      {/* What We Offer */}
-      <section className="py-20 bg-white">
+      {/* ── Values ── */}
+      <section className="section bg-cream border-b border-paper">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-purple-700 font-semibold text-sm uppercase tracking-wider mb-2">Serviciile Noastre</p>
-            <h2 className="section-title">Ce Oferim</h2>
+          <div className="text-center mb-10">
+            <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">What We Stand For</p>
+            <h2 className="font-serif text-h2 text-charcoal">Our Values</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {values.map(v => (
+              <div key={v.name}
+                   className="bg-cream border border-paper border-l-4 border-l-forest-800 p-6
+                              hover:shadow-classic transition-shadow duration-300">
+                <h3 className="font-serif text-h4 text-charcoal mb-2">{v.name}</h3>
+                <div className="h-px bg-gold/40 w-10 mb-3" />
+                <p className="text-sm font-sans text-charcoal-light leading-reading">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── What We Offer ── */}
+      <section className="section bg-cream-dark border-b border-paper">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">Services</p>
+            <h2 className="font-serif text-h2 text-charcoal">What We Offer</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                icon: Library,
-                title: 'Colecții Curate',
-                desc: 'O selecție atentă a celor mai valoroase titluri din literatura română, îngrijite de experți recunoscuți.',
-                features: ['Poezie clasică și contemporană', 'Proză și roman', 'Filozofie și eseistică', 'Critică literară'],
-                gradient: 'from-purple-800 to-indigo-800',
+                num: 'I.',
+                title: 'Curated Collections',
+                desc: 'Carefully selected titles spanning every genre of Romanian literary tradition — from medieval chronicles to contemporary verse. Each collection is assembled with scholarly guidance.',
               },
               {
-                icon: Mic,
-                title: 'Audiobook Premium',
-                desc: 'Ascultă literatura română în interpretări de excepție, realizate de actori și recitatori de renume.',
-                features: ['Înregistrări de studio profesionale', 'Actori și recitatori de renume', 'Format MP3 și streaming', 'Disponibil pe toate platformele'],
-                gradient: 'from-blue-800 to-cyan-700',
+                num: 'II.',
+                title: 'Premium Audiobooks',
+                desc: 'Professional studio recordings of literary works, performed by distinguished Romanian actors. Faithful to the text, produced to the highest technical standards.',
               },
               {
-                icon: Star,
-                title: 'Expertiză Editorială',
-                desc: 'Fiecare carte beneficiază de grija editorilor noștri specializați în literatura română.',
-                features: ['Note critice și bibliografice', 'Prefețe și postfețe semnate', 'Redactare filologică riguroasă', 'Design tipografic premium'],
-                gradient: 'from-amber-700 to-orange-700',
+                num: 'III.',
+                title: 'Expert Curation',
+                desc: 'Our editorial board includes university professors, literary critics, and philologists who ensure every edition meets the standards of serious scholarly publishing.',
               },
-            ].map(service => (
-              <div key={service.title} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-                <div className={`bg-gradient-to-br ${service.gradient} p-6 text-white`}>
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">
-                    <service.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>{service.title}</h3>
-                  <p className="text-white/80 text-sm leading-relaxed">{service.desc}</p>
-                </div>
-                <div className="bg-white p-5">
-                  <ul className="space-y-2">
-                    {service.features.map(f => (
-                      <li key={f} className="flex items-center gap-2 text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            ].map(item => (
+              <div key={item.title} className="bg-cream border border-paper p-7 relative overflow-hidden">
+                <span className="absolute top-5 right-5 font-serif text-5xl text-gold/10 leading-none select-none">
+                  {item.num}
+                </span>
+                <span className="font-serif text-3xl text-gold/60 block mb-4">{item.num}</span>
+                <h3 className="font-serif text-h4 text-charcoal mb-2">{item.title}</h3>
+                <div className="h-px bg-gold/40 w-8 mb-3" />
+                <p className="text-sm font-sans text-charcoal-light leading-reading">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-purple-700 font-semibold text-sm uppercase tracking-wider mb-2">Oamenii Noștri</p>
-            <h2 className="section-title">Echipa Prince's Multimedia</h2>
-            <p className="section-subtitle mx-auto text-center">Oameni pasionați de literatură care lucrează cu dedicare pentru voi</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamMembers.map(member => (
-              <div key={member.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow group">
-                <div className={`h-32 bg-gradient-to-br ${member.gradient} flex items-center justify-center relative overflow-hidden`}>
-                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center text-3xl font-bold text-white">
-                    {member.initials}
-                  </div>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-white transition-opacity" />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 mb-0.5" style={{ fontFamily: 'Playfair Display, serif' }}>{member.name}</h3>
-                  <p className="text-xs text-purple-700 font-medium mb-3">{member.role}</p>
-                  <p className="text-xs text-gray-600 leading-relaxed">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Awards */}
-      <section className="py-16 bg-white">
+      {/* ── Team ── */}
+      <section className="section bg-cream border-b border-paper">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="section-title">Recunoaștere & Premii</h2>
+            <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">The People</p>
+            <h2 className="font-serif text-h2 text-charcoal">Meet Our Team</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
-              { icon: Award, title: 'Premiul Uniunii Editorilor', year: '2018', desc: 'Cea mai bună editură specializată în literatura română.' },
-              { icon: Star, title: 'Topul Cititorilor', year: '2021', desc: 'Votată editura preferată de cititorii din România.' },
-              { icon: BookOpen, title: 'Excelență Editorială', year: '2023', desc: 'Premiu național pentru calitate și diversitate editorială.' },
-            ].map(award => (
-              <div key={award.title} className="flex items-start gap-4 p-5 bg-amber-50 rounded-2xl border border-amber-100">
-                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <award.icon className="w-6 h-6 text-amber-600" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {teamMembers.map(member => (
+              <div key={member.id}
+                   className="bg-cream border border-paper p-6 hover:shadow-classic transition-shadow">
+                <div className="w-14 h-14 bg-forest-800 flex items-center justify-center
+                                text-cream font-serif text-2xl mb-4">
+                  {member.initials}
                 </div>
+                <h3 className="font-serif text-base text-charcoal">{member.name}</h3>
+                <p className="text-xs font-sans text-gold uppercase tracking-widest mt-0.5 mb-3">{member.role}</p>
+                <div className="h-px bg-paper mb-3" />
+                <p className="text-xs font-sans text-charcoal-light leading-reading">{member.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Why Us ── */}
+      <section className="section bg-cream-dark border-b border-paper">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">Our Distinctiveness</p>
+            <h2 className="font-serif text-h2 text-charcoal">Why Readers Choose Us</h2>
+          </div>
+          <ol className="space-y-0">
+            {[
+              { n: '1', title: 'Professional Curation',          desc: 'Every title selected with care by qualified literary scholars.' },
+              { n: '2', title: 'Authentic Romanian Literature',  desc: 'Faithful to the original texts, with authoritative critical apparatus.' },
+              { n: '3', title: 'Quality Translations',           desc: 'When we translate, we commission established literary translators.' },
+              { n: '4', title: 'Premium Production Values',      desc: 'Archival paper, durable bindings, thoughtful typography in every volume.' },
+              { n: '5', title: 'A Trusted Heritage',             desc: 'Twenty-five years of publishing excellence, built on trust and integrity.' },
+            ].map((item, i, arr) => (
+              <li key={item.n} className={`flex items-start gap-6 py-5 ${i < arr.length - 1 ? 'border-b border-paper' : ''}`}>
+                <span className="font-serif text-3xl text-gold/40 w-8 flex-shrink-0 leading-none pt-1">{item.n}</span>
                 <div>
-                  <div className="text-xs text-amber-600 font-semibold mb-0.5">{award.year}</div>
-                  <h3 className="font-bold text-gray-900 text-sm mb-1">{award.title}</h3>
-                  <p className="text-xs text-gray-600">{award.desc}</p>
+                  <h4 className="font-serif text-h4 text-charcoal">{item.title}</h4>
+                  <p className="text-sm font-sans text-charcoal-light mt-1 leading-reading">{item.desc}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* Why Us */}
-      <section className="py-20 bg-gradient-to-br from-purple-900 to-indigo-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-              De ce să Alegi Prince's Multimedia?
-            </h2>
-            <p className="text-blue-200">5 motive pentru care cititorii ne aleg de ani de zile</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
-            {[
-              { num: '01', title: 'Selecție Premium', desc: 'Curatăm cu grijă fiecare titlu publicat' },
-              { num: '02', title: 'Ediții de Calitate', desc: 'Hârtie și producție tipografică superioară' },
-              { num: '03', title: 'Prețuri Accesibile', desc: 'Carte de calitate la prețuri corecte' },
-              { num: '04', title: 'Livrare Rapidă', desc: 'Comenzi procesate în 24 de ore' },
-              { num: '05', title: 'Suport Dedicat', desc: 'Echipă disponibilă pentru orice întrebare' },
-            ].map(item => (
-              <div key={item.num} className="bg-white/10 rounded-2xl p-5 border border-white/20 hover:bg-white/15 transition-colors text-center">
-                <div className="text-4xl font-bold text-purple-300 mb-3">{item.num}</div>
-                <h3 className="font-bold text-white mb-2 text-sm">{item.title}</h3>
-                <p className="text-xs text-blue-200">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="section-title mb-4">Gata să Descoperi Biblioteca Noastră?</h2>
-          <p className="text-gray-600 mb-8">
-            Explorează colecția completă a cărților noastre și găsește titlul perfect pentru tine.
+      {/* ── CTA ── */}
+      <section className="bg-cream py-16 border-t border-paper">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="font-serif text-h2 text-charcoal mb-4">Begin Exploring</h2>
+          <GoldRule />
+          <p className="font-sans text-sm text-charcoal-light leading-reading mb-8 mt-5">
+            Browse our complete catalogue and discover the works that have shaped Romanian
+            literary thought and culture across the centuries.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/collections" className="btn-primary flex items-center gap-2">
-              Explorează Colecțiile <ArrowRight className="w-4 h-4" />
+            <Link to="/collections" className="btn-primary px-8">
+              Explore the Collection
             </Link>
-            <Link to="/contact" className="btn-secondary flex items-center gap-2">
-              Contactează-ne
+            <Link to="/contact" className="btn-secondary px-8">
+              Contact Us
             </Link>
           </div>
         </div>

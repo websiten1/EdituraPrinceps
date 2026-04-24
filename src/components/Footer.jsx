@@ -13,25 +13,25 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t-2 border-burgundy">
 
-      {/* Newsletter strip */}
+      {/* Bandă newsletter */}
       <div className="border-b border-gray-100 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8
                         flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="flex-1">
-            <h3 className="font-display text-xl text-charcoal mb-1">Subscribe to Our Newsletter</h3>
+            <h3 className="font-display text-xl text-charcoal mb-1">Abonează-te la Buletinul Nostru</h3>
             <p className="text-sm font-sans text-charcoal-light">
-              New titles, literary notes, and exclusive offers — delivered to your inbox.
+              Titluri noi, note literare și oferte exclusive — livrate în căsuța ta poștală.
             </p>
           </div>
           {subscribed ? (
-            <p className="text-sm font-sans text-burgundy italic font-medium">Thank you for subscribing.</p>
+            <p className="text-sm font-sans text-burgundy italic font-medium">Mulțumim pentru abonare.</p>
           ) : (
             <form onSubmit={handleSubscribe} className="flex gap-0 w-full sm:w-auto">
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="Your email address"
+                placeholder="Adresa ta de email"
                 required
                 className="px-4 py-2.5 bg-white border border-gray-200
                            text-sm font-sans text-charcoal placeholder-charcoal-lighter
@@ -44,24 +44,24 @@ export default function Footer() {
                            uppercase tracking-wide border border-burgundy
                            hover:bg-burgundy-800 transition-colors duration-200 whitespace-nowrap"
               >
-                Subscribe
+                Abonează-te
               </button>
             </form>
           )}
         </div>
       </div>
 
-      {/* Main columns */}
+      {/* Coloane principale */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12
                       grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-        {/* About */}
+        {/* Despre */}
         <div>
           <h4 className="font-display text-lg text-charcoal mb-1">Editura Princeps</h4>
           <div className="h-px bg-gray-200 w-full mb-4" />
           <p className="text-sm font-sans text-charcoal-light leading-reading mb-5">
-            A distinguished Romanian publishing house dedicated to preserving and celebrating the
-            literary heritage of Romania since 1999.
+            O distinsă editură română dedicată păstrării și celebrării patrimoniului literar
+            al României din 1999.
           </p>
           <ul className="space-y-2">
             {[
@@ -80,17 +80,17 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Collections */}
+        {/* Colecții */}
         <div>
-          <h4 className="font-display text-lg text-charcoal mb-1">Collections</h4>
+          <h4 className="font-display text-lg text-charcoal mb-1">Colecții</h4>
           <div className="h-px bg-gray-200 w-full mb-4" />
           <ul className="space-y-2">
             {[
-              { label: 'Poetry', to: '/collections?category=Poetry' },
-              { label: 'Prose', to: '/collections?category=Prose' },
-              { label: 'Philosophy', to: '/collections?category=Philosophy' },
-              { label: 'Literary Criticism', to: '/collections?category=Literary Criticism' },
-              { label: 'Audiobooks', to: '/collections?category=Audiobooks' },
+              { label: 'Poezie',           to: '/collections?category=Poezie' },
+              { label: 'Proză',            to: '/collections?category=Proză' },
+              { label: 'Filozofie',        to: '/collections?category=Filozofie' },
+              { label: 'Critică Literară', to: '/collections?category=Critică Literară' },
+              { label: 'Audiobook-uri',    to: '/collections?category=Audiobook-uri' },
             ].map(l => (
               <li key={l.label}>
                 <Link to={l.to}
@@ -103,17 +103,17 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Information */}
+        {/* Informații */}
         <div>
-          <h4 className="font-display text-lg text-charcoal mb-1">Information</h4>
+          <h4 className="font-display text-lg text-charcoal mb-1">Informații</h4>
           <div className="h-px bg-gray-200 w-full mb-4" />
           <ul className="space-y-2">
             {[
-              { label: 'Frequently Asked Questions', to: '/contact' },
-              { label: 'Shipping Policy', to: '/contact' },
-              { label: 'Returns & Exchanges', to: '/contact' },
-              { label: 'Privacy Policy', to: '#' },
-              { label: 'Terms & Conditions', to: '#' },
+              { label: 'Întrebări Frecvente',          to: '/contact' },
+              { label: 'Politica de Livrare',          to: '/contact' },
+              { label: 'Returnări și Schimburi',       to: '/contact' },
+              { label: 'Politica de Confidențialitate', to: '#' },
+              { label: 'Termeni și Condiții',          to: '#' },
             ].map(l => (
               <li key={l.label}>
                 <Link to={l.to}
@@ -132,10 +132,10 @@ export default function Footer() {
           <div className="h-px bg-gray-200 w-full mb-4" />
           <dl className="space-y-3">
             {[
-              { label: 'Address', value: 'Str. Literaturii 12, Iași, România' },
-              { label: 'Phone', value: '+40 232 XXX XXX' },
+              { label: 'Adresă', value: 'Str. Literaturii 12, Iași, România' },
+              { label: 'Telefon', value: '+40 232 XXX XXX' },
               { label: 'Email', value: 'contact@edituraprinceps.ro' },
-              { label: 'Hours', value: 'Mon–Fri 9:00–18:00' },
+              { label: 'Program', value: 'Lun–Vin 9:00–18:00' },
             ].map(item => (
               <div key={item.label}>
                 <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">
@@ -148,15 +148,15 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* Bara de jos */}
       <div className="border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5
                         flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs font-sans text-charcoal-lighter">
-            © {new Date().getFullYear()} Editura Princeps. All rights reserved.
+            © {new Date().getFullYear()} Editura Princeps. Toate drepturile rezervate.
           </p>
           <div className="flex items-center gap-6">
-            {['Visa', 'Mastercard', 'PayPal', 'Bank Transfer'].map(m => (
+            {['Visa', 'Mastercard', 'PayPal', 'Transfer Bancar'].map(m => (
               <span key={m} className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide">
                 {m}
               </span>

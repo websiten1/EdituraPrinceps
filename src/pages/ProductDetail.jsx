@@ -33,10 +33,10 @@ function ReviewModal({ onClose, onSubmit }) {
 
   const validate = () => {
     const e = {};
-    if (!form.rating)             e.rating  = 'Please select a rating.';
-    if (!form.title.trim())       e.title   = 'Title is required.';
-    if (form.content.length < 20) e.content = 'Review must be at least 20 characters.';
-    if (!form.name.trim())        e.name    = 'Name is required.';
+    if (!form.rating)             e.rating  = 'Selectează o evaluare.';
+    if (!form.title.trim())       e.title   = 'Titlul este obligatoriu.';
+    if (form.content.length < 20) e.content = 'Recenzia trebuie să aibă cel puțin 20 de caractere.';
+    if (!form.name.trim())        e.name    = 'Numele este obligatoriu.';
     return e;
   };
 
@@ -53,21 +53,21 @@ function ReviewModal({ onClose, onSubmit }) {
       <div className="relative bg-white border border-gray-200 shadow-classic-lg w-full max-w-lg
                       max-h-[90vh] overflow-y-auto">
         <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h3 className="font-display text-xl text-charcoal">Write a Review</h3>
+          <h3 className="font-display text-xl text-charcoal">Scrie o Recenzie</h3>
           <button onClick={onClose} className="text-charcoal-light hover:text-charcoal font-ui text-xs uppercase tracking-wide">
-            Close
+            Închide
           </button>
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
-            <label className="field-label">Your Rating *</label>
+            <label className="field-label">Evaluarea ta *</label>
             <Stars value={form.rating} size="lg" interactive onChange={r => setForm(f => ({ ...f, rating: r }))} />
             {errors.rating && <p className="text-burgundy text-xs font-sans mt-1">{errors.rating}</p>}
           </div>
           {[
-            { name: 'title',   label: 'Review Title *',  type: 'input',    ph: 'Summarise your thoughts' },
-            { name: 'name',    label: 'Your Name *',     type: 'input',    ph: 'First name or initials' },
-            { name: 'content', label: 'Your Review *',   type: 'textarea', ph: 'Share your reading experience…' },
+            { name: 'title',   label: 'Titlul Recenziei *',  type: 'input',    ph: 'Rezumă-ți impresiile' },
+            { name: 'name',    label: 'Numele Tău *',        type: 'input',    ph: 'Prenume sau inițiale' },
+            { name: 'content', label: 'Recenzia Ta *',       type: 'textarea', ph: 'Descrie experiența ta de lectură…' },
           ].map(field => (
             <div key={field.name}>
               <label className="field-label">{field.label}</label>
@@ -91,8 +91,8 @@ function ReviewModal({ onClose, onSubmit }) {
             </div>
           ))}
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="btn-secondary flex-1">Cancel</button>
-            <button type="submit" className="btn-primary flex-1">Submit Review</button>
+            <button type="button" onClick={onClose} className="btn-secondary flex-1">Anulează</button>
+            <button type="submit" className="btn-primary flex-1">Trimite Recenzia</button>
           </div>
         </form>
       </div>
@@ -101,14 +101,14 @@ function ReviewModal({ onClose, onSubmit }) {
 }
 
 const seedReviews = [
-  { id: 1, author: 'Maria I.',     rating: 5, date: '15 Mar 2024', title: 'A masterpiece of Romanian literature',
-    content: 'I read this with great concentration and immense pleasure. Every page reveals new layers of meaning and beauty. Highly recommended.',
+  { id: 1, author: 'Maria I.',     rating: 5, date: '15 Mar 2024', title: 'O capodoperă a literaturii române',
+    content: 'Am citit această carte cu mare atenție și imens plăcere. Fiecare pagină dezvăluie noi straturi de semnificație și frumusețe. Recomand cu toată inima.',
     helpful: 12, verified: true },
-  { id: 2, author: 'Alexandru P.', rating: 4, date: '3 Feb 2024',  title: 'Essential reading',
-    content: 'A beautifully produced volume with a thoughtful critical apparatus. The edition is well-prepared and the text impeccably rendered.',
+  { id: 2, author: 'Alexandru P.', rating: 4, date: '3 Feb 2024',  title: 'Lectură esențială',
+    content: 'Un volum frumos realizat, cu un aparat critic atent. Ediția este bine pregătită, iar textul impecabil redat.',
     helpful: 8,  verified: true },
-  { id: 3, author: 'Elena G.',     rating: 5, date: '20 Jan 2024', title: 'Exquisite edition',
-    content: 'Editura Princeps consistently produce editions of the highest quality. The paper is fine, the binding sturdy, the presentation elegant.',
+  { id: 3, author: 'Elena G.',     rating: 5, date: '20 Ian 2024', title: 'Ediție desăvârșită',
+    content: 'Editura Princeps realizează constant ediții de cea mai înaltă calitate. Hârtia este fină, legătura solidă, prezentarea elegantă.',
     helpful: 5,  verified: false },
 ];
 
@@ -134,9 +134,9 @@ export default function ProductDetail() {
   if (!book) return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="text-center">
-        <p className="font-display text-3xl text-charcoal-light italic mb-4">Title not found</p>
+        <p className="font-display text-3xl text-charcoal-light italic mb-4">Titlu negăsit</p>
         <button onClick={() => navigate('/collections')} className="btn-primary">
-          Return to Collections
+          Înapoi la Colecții
         </button>
       </div>
     </div>
@@ -154,18 +154,18 @@ export default function ProductDetail() {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    addToast('Link copied to clipboard.', 'info');
+    addToast('Link copiat în clipboard.', 'info');
   };
 
   const handleReview = form => {
     setReviews(prev => [{
       id: Date.now(), author: form.name,
       rating: form.rating,
-      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      date: new Date().toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' }),
       title: form.title, content: form.content, helpful: 0, verified: false,
     }, ...prev]);
     setShowModal(false);
-    addToast('Your review has been published.', 'success');
+    addToast('Recenzia ta a fost publicată.', 'success');
   };
 
   return (
@@ -174,7 +174,7 @@ export default function ProductDetail() {
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb items={[
-            { label: 'Collections', to: '/collections' },
+            { label: 'Colecții', to: '/collections' },
             { label: book.category, to: `/collections?category=${book.category}` },
             { label: book.title },
           ]} />
@@ -183,10 +183,10 @@ export default function ProductDetail() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        {/* ── Main product block ── */}
+        {/* Bloc principal produs */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 bg-white border border-gray-200 p-6 sm:p-10">
 
-          {/* LEFT: Cover */}
+          {/* STÂNGA: Copertă */}
           <div className="lg:col-span-2 flex flex-col items-center gap-5">
             <div className="w-52 h-72 relative flex flex-col items-center
                             justify-center text-white/20 shadow-classic-lg"
@@ -213,11 +213,11 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Thumbnails */}
+            {/* Miniaturi */}
             <div className="flex items-center gap-2">
               {[1, 2, 3].map((_, i) => (
                 <div key={i}
-                     className={`w-12 h-16 cursor-pointer border-2 transition-colors`}
+                     className="w-12 h-16 cursor-pointer border-2 transition-colors"
                      style={{
                        backgroundColor: book.coverColor,
                        borderColor: i === 0 ? '#8B3A3A' : 'transparent',
@@ -226,10 +226,10 @@ export default function ProductDetail() {
               ))}
             </div>
 
-            {/* Share */}
+            {/* Distribuie */}
             <div className="text-center">
               <p className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-2">
-                Share this title
+                Distribuie acest titlu
               </p>
               <div className="flex items-center justify-center gap-4 text-xs font-ui">
                 <a href="#" className="text-burgundy hover:underline uppercase tracking-wide">Facebook</a>
@@ -237,13 +237,13 @@ export default function ProductDetail() {
                 <a href="#" className="text-burgundy hover:underline uppercase tracking-wide">Twitter</a>
                 <span className="text-gray-300">|</span>
                 <button onClick={handleCopy} className="text-burgundy hover:underline uppercase tracking-wide">
-                  {copied ? 'Copied!' : 'Copy link'}
+                  {copied ? 'Copiat!' : 'Copiază link'}
                 </button>
               </div>
             </div>
           </div>
 
-          {/* RIGHT: Info */}
+          {/* DREAPTA: Informații */}
           <div className="lg:col-span-3">
 
             <div className="flex items-center flex-wrap gap-2 mb-4">
@@ -265,10 +265,10 @@ export default function ProductDetail() {
             <div className="flex items-center gap-3 mb-6">
               <Stars value={book.rating} size="md" />
               <span className="font-sans text-sm text-charcoal-light">
-                {book.rating} · {book.reviewCount} reviews
+                {book.rating} · {book.reviewCount} recenzii
               </span>
               <a href="#reviews" className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
-                Read reviews
+                Citește recenziile
               </a>
             </div>
 
@@ -285,18 +285,18 @@ export default function ProductDetail() {
             <div className="flex items-center gap-2 mb-5">
               {book.stock > 5 ? (
                 <><Check className="w-4 h-4 text-forest-800" />
-                  <span className="text-sm font-sans text-forest-800">In Stock — ships in 3–5 business days</span></>
+                  <span className="text-sm font-sans text-forest-800">În Stoc — expediat în 3–5 zile lucrătoare</span></>
               ) : book.stock > 0 ? (
                 <><AlertCircle className="w-4 h-4 text-charcoal-light" />
-                  <span className="text-sm font-sans text-charcoal-light">Only {book.stock} copies remaining</span></>
+                  <span className="text-sm font-sans text-charcoal-light">Doar {book.stock} exemplare rămase</span></>
               ) : (
                 <><AlertCircle className="w-4 h-4 text-charcoal-lighter" />
-                  <span className="text-sm font-sans text-charcoal-lighter">Currently out of stock</span></>
+                  <span className="text-sm font-sans text-charcoal-lighter">Momentan indisponibil</span></>
               )}
             </div>
 
             <div className="flex items-center gap-4 mb-5">
-              <span className="text-xs font-ui font-semibold text-charcoal uppercase tracking-wide">Quantity</span>
+              <span className="text-xs font-ui font-semibold text-charcoal uppercase tracking-wide">Cantitate</span>
               <div className="flex items-center border border-gray-200">
                 <button onClick={() => setQuantity(q => Math.max(1, q - 1))}
                         className="w-9 h-9 flex items-center justify-center text-charcoal-light
@@ -322,7 +322,7 @@ export default function ProductDetail() {
                 className="flex-1 btn-primary py-3.5 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ShoppingCart className="w-4 h-4" />
-                Add to Cart
+                Adaugă în Coș
               </button>
               <button
                 onClick={() => toggleWishlist(book)}
@@ -334,7 +334,7 @@ export default function ProductDetail() {
                             }`}
               >
                 <Heart className={`w-4 h-4 ${inWish ? 'fill-burgundy' : ''}`} />
-                {inWish ? 'In Wishlist' : 'Add to Wishlist'}
+                {inWish ? 'În Lista de Dorințe' : 'Adaugă în Dorințe'}
               </button>
             </div>
 
@@ -342,22 +342,22 @@ export default function ProductDetail() {
                   className="block w-full text-center py-3 bg-charcoal text-white
                              font-ui font-semibold text-sm uppercase tracking-wide
                              border border-charcoal hover:bg-gray-800 transition-colors mb-6">
-              Buy Now
+              Cumpără Acum
             </Link>
 
             <div className="border-t border-gray-100 pt-5">
               <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-charcoal mb-3">
-                Bibliographic Details
+                Date Bibliografice
               </h3>
               <table className="w-full text-sm">
                 <tbody>
                   {[
-                    { label: 'ISBN',      value: book.isbn },
-                    { label: 'Published', value: book.publicationDate },
-                    { label: 'Pages',     value: book.pages },
-                    { label: 'Language',  value: book.language },
-                    { label: 'Binding',   value: book.binding },
-                    { label: 'Category',  value: book.category },
+                    { label: 'ISBN',               value: book.isbn },
+                    { label: 'Data Publicării',    value: book.publicationDate },
+                    { label: 'Pagini',             value: book.pages },
+                    { label: 'Limbă',              value: book.language },
+                    { label: 'Copertă',            value: book.binding },
+                    { label: 'Categorie',          value: book.category },
                   ].map(row => (
                     <tr key={row.label} className="border-b border-gray-100 last:border-0">
                       <td className="py-2 pr-4 font-ui text-xs text-charcoal-lighter uppercase tracking-wide w-1/3">
@@ -374,21 +374,21 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Description */}
+        {/* Descriere */}
         <div className="bg-white border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
-          <h2 className="font-display text-xl text-charcoal mb-4">About This Book</h2>
+          <h2 className="font-display text-xl text-charcoal mb-4">Despre Această Carte</h2>
           <div className={`font-sans text-sm text-charcoal leading-reading ${!expanded ? 'line-clamp-4' : ''}`}>
             <p className="mb-3">{book.description}</p>
             {book.longDescription && <p>{book.longDescription}</p>}
           </div>
           <button onClick={() => setExpanded(e => !e)} className="mt-3 btn-ghost text-sm">
-            {expanded ? 'Read less ↑' : 'Read more ↓'}
+            {expanded ? 'Citește mai puțin ↑' : 'Citește mai mult ↓'}
           </button>
         </div>
 
-        {/* Author box */}
+        {/* Autor */}
         <div className="bg-gray-50 border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
-          <h2 className="font-display text-xl text-charcoal mb-4">About the Author</h2>
+          <h2 className="font-display text-xl text-charcoal mb-4">Despre Autor</h2>
           <div className="flex items-start gap-5">
             <div className="w-14 h-14 bg-burgundy flex items-center justify-center
                             text-white font-display text-xl flex-shrink-0">
@@ -397,26 +397,26 @@ export default function ProductDetail() {
             <div>
               <h3 className="font-serif text-h4 text-charcoal mb-1">{book.author}</h3>
               <p className="font-sans text-sm text-charcoal-light leading-reading mb-3">
-                {book.author} is one of the distinguished voices of Romanian literature.
-                Their work has been studied and celebrated across Romania and beyond,
-                contributing significantly to the cultural heritage of the Romanian people.
+                {book.author} este una dintre vocile distincte ale literaturii române.
+                Opera sa a fost studiată și celebrată în România și în afara granițelor,
+                contribuind semnificativ la patrimoniul cultural al poporului român.
               </p>
               <Link to={`/collections?search=${encodeURIComponent(book.author)}`}
                     className="btn-ghost text-sm">
-                View all titles by this author →
+                Vezi toate titlurile acestui autor →
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Reviews */}
+        {/* Recenzii */}
         <div id="reviews" className="bg-white border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
           <div className="flex items-center justify-between flex-wrap gap-4 mb-7">
             <h2 className="font-display text-xl text-charcoal">
-              Reader Reviews <span className="text-charcoal-lighter font-sans text-base font-normal">({reviews.length})</span>
+              Recenzii Cititori <span className="text-charcoal-lighter font-sans text-base font-normal">({reviews.length})</span>
             </h2>
             <button onClick={() => setShowModal(true)} className="btn-ghost text-sm">
-              Write a review →
+              Scrie o recenzie →
             </button>
           </div>
 
@@ -424,7 +424,7 @@ export default function ProductDetail() {
             <div className="text-center flex-shrink-0">
               <div className="font-display text-6xl text-charcoal">{avg.toFixed(1)}</div>
               <Stars value={avg} size="md" />
-              <p className="text-xs font-sans text-charcoal-lighter mt-1">{reviews.length} reviews</p>
+              <p className="text-xs font-sans text-charcoal-lighter mt-1">{reviews.length} recenzii</p>
             </div>
             <div className="flex-1 space-y-2">
               {dist.map(({ star, count, pct }) => (
@@ -456,7 +456,7 @@ export default function ProductDetail() {
                         </span>
                         {r.verified && (
                           <span className="text-xs font-ui text-forest-800 border border-forest-800 px-1.5 py-0.5">
-                            Verified
+                            Verificat
                           </span>
                         )}
                       </div>
@@ -471,7 +471,7 @@ export default function ProductDetail() {
                 <p className="text-sm font-sans text-charcoal-light leading-reading mb-3">{r.content}</p>
                 <button className="flex items-center gap-1.5 text-xs font-ui text-charcoal-lighter
                                    hover:text-burgundy transition-colors uppercase tracking-wide">
-                  <ThumbsUp className="w-3 h-3" /> Helpful ({r.helpful})
+                  <ThumbsUp className="w-3 h-3" /> Util ({r.helpful})
                 </button>
               </div>
             ))}
@@ -481,7 +481,7 @@ export default function ProductDetail() {
         {related.length > 0 && (
           <div className="mt-12">
             <h2 className="font-display text-xl text-charcoal mb-6 pb-3 border-b border-gray-200">
-              Related Titles
+              Titluri Asemănătoare
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {related.map(b => <BookCard key={b.id} book={b} />)}

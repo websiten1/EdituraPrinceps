@@ -53,7 +53,7 @@ function Hero() {
         </h1>
 
         <p className="font-serif-italic text-2xl sm:text-3xl text-charcoal-light mb-2">
-          Treasures of Romanian Literary Heritage
+          Comorile Patrimoniului Literar Român
         </p>
 
         <div className="flex items-center justify-center gap-6 mt-6 mb-10">
@@ -63,23 +63,23 @@ function Hero() {
         </div>
 
         <p className="text-base font-sans text-charcoal-light max-w-xl mx-auto leading-reading mb-10">
-          A distinguished Romanian publishing house, curating the finest works of poetry,
-          prose, philosophy, and literary criticism since 1999.
+          O distinsă editură română care selectează cele mai valoroase opere de poezie,
+          proză, filozofie și critică literară din 1999.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link to="/collections" className="btn-primary px-8 py-3.5">
-            Explore the Collection
+            Explorează Colecția
           </Link>
           <Link to="/about" className="btn-ghost text-base">
-            Our Story →
+            Povestea Noastră →
           </Link>
         </div>
 
         <div className="flex items-center justify-center gap-4 mt-16">
           <div className="h-px bg-gray-100 w-24" />
           <span className="text-charcoal-lighter font-ui text-xs uppercase tracking-widest">
-            25 years of literary excellence
+            25 de ani de excelență literară
           </span>
           <div className="h-px bg-gray-100 w-24" />
         </div>
@@ -88,30 +88,30 @@ function Hero() {
   );
 }
 
-/* ── Featured Collections ────────────────────────────────────────── */
+/* ── Colecții în Evidență ─────────────────────────────────────────── */
 function FeaturedCollections() {
   const colData = [
     {
-      title:    'Romanian Poetry',
-      subtitle: 'Voices of a Nation',
-      desc:     'From Eminescu to the present day — the essential verse of Romanian literature, curated for the discerning reader.',
-      link:     '/collections?category=Poetry',
+      title:    'Poezia Română',
+      subtitle: 'Voci ale Unei Națiuni',
+      desc:     'De la Eminescu până în zilele noastre — versurile esențiale ale literaturii române, selectate pentru cititorul avizat.',
+      link:     '/collections?category=Poezie',
       count:    14,
       color:    '#6B4C4C',
     },
     {
-      title:    'Philosophy & Thought',
-      subtitle: 'Romanian Intellectual Heritage',
-      desc:     'The foundational philosophical works that shaped Romanian intellectual life, in authoritative editions.',
-      link:     '/collections?category=Philosophy',
+      title:    'Filozofie și Gândire',
+      subtitle: 'Moștenire Intelectuală Română',
+      desc:     'Operele filozofice fundamentale care au modelat viața intelectuală românească, în ediții de referință.',
+      link:     '/collections?category=Filozofie',
       count:    4,
       color:    '#2C3E50',
     },
     {
-      title:    'Literary Criticism',
-      subtitle: 'Scholarship & Analysis',
-      desc:     'Critical studies and essays by Romania\'s foremost literary scholars — essential reading for any serious student.',
-      link:     '/collections?category=Literary Criticism',
+      title:    'Critică Literară',
+      subtitle: 'Erudiție și Analiză',
+      desc:     'Studii critice și eseuri semnate de cei mai importanți cercetători literari români — lectură esențială pentru orice student serios.',
+      link:     '/collections?category=Critică Literară',
       count:    6,
       color:    '#8B6F47',
     },
@@ -120,7 +120,7 @@ function FeaturedCollections() {
   return (
     <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
-        <SectionHeader eyebrow="Curated with Care" title="Our Collections" />
+        <SectionHeader eyebrow="Selectate cu Grijă" title="Colecțiile Noastre" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {colData.map(col => (
@@ -142,10 +142,10 @@ function FeaturedCollections() {
               </p>
               <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
                 <span className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide">
-                  {col.count} titles
+                  {col.count} titluri
                 </span>
                 <Link to={col.link} className="btn-ghost text-sm">
-                  Browse →
+                  Răsfoi →
                 </Link>
               </div>
             </div>
@@ -156,16 +156,16 @@ function FeaturedCollections() {
   );
 }
 
-/* ── Latest Releases ─────────────────────────────────────────────── */
+/* ── Apariții Recente ────────────────────────────────────────────── */
 function LatestReleases() {
   const latest = books.slice(0, 8);
   return (
     <section className="section bg-white border-b border-gray-100">
       <div className="container">
         <div className="flex items-end justify-between mb-10">
-          <SectionHeader eyebrow="Recently Published" title="Latest Releases" />
+          <SectionHeader eyebrow="Publicate Recent" title="Apariții Recente" />
           <Link to="/collections" className="btn-ghost hidden sm:flex">
-            View all titles →
+            Vezi toate titlurile →
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -173,7 +173,7 @@ function LatestReleases() {
         </div>
         <div className="text-center mt-10">
           <Link to="/collections" className="btn-primary px-8">
-            View Complete Catalogue
+            Vezi Catalogul Complet
           </Link>
         </div>
       </div>
@@ -181,7 +181,7 @@ function LatestReleases() {
   );
 }
 
-/* ── Bestsellers ─────────────────────────────────────────────────── */
+/* ── Bestselleri ─────────────────────────────────────────────────── */
 function Bestsellers() {
   const best = books.filter(b => b.bestseller);
   const { addToCart } = useApp();
@@ -189,7 +189,7 @@ function Bestsellers() {
   return (
     <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
-        <SectionHeader eyebrow="Most Sought After" title="Bestsellers" />
+        <SectionHeader eyebrow="Cele Mai Căutate" title="Bestselleri" />
 
         <div className="max-w-3xl">
           {best.map((book, i) => (
@@ -234,7 +234,7 @@ function Bestsellers() {
                              hover:bg-burgundy hover:text-white transition-colors"
                 >
                   <ShoppingCart className="w-3 h-3" />
-                  Add
+                  Adaugă
                 </button>
               </div>
             </div>
@@ -245,12 +245,12 @@ function Bestsellers() {
   );
 }
 
-/* ── Statistics ──────────────────────────────────────────────────── */
+/* ── Statistici ──────────────────────────────────────────────────── */
 function Statistics() {
   const stats = [
-    { value: '500+',    label: 'Published Titles',    sub: 'Across all categories' },
-    { value: '10,000+', label: 'Readers Served',      sub: 'Across Romania & beyond' },
-    { value: '25+',     label: 'Years of Excellence', sub: 'Established 1999' },
+    { value: '500+',    label: 'Titluri Publicate',     sub: 'Toate categoriile' },
+    { value: '10.000+', label: 'Cititori Serviți',      sub: 'În România și diaspora' },
+    { value: '25+',     label: 'Ani de Excelență',      sub: 'Fondată în 1999' },
   ];
 
   return (
@@ -277,12 +277,12 @@ function Statistics() {
   );
 }
 
-/* ── Testimonials ────────────────────────────────────────────────── */
+/* ── Mărturii ────────────────────────────────────────────────────── */
 function Testimonials() {
   return (
     <section className="section bg-white border-b border-gray-100">
       <div className="container">
-        <SectionHeader eyebrow="Reader Voices" title="What Our Readers Say" centered />
+        <SectionHeader eyebrow="Voci Cititori" title="Ce Spun Cititorii Noștri" centered />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map(t => (
@@ -316,7 +316,7 @@ function Testimonials() {
   );
 }
 
-/* ── Newsletter ──────────────────────────────────────────────────── */
+/* ── Buletin informativ ──────────────────────────────────────────── */
 function Newsletter() {
   const [email, setEmail] = useState('');
   const [done, setDone]   = useState(false);
@@ -325,7 +325,7 @@ function Newsletter() {
   const handleSubmit = e => {
     e.preventDefault();
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      setError('Please enter a valid email address.');
+      setError('Introduceți o adresă de email validă.');
       return;
     }
     setDone(true); setError('');
@@ -340,15 +340,15 @@ function Newsletter() {
             <span className="text-burgundy-300 font-serif text-xl">❧</span>
             <div className="h-px bg-gray-200 w-16" />
           </div>
-          <h2 className="font-display text-h2 text-charcoal mb-3">Subscribe to Our Newsletter</h2>
+          <h2 className="font-display text-h2 text-charcoal mb-3">Abonează-te la Buletinul Nostru</h2>
           <p className="font-sans text-sm text-charcoal-light leading-reading mb-8">
-            Receive news of new publications, literary notes, and exclusive offers from
-            Editura Princeps — delivered with care to your inbox.
+            Primești noutăți despre apariții, note literare și oferte exclusive de la
+            Editura Princeps — livrate cu grijă în căsuța ta poștală.
           </p>
 
           {done ? (
             <p className="font-quote text-burgundy text-lg italic">
-              Thank you. We look forward to corresponding with you.
+              Mulțumim. Așteptăm cu plăcere corespondența dumneavoastră.
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto">
@@ -356,7 +356,7 @@ function Newsletter() {
                 type="email"
                 value={email}
                 onChange={e => { setEmail(e.target.value); setError(''); }}
-                placeholder="Your email address"
+                placeholder="Adresa ta de email"
                 className={`flex-1 px-4 py-3 bg-white border text-sm font-sans
                             text-charcoal placeholder-charcoal-lighter
                             focus:outline-none focus:border-burgundy transition-colors
@@ -369,7 +369,7 @@ function Newsletter() {
                            uppercase tracking-wide border border-burgundy
                            hover:bg-burgundy-800 transition-colors duration-200 whitespace-nowrap"
               >
-                Subscribe
+                Abonează-te
               </button>
             </form>
           )}
@@ -377,7 +377,7 @@ function Newsletter() {
             <p className="text-burgundy text-xs font-sans mt-2">{error}</p>
           )}
           <p className="text-xs font-sans text-charcoal-lighter mt-4">
-            Your privacy is respected. Unsubscribe at any time.
+            Intimitatea ta este respectată. Te poți dezabona oricând.
           </p>
         </div>
       </div>
@@ -385,7 +385,7 @@ function Newsletter() {
   );
 }
 
-/* ── Page ────────────────────────────────────────────────────────── */
+/* ── Pagina ──────────────────────────────────────────────────────── */
 export default function Home() {
   return (
     <div className="fade-in">

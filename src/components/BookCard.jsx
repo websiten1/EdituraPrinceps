@@ -3,22 +3,22 @@ import { ShoppingCart, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const categoryColors = {
-  'Poetry':             'border-burgundy-400 text-burgundy',
-  'Prose':              'border-charcoal text-charcoal',
-  'Philosophy':         'border-gray-400 text-charcoal-light',
-  'Literary Criticism': 'border-burgundy-300 text-burgundy-700',
-  'Audiobooks':         'border-forest-800 text-forest-800',
+  'Poezie':          'border-burgundy-400 text-burgundy',
+  'Proză':           'border-charcoal text-charcoal',
+  'Filozofie':       'border-gray-400 text-charcoal-light',
+  'Critică Literară':'border-burgundy-300 text-burgundy-700',
+  'Audiobook-uri':   'border-forest-800 text-forest-800',
 };
 
 function StarRow({ rating }) {
   return (
-    <span className="text-burgundy-400 text-sm tracking-tighter font-sans" aria-label={`${rating} out of 5`}>
+    <span className="text-burgundy-400 text-sm tracking-tighter font-sans" aria-label={`${rating} din 5`}>
       {'★'.repeat(Math.floor(rating))}{'☆'.repeat(5 - Math.floor(rating))}
     </span>
   );
 }
 
-/* ── Grid card ─────────────────────────────────────────────────────── */
+/* ── Card grilă ─────────────────────────────────────────────────────── */
 function GridCard({ book }) {
   const { addToCart, toggleWishlist, wishlist } = useApp();
   const isWishlisted = wishlist.some(b => b.id === book.id);
@@ -28,12 +28,11 @@ function GridCard({ book }) {
     <article className="bg-white border border-gray-200 flex flex-col
                         transition-shadow duration-300 hover:shadow-classic-md group">
 
-      {/* Cover */}
+      {/* Copertă */}
       <Link to={`/product/${book.id}`} className="block relative overflow-hidden">
         <div className="h-52 relative flex flex-col items-center
                         justify-center select-none"
              style={{ backgroundColor: book.coverColor }}>
-          {/* Classic spine lines */}
           <div className="absolute inset-0 flex flex-col justify-between px-5 py-5 pointer-events-none">
             <div className="h-px bg-white/20" />
             <div className="text-center">
@@ -51,7 +50,7 @@ function GridCard({ book }) {
           {book.originalPrice && (
             <span className="absolute top-2 left-2 bg-burgundy text-white
                              text-xs font-ui font-semibold px-2 py-0.5 uppercase tracking-wide">
-              Sale
+              Reducere
             </span>
           )}
           {book.bestseller && (
@@ -62,18 +61,18 @@ function GridCard({ book }) {
           )}
         </div>
 
-        {/* Hover overlay */}
+        {/* Suprapunere la hover */}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100
                         transition-opacity duration-300 flex items-center justify-center gap-3">
           <span className="text-white text-sm font-ui font-semibold uppercase tracking-wide
                            border border-white px-4 py-2 hover:bg-white hover:text-burgundy
                            transition-colors duration-200">
-            View Details
+            Vezi Detalii
           </span>
         </div>
       </Link>
 
-      {/* Content */}
+      {/* Conținut */}
       <div className="p-4 flex flex-col flex-1 border-t border-gray-100">
         <div className="mb-2">
           <span className={`badge bg-transparent ${colorClass} text-xs`}>
@@ -109,7 +108,7 @@ function GridCard({ book }) {
             )}
           </div>
           <span className={`text-xs font-ui ${book.stock > 0 ? 'text-forest-800' : 'text-charcoal-lighter'}`}>
-            {book.stock > 0 ? 'In Stock' : 'Out of Stock'}
+            {book.stock > 0 ? 'În Stoc' : 'Epuizat'}
           </span>
         </div>
 
@@ -124,7 +123,7 @@ function GridCard({ book }) {
                        disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ShoppingCart className="w-3.5 h-3.5" />
-            Add to Cart
+            Adaugă în Coș
           </button>
           <button
             onClick={() => toggleWishlist(book)}
@@ -133,6 +132,7 @@ function GridCard({ book }) {
                 ? 'border-burgundy bg-burgundy-50 text-burgundy'
                 : 'border-gray-200 text-charcoal-lighter hover:border-burgundy hover:text-burgundy'
               }`}
+            aria-label="Adaugă în lista de dorințe"
           >
             <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-burgundy' : ''}`} />
           </button>
@@ -142,7 +142,7 @@ function GridCard({ book }) {
   );
 }
 
-/* ── List card ─────────────────────────────────────────────────────── */
+/* ── Card listă ─────────────────────────────────────────────────────── */
 function ListCard({ book }) {
   const { addToCart, toggleWishlist, wishlist } = useApp();
   const isWishlisted = wishlist.some(b => b.id === book.id);
@@ -176,7 +176,7 @@ function ListCard({ book }) {
                 {book.author}
               </p>
             </div>
-            <button onClick={() => toggleWishlist(book)} className="flex-shrink-0 mt-1">
+            <button onClick={() => toggleWishlist(book)} className="flex-shrink-0 mt-1" aria-label="Lista de dorințe">
               <Heart className={`w-4 h-4 transition-colors ${
                 isWishlisted ? 'text-burgundy fill-burgundy' : 'text-charcoal-lighter hover:text-burgundy'
               }`} />
@@ -204,7 +204,7 @@ function ListCard({ book }) {
                        disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ShoppingCart className="w-3.5 h-3.5" />
-            Add to Cart
+            Adaugă în Coș
           </button>
         </div>
       </div>

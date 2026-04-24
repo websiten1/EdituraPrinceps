@@ -5,22 +5,22 @@ import { useApp } from '../context/AppContext';
 import Breadcrumb from '../components/Breadcrumb';
 
 const STEPS = [
-  { id: 1, label: 'Billing' },
-  { id: 2, label: 'Shipping' },
-  { id: 3, label: 'Payment' },
+  { id: 1, label: 'Facturare' },
+  { id: 2, label: 'Livrare' },
+  { id: 3, label: 'Plată' },
 ];
 
 const shippingMethods = [
-  { id: 'standard', label: 'Standard Delivery',  desc: '3–5 business days', price: 15 },
-  { id: 'express',  label: 'Express Delivery',    desc: '1–2 business days', price: 25 },
-  { id: 'pickup',   label: 'Collect in Store',    desc: 'Iași — No charge',  price: 0  },
+  { id: 'standard', label: 'Livrare Standard',    desc: '3–5 zile lucrătoare',   price: 15 },
+  { id: 'express',  label: 'Livrare Express',      desc: '1–2 zile lucrătoare',   price: 25 },
+  { id: 'pickup',   label: 'Ridicare din Magazin', desc: 'Iași — Fără cost',       price: 0  },
 ];
 
 const paymentMethods = [
-  { id: 'card',     label: 'Credit / Debit Card', desc: 'Visa, Mastercard, Maestro' },
-  { id: 'transfer', label: 'Bank Transfer',        desc: 'Processed in 1–2 banking days' },
-  { id: 'paypal',   label: 'PayPal',               desc: 'Fast, secure checkout' },
-  { id: 'ramburs',  label: 'Cash on Delivery',     desc: 'Pay upon receipt of parcel' },
+  { id: 'card',     label: 'Card de Credit / Debit', desc: 'Visa, Mastercard, Maestro' },
+  { id: 'transfer', label: 'Transfer Bancar',         desc: 'Procesare în 1–2 zile bancare' },
+  { id: 'paypal',   label: 'PayPal',                  desc: 'Plată rapidă și sigură' },
+  { id: 'ramburs',  label: 'Ramburs',                 desc: 'Plată la primirea coletului' },
 ];
 
 function Progress({ current }) {
@@ -66,44 +66,44 @@ function AddressForm({ data, setData, errors, showSameAs, sameAs, setSameAs }) {
   const set = (k, v) => setData(d => ({ ...d, [k]: v }));
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <Field label="First Name" required error={errors?.firstName}>
+      <Field label="Prenume" required error={errors?.firstName}>
         <input className={`field ${errors?.firstName ? 'border-burgundy' : ''}`}
                value={data.firstName || ''} onChange={e => set('firstName', e.target.value)} />
       </Field>
-      <Field label="Last Name" required error={errors?.lastName}>
+      <Field label="Nume de Familie" required error={errors?.lastName}>
         <input className={`field ${errors?.lastName ? 'border-burgundy' : ''}`}
                value={data.lastName || ''} onChange={e => set('lastName', e.target.value)} />
       </Field>
-      <Field label="Email Address" required error={errors?.email}>
+      <Field label="Adresă de Email" required error={errors?.email}>
         <input type="email" className={`field sm:col-span-2 ${errors?.email ? 'border-burgundy' : ''}`}
                value={data.email || ''} onChange={e => set('email', e.target.value)} />
       </Field>
-      <Field label="Phone Number" required error={errors?.phone}>
+      <Field label="Număr de Telefon" required error={errors?.phone}>
         <input className={`field ${errors?.phone ? 'border-burgundy' : ''}`}
                value={data.phone || ''} onChange={e => set('phone', e.target.value)}
                placeholder="+40 7XX XXX XXX" />
       </Field>
       <div className="sm:col-span-2">
-        <Field label="Street Address" required error={errors?.address}>
+        <Field label="Adresă Stradală" required error={errors?.address}>
           <input className={`field ${errors?.address ? 'border-burgundy' : ''}`}
                  value={data.address || ''} onChange={e => set('address', e.target.value)}
-                 placeholder="Street, number, apartment" />
+                 placeholder="Stradă, număr, apartament" />
         </Field>
       </div>
-      <Field label="City" required error={errors?.city}>
+      <Field label="Oraș" required error={errors?.city}>
         <input className={`field ${errors?.city ? 'border-burgundy' : ''}`}
                value={data.city || ''} onChange={e => set('city', e.target.value)} />
       </Field>
-      <Field label="County" required error={errors?.county}>
+      <Field label="Județ" required error={errors?.county}>
         <select className={`field ${errors?.county ? 'border-burgundy' : ''}`}
                 value={data.county || ''} onChange={e => set('county', e.target.value)}>
-          <option value="">Select county</option>
+          <option value="">Selectează județul</option>
           {['Alba','Arad','Argeș','Bacău','Bihor','Brașov','București','Cluj',
             'Constanța','Dolj','Galați','Iași','Ilfov','Mureș','Prahova',
             'Sibiu','Suceava','Timiș'].map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </Field>
-      <Field label="Postal Code">
+      <Field label="Cod Poștal">
         <input className="field" value={data.zip || ''} onChange={e => set('zip', e.target.value)} />
       </Field>
       {showSameAs && (
@@ -112,7 +112,7 @@ function AddressForm({ data, setData, errors, showSameAs, sameAs, setSameAs }) {
             <input type="checkbox" checked={sameAs} onChange={e => setSameAs(e.target.checked)}
                    className="w-4 h-4 border-gray-300 text-burgundy focus:ring-burgundy accent-burgundy" />
             <span className="text-sm font-sans text-charcoal">
-              Shipping address same as billing address
+              Adresa de livrare este aceeași cu adresa de facturare
             </span>
           </label>
         </div>
@@ -139,14 +139,14 @@ export default function Checkout() {
   const selShip  = shippingMethods.find(m => m.id === shipMethod);
   const shipCost = selShip?.price ?? shippingCost;
   const total    = cartTotal - discountAmount + shipCost;
-  const orderNum = `PM-${Date.now().toString().slice(-6)}`;
+  const orderNum = `EP-${Date.now().toString().slice(-6)}`;
 
   const validateBilling = () => {
     const e = {};
     ['firstName','lastName','phone','address','city','county'].forEach(k => {
-      if (!billing[k]) e[k] = 'Required';
+      if (!billing[k]) e[k] = 'Câmp obligatoriu';
     });
-    if (!billing.email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Valid email required';
+    if (!billing.email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Email valid obligatoriu';
     return e;
   };
 
@@ -161,7 +161,7 @@ export default function Checkout() {
   };
 
   const placeOrder = () => {
-    if (!terms) { setErrors({ terms: 'You must accept the terms and conditions.' }); return; }
+    if (!terms) { setErrors({ terms: 'Trebuie să accepți termenii și condițiile.' }); return; }
     setLoading(true);
     setTimeout(() => { setLoading(false); setDone(true); clearCart(); }, 1800);
   };
@@ -169,8 +169,8 @@ export default function Checkout() {
   if (cart.items.length === 0 && !done) return (
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="text-center">
-        <p className="font-sans text-sm text-charcoal-light mb-4">Your cart is empty.</p>
-        <Link to="/collections" className="btn-primary">Browse the Collection</Link>
+        <p className="font-sans text-sm text-charcoal-light mb-4">Coșul tău este gol.</p>
+        <Link to="/collections" className="btn-primary">Răsfoiește Colecția</Link>
       </div>
     </div>
   );
@@ -179,18 +179,18 @@ export default function Checkout() {
     <div className="fade-in min-h-screen bg-white flex items-center justify-center px-4">
       <div className="bg-white border border-gray-200 max-w-lg w-full p-10 text-center shadow-classic-md">
         <CheckCircle className="w-14 h-14 text-forest-800 mx-auto mb-5" />
-        <h1 className="font-display text-h2 text-charcoal mb-2">Order Confirmed</h1>
+        <h1 className="font-display text-h2 text-charcoal mb-2">Comandă Confirmată</h1>
         <div className="h-0.5 bg-burgundy w-12 mx-auto mb-5" />
         <p className="font-sans text-sm text-charcoal-light mb-2">
-          Order reference: <strong className="text-burgundy font-mono">#{orderNum}</strong>
+          Referință comandă: <strong className="text-burgundy font-mono">#{orderNum}</strong>
         </p>
         <p className="font-sans text-sm text-charcoal-light mb-8 leading-reading">
-          Thank you for your order. A confirmation has been sent to your email address.
-          Your books will be dispatched within 1–2 business days.
+          Mulțumim pentru comandă. O confirmare a fost trimisă la adresa ta de email.
+          Cărțile vor fi expediate în 1–2 zile lucrătoare.
         </p>
         <div className="flex gap-3 justify-center">
-          <Link to="/" className="btn-primary px-6">Return Home</Link>
-          <Link to="/collections" className="btn-secondary px-6">Continue Browsing</Link>
+          <Link to="/" className="btn-primary px-6">Înapoi Acasă</Link>
+          <Link to="/collections" className="btn-secondary px-6">Continuă Navigarea</Link>
         </div>
       </div>
     </div>
@@ -200,8 +200,8 @@ export default function Checkout() {
     <div className="fade-in min-h-screen bg-white">
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <Breadcrumb items={[{ label: 'Cart', to: '/cart' }, { label: 'Checkout' }]} />
-          <h1 className="font-display text-h1 text-charcoal mt-4">Checkout</h1>
+          <Breadcrumb items={[{ label: 'Coș', to: '/cart' }, { label: 'Finalizare Comandă' }]} />
+          <h1 className="font-display text-h1 text-charcoal mt-4">Finalizare Comandă</h1>
         </div>
       </div>
 
@@ -210,20 +210,20 @@ export default function Checkout() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* ── Main panel ── */}
+          {/* Panoul principal */}
           <div className="lg:col-span-2 space-y-6">
 
             {step === 1 && (
               <div className="bg-white border border-gray-200">
                 <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                  <h2 className="font-display text-xl text-charcoal">Billing Address</h2>
+                  <h2 className="font-display text-xl text-charcoal">Adresă de Facturare</h2>
                 </div>
                 <div className="p-6">
                   <AddressForm data={billing} setData={setBilling} errors={billingErr}
                                showSameAs sameAs={sameAs} setSameAs={setSameAs} />
                   {!sameAs && (
                     <div className="mt-8 pt-6 border-t border-gray-100">
-                      <h3 className="font-display text-lg text-charcoal mb-5">Shipping Address</h3>
+                      <h3 className="font-display text-lg text-charcoal mb-5">Adresă de Livrare</h3>
                       <AddressForm data={shipping} setData={setShipping} errors={{}} showSameAs={false} />
                     </div>
                   )}
@@ -234,7 +234,7 @@ export default function Checkout() {
             {step === 2 && (
               <div className="bg-white border border-gray-200">
                 <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                  <h2 className="font-display text-xl text-charcoal">Shipping Method</h2>
+                  <h2 className="font-display text-xl text-charcoal">Metodă de Livrare</h2>
                 </div>
                 <div className="p-6 space-y-3">
                   {shippingMethods.map(m => (
@@ -254,7 +254,7 @@ export default function Checkout() {
                         <p className="font-sans text-xs text-charcoal-light">{m.desc}</p>
                       </div>
                       <span className={`font-serif text-base font-semibold ${m.price === 0 ? 'text-forest-800' : 'text-charcoal'}`}>
-                        {m.price === 0 ? 'Free' : `${m.price} lei`}
+                        {m.price === 0 ? 'Gratuit' : `${m.price} lei`}
                       </span>
                     </label>
                   ))}
@@ -265,7 +265,7 @@ export default function Checkout() {
             {step === 3 && (
               <div className="bg-white border border-gray-200">
                 <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                  <h2 className="font-display text-xl text-charcoal">Payment Method</h2>
+                  <h2 className="font-display text-xl text-charcoal">Metodă de Plată</h2>
                 </div>
                 <div className="p-6">
                   <div className="grid grid-cols-2 gap-3 mb-6">
@@ -290,23 +290,23 @@ export default function Checkout() {
                   {payMethod === 'card' && (
                     <div className="bg-gray-50 border border-gray-200 p-5 space-y-4">
                       <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-charcoal mb-4">
-                        Card Details
+                        Detalii Card
                       </h3>
-                      <Field label="Card Number *">
+                      <Field label="Număr Card *">
                         <input className="field font-mono" placeholder="1234 5678 9012 3456"
                                value={card.number}
                                onChange={e => setCard(c => ({ ...c, number: e.target.value.replace(/\D/g,'').slice(0,16).replace(/(\d{4})/g,'$1 ').trim() }))}
                                maxLength={19} />
                       </Field>
-                      <Field label="Cardholder Name *">
+                      <Field label="Titular Card *">
                         <input className="field uppercase"
                                value={card.name}
                                onChange={e => setCard(c => ({ ...c, name: e.target.value.toUpperCase() }))}
-                               placeholder="FULL NAME" />
+                               placeholder="NUME PRENUME" />
                       </Field>
                       <div className="grid grid-cols-2 gap-4">
-                        <Field label="Expiry *">
-                          <input className="field font-mono" placeholder="MM/YY" maxLength={5}
+                        <Field label="Valabilitate *">
+                          <input className="field font-mono" placeholder="LL/AA" maxLength={5}
                                  value={card.expiry}
                                  onChange={e => {
                                    let v = e.target.value.replace(/\D/g,'');
@@ -328,10 +328,10 @@ export default function Checkout() {
                       <input type="checkbox" checked={terms} onChange={e => { setTerms(e.target.checked); setErrors({}); }}
                              className="w-4 h-4 mt-0.5 border-gray-300 text-burgundy focus:ring-burgundy accent-burgundy" />
                       <span className="text-sm font-sans text-charcoal-light leading-reading">
-                        I have read and agree to the{' '}
-                        <Link to="#" className="text-burgundy hover:underline">Terms & Conditions</Link>
-                        {' '}and{' '}
-                        <Link to="#" className="text-burgundy hover:underline">Privacy Policy</Link>.
+                        Am citit și sunt de acord cu{' '}
+                        <Link to="#" className="text-burgundy hover:underline">Termenii și Condițiile</Link>
+                        {' '}și{' '}
+                        <Link to="#" className="text-burgundy hover:underline">Politica de Confidențialitate</Link>.
                       </span>
                     </label>
                     {errors.terms && (
@@ -344,30 +344,30 @@ export default function Checkout() {
               </div>
             )}
 
-            {/* Navigation */}
+            {/* Navigare */}
             <div className="flex items-center justify-between">
               {step > 1
-                ? <button onClick={() => setStep(s => s - 1)} className="btn-secondary px-5 py-2.5 text-sm">← Back</button>
-                : <Link to="/cart" className="btn-secondary px-5 py-2.5 text-sm">← Return to Cart</Link>
+                ? <button onClick={() => setStep(s => s - 1)} className="btn-secondary px-5 py-2.5 text-sm">← Înapoi</button>
+                : <Link to="/cart" className="btn-secondary px-5 py-2.5 text-sm">← Înapoi la Coș</Link>
               }
               {step < 3
                 ? <button onClick={nextStep} className="btn-primary flex items-center gap-2 px-6 py-2.5">
-                    Continue <ChevronRight className="w-4 h-4" />
+                    Continuă <ChevronRight className="w-4 h-4" />
                   </button>
                 : <button onClick={placeOrder} disabled={loading}
                           className="btn-primary flex items-center gap-2 px-6 py-2.5 disabled:opacity-60">
                     <Lock className="w-4 h-4" />
-                    {loading ? 'Processing…' : 'Place Order'}
+                    {loading ? 'Se procesează…' : 'Plasează Comanda'}
                   </button>
               }
             </div>
           </div>
 
-          {/* ── Order summary sidebar ── */}
+          {/* Rezumat comandă */}
           <div className="lg:col-span-1">
             <div className="bg-white border border-gray-200 sticky top-24">
               <div className="bg-gray-50 border-b border-gray-200 px-5 py-4">
-                <h3 className="font-display text-lg text-charcoal">Order Summary</h3>
+                <h3 className="font-display text-lg text-charcoal">Rezumatul Comenzii</h3>
               </div>
               <div className="p-5 max-h-64 overflow-y-auto space-y-3 border-b border-gray-100 scrollbar-thin">
                 {cart.items.map(item => (
@@ -392,14 +392,14 @@ export default function Checkout() {
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-forest-800">
-                    <span>Discount</span>
+                    <span>Reducere</span>
                     <span>−{discountAmount.toFixed(2)} lei</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-charcoal-light">Shipping</span>
+                  <span className="text-charcoal-light">Livrare</span>
                   <span className={shipCost === 0 ? 'text-forest-800' : ''}>
-                    {shipCost === 0 ? 'Free' : `${shipCost} lei`}
+                    {shipCost === 0 ? 'Gratuită' : `${shipCost} lei`}
                   </span>
                 </div>
               </div>
@@ -410,7 +410,7 @@ export default function Checkout() {
                 </div>
                 <p className="text-xs font-sans text-charcoal-lighter mt-4 flex items-center gap-1">
                   <Lock className="w-3 h-3 text-forest-800" />
-                  Secured by 256-bit SSL encryption
+                  Securizat prin criptare SSL 256-bit
                 </p>
               </div>
             </div>

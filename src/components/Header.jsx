@@ -48,9 +48,9 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/collections', label: 'Collections' },
-    { to: '/about', label: 'About' },
+    { to: '/', label: 'Acasă' },
+    { to: '/collections', label: 'Colecții' },
+    { to: '/about', label: 'Despre Noi' },
     { to: '/contact', label: 'Contact' },
   ];
 
@@ -69,13 +69,12 @@ export default function Header() {
     <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300
       ${scrolled ? 'shadow-classic-md' : 'border-b border-gray-200'}`}>
 
-      {/* Top burgundy accent line */}
       <div className="h-0.5 bg-burgundy w-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
 
-          {/* ── Logo ─────────────────────────────────────── */}
+          {/* Logo */}
           <Link to="/" className="flex flex-col leading-none group">
             <span className="font-display text-xl lg:text-2xl text-charcoal tracking-wide
                              group-hover:text-burgundy transition-colors duration-200">
@@ -86,7 +85,7 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* ── Desktop nav ──────────────────────────────── */}
+          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map(link => (
               <Link
@@ -103,15 +102,15 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* ── Actions ──────────────────────────────────── */}
+          {/* Actions */}
           <div className="flex items-center gap-2">
 
-            {/* Search */}
+            {/* Căutare */}
             <div ref={searchRef} className="relative">
               <button
                 onClick={() => setSearchOpen(v => !v)}
                 className="p-2 text-charcoal-light hover:text-burgundy transition-colors duration-200"
-                aria-label="Search"
+                aria-label="Caută"
               >
                 <Search className="w-4 h-4" />
               </button>
@@ -126,7 +125,7 @@ export default function Header() {
                         type="text"
                         value={searchValue}
                         onChange={e => setSearchValue(e.target.value)}
-                        placeholder="Search titles, authors…"
+                        placeholder="Caută titluri, autori…"
                         className="flex-1 bg-transparent outline-none text-sm text-charcoal placeholder-charcoal-lighter font-sans"
                       />
                       {searchValue && (
@@ -170,21 +169,21 @@ export default function Header() {
                                    uppercase tracking-wide hover:bg-gray-50 text-center
                                    transition-colors border-t border-gray-100"
                       >
-                        View all results →
+                        Vezi toate rezultatele →
                       </Link>
                     </div>
                   )}
 
                   {searchValue.length > 1 && searchResults.length === 0 && (
                     <p className="px-4 py-5 text-sm font-sans text-charcoal-light text-center italic">
-                      No results for "{searchValue}"
+                      Niciun rezultat pentru „{searchValue}"
                     </p>
                   )}
                 </div>
               )}
             </div>
 
-            {/* User (desktop) */}
+            {/* Cont utilizator (desktop) */}
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setUserMenuOpen(v => !v)}
@@ -194,12 +193,12 @@ export default function Header() {
                 <ChevronDown className="w-3 h-3" />
               </button>
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-classic-md z-50">
+                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-gray-200 shadow-classic-md z-50">
                   {[
-                    { label: 'My Account', to: '/account' },
-                    { label: 'My Orders', to: '/account/orders' },
-                    { label: 'Wishlist', to: '/account/wishlist' },
-                    { label: 'Settings', to: '/account/settings' },
+                    { label: 'Contul Meu',       to: '/account' },
+                    { label: 'Comenzile Mele',   to: '/account/orders' },
+                    { label: 'Lista de Dorințe', to: '/account/wishlist' },
+                    { label: 'Setări',           to: '/account/settings' },
                   ].map(item => (
                     <Link
                       key={item.label}
@@ -217,13 +216,13 @@ export default function Header() {
                     className="w-full text-left block px-4 py-2.5 text-sm font-sans text-burgundy
                                hover:bg-burgundy-50 transition-colors"
                   >
-                    Sign Out
+                    Deconectare
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Cart */}
+            {/* Coș */}
             <Link
               to="/cart"
               className="relative flex items-center gap-2 px-4 py-2
@@ -233,7 +232,7 @@ export default function Header() {
                          hover:bg-burgundy-800 transition-colors duration-200"
             >
               <ShoppingCart className="w-4 h-4" />
-              <span className="hidden sm:inline">Cart</span>
+              <span className="hidden sm:inline">Coș</span>
               {cartCount > 0 && (
                 <span className="w-5 h-5 bg-white text-burgundy text-xs font-bold
                                  flex items-center justify-center rounded-full">
@@ -242,11 +241,11 @@ export default function Header() {
               )}
             </Link>
 
-            {/* Mobile hamburger */}
+            {/* Hamburger mobil */}
             <button
               className="lg:hidden p-2 text-charcoal-light hover:text-burgundy transition-colors"
               onClick={() => setMobileOpen(v => !v)}
-              aria-label="Toggle menu"
+              aria-label="Meniu"
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -254,7 +253,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Meniu mobil */}
       {mobileOpen && (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-classic-md">
           <nav className="max-w-7xl mx-auto px-4 py-3 space-y-0">
@@ -277,7 +276,7 @@ export default function Header() {
               className="block px-3 py-3 text-sm font-ui uppercase tracking-wide
                 text-charcoal hover:text-burgundy transition-colors"
             >
-              My Account
+              Contul Meu
             </Link>
           </nav>
         </div>

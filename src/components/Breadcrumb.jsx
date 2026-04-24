@@ -6,7 +6,7 @@ export default function Breadcrumb({ items }) {
       <ol className="flex items-center gap-2 text-xs font-ui text-charcoal-lighter uppercase tracking-wide">
         <li>
           <Link to="/" className="hover:text-burgundy transition-colors duration-200">
-            Home
+            Acasă
           </Link>
         </li>
         {items.map((item, i) => (

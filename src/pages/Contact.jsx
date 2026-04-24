@@ -4,19 +4,19 @@ import Breadcrumb from '../components/Breadcrumb';
 import { faqs } from '../data/books';
 
 function ContactForm() {
-  const [form, setForm]         = useState({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' });
-  const [errors, setErrors]     = useState({});
+  const [form, setForm]           = useState({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' });
+  const [errors, setErrors]       = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading]   = useState(false);
+  const [loading, setLoading]     = useState(false);
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Full name is required.';
-    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'A valid email address is required.';
-    if (form.phone && !form.phone.match(/^[0-9+\s\-(). ]{7,15}$/)) e.phone = 'Please enter a valid phone number.';
-    if (!form.subject) e.subject = 'Please select a subject.';
-    if (form.message.trim().length < 20) e.message = 'Message must be at least 20 characters.';
-    if (parseInt(form.captcha) !== 8) e.captcha = 'Incorrect answer. Please try again.';
+    if (!form.name.trim()) e.name = 'Numele complet este obligatoriu.';
+    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'O adresă de email validă este obligatorie.';
+    if (form.phone && !form.phone.match(/^[0-9+\s\-(). ]{7,15}$/)) e.phone = 'Introduceți un număr de telefon valid.';
+    if (!form.subject) e.subject = 'Selectați un subiect.';
+    if (form.message.trim().length < 20) e.message = 'Mesajul trebuie să aibă cel puțin 20 de caractere.';
+    if (parseInt(form.captcha) !== 8) e.captcha = 'Răspuns incorect. Încearcă din nou.';
     return e;
   };
 
@@ -39,73 +39,73 @@ function ContactForm() {
   if (submitted) return (
     <div className="bg-white border border-gray-200 p-10 text-center">
       <CheckCircle className="w-12 h-12 text-forest-800 mx-auto mb-4" />
-      <h3 className="font-display text-h3 text-charcoal mb-2">Message Received</h3>
+      <h3 className="font-display text-h3 text-charcoal mb-2">Mesaj Primit</h3>
       <p className="text-sm font-sans text-charcoal-light leading-reading max-w-xs mx-auto mb-6">
-        Thank you for writing to us. We will reply within one business day.
+        Vă mulțumim că ne-ați scris. Vom răspunde în cel mult o zi lucrătoare.
       </p>
       <button onClick={() => { setSubmitted(false); setForm({ name:'', email:'', phone:'', subject:'', message:'', captcha:'' }); }}
               className="btn-secondary">
-        Send Another Message
+        Trimite un Alt Mesaj
       </button>
     </div>
   );
 
   return (
     <div className="bg-white border border-gray-200 p-6 sm:p-8">
-      <h2 className="font-display text-h3 text-charcoal mb-1">Send Us a Message</h2>
+      <h2 className="font-display text-h3 text-charcoal mb-1">Trimite-ne un Mesaj</h2>
       <div className="h-0.5 bg-burgundy w-12 mb-6" />
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <Field name="name" label="Full Name" required error={errors.name}>
+          <Field name="name" label="Nume Complet" required error={errors.name}>
             <input type="text" value={form.name}
                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                    className={`field ${errors.name ? 'border-burgundy' : ''}`}
                    placeholder="Ioan Ionescu" />
           </Field>
-          <Field name="email" label="Email Address" required error={errors.email}>
+          <Field name="email" label="Adresă de Email" required error={errors.email}>
             <input type="email" value={form.email}
                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                    className={`field ${errors.email ? 'border-burgundy' : ''}`}
-                   placeholder="email@example.com" />
+                   placeholder="email@exemplu.ro" />
           </Field>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <Field name="phone" label="Phone (optional)" error={errors.phone}>
+          <Field name="phone" label="Telefon (opțional)" error={errors.phone}>
             <input type="tel" value={form.phone}
                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                    className={`field ${errors.phone ? 'border-burgundy' : ''}`}
                    placeholder="+40 7XX XXX XXX" />
           </Field>
-          <Field name="subject" label="Subject" required error={errors.subject}>
+          <Field name="subject" label="Subiect" required error={errors.subject}>
             <select value={form.subject}
                     onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
                     className={`field ${errors.subject ? 'border-burgundy' : ''}`}>
-              <option value="">Select a subject</option>
-              <option value="general">General Enquiry</option>
-              <option value="order">Order Issue</option>
-              <option value="partnership">Partnership Proposal</option>
-              <option value="press">Press & Media</option>
-              <option value="other">Other</option>
+              <option value="">Selectează un subiect</option>
+              <option value="general">Întrebare Generală</option>
+              <option value="order">Problemă cu Comanda</option>
+              <option value="partnership">Propunere de Parteneriat</option>
+              <option value="press">Presă și Media</option>
+              <option value="other">Altele</option>
             </select>
           </Field>
         </div>
-        <Field name="message" label="Message" required error={errors.message}>
+        <Field name="message" label="Mesaj" required error={errors.message}>
           <textarea rows={5} value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                     className={`field resize-none ${errors.message ? 'border-burgundy' : ''}`}
-                    placeholder="Please describe your enquiry in detail…" />
-          <p className="text-xs font-sans text-charcoal-lighter mt-1">{form.message.length} chars (min 20)</p>
+                    placeholder="Descrieți în detaliu întrebarea dumneavoastră…" />
+          <p className="text-xs font-sans text-charcoal-lighter mt-1">{form.message.length} caractere (min 20)</p>
         </Field>
-        <Field name="captcha" label="Verification: What is 3 + 5?" required error={errors.captcha}>
+        <Field name="captcha" label="Verificare: Cât face 3 + 5?" required error={errors.captcha}>
           <input type="number" value={form.captcha}
                  onChange={e => setForm(f => ({ ...f, captcha: e.target.value }))}
                  className={`field w-28 ${errors.captcha ? 'border-burgundy' : ''}`}
-                 placeholder="Answer" />
+                 placeholder="Răspuns" />
         </Field>
         <button type="submit" disabled={loading}
                 className="btn-primary w-full py-3.5 disabled:opacity-60">
-          {loading ? 'Sending…' : 'Send Message'}
+          {loading ? 'Se trimite…' : 'Trimite Mesajul'}
         </button>
       </form>
     </div>
@@ -116,29 +116,29 @@ function ContactInfo() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-display text-h3 text-charcoal mb-1">Contact Information</h2>
+        <h2 className="font-display text-h3 text-charcoal mb-1">Informații de Contact</h2>
         <div className="h-0.5 bg-burgundy w-12 mb-5" />
       </div>
 
       {[
         {
-          heading: 'Address',
+          heading: 'Adresă',
           lines: ['Str. Literaturii, Nr. 12', 'Iași, 700XXX', 'România'],
-          action: { label: 'View on Google Maps →', href: 'https://maps.google.com' },
+          action: { label: 'Vezi pe Google Maps →', href: 'https://maps.google.com' },
         },
         {
-          heading: 'Telephone',
-          lines: ['+40 232 XXX XXX (Office)', '+40 7XX XXX XXX (Mobile)'],
-          action: { label: 'Call us →', href: 'tel:+40232XXXXXX' },
+          heading: 'Telefon',
+          lines: ['+40 232 XXX XXX (Birou)', '+40 7XX XXX XXX (Mobil)'],
+          action: { label: 'Sună-ne →', href: 'tel:+40232XXXXXX' },
         },
         {
-          heading: 'Electronic Mail',
+          heading: 'Poștă Electronică',
           lines: ['contact@edituraprinceps.ro', 'comenzi@edituraprinceps.ro'],
-          action: { label: 'Send email →', href: 'mailto:contact@edituraprinceps.ro' },
+          action: { label: 'Trimite email →', href: 'mailto:contact@edituraprinceps.ro' },
         },
         {
-          heading: 'Office Hours',
-          lines: ['Monday – Friday: 9:00 – 18:00', 'Saturday: 10:00 – 14:00', 'Sunday: Closed'],
+          heading: 'Program de Lucru',
+          lines: ['Luni – Vineri: 9:00 – 18:00', 'Sâmbătă: 10:00 – 14:00', 'Duminică: Închis'],
         },
       ].map(card => (
         <div key={card.heading} className="bg-white border border-gray-200 p-5">
@@ -160,28 +160,28 @@ function ContactInfo() {
         </div>
       ))}
 
-      {/* Map placeholder */}
+      {/* Placeholder hartă */}
       <div className="bg-gray-100 h-44 border border-gray-200 flex items-center justify-center relative overflow-hidden">
         <div className="text-center">
-          <p className="font-ui text-xs text-charcoal-lighter uppercase tracking-wide mb-1">Location</p>
+          <p className="font-ui text-xs text-charcoal-lighter uppercase tracking-wide mb-1">Locație</p>
           <p className="font-serif text-lg text-charcoal-light italic">Iași, România</p>
           <a href="https://maps.google.com" target="_blank" rel="noreferrer"
              className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide mt-1 block">
-            Open Google Maps →
+            Deschide Google Maps →
           </a>
         </div>
       </div>
 
-      {/* Social */}
+      {/* Rețele sociale */}
       <div className="bg-white border border-gray-200 p-5">
         <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2 border-b border-gray-100">
-          Follow Us
+          Urmărește-ne
         </h3>
         <div className="space-y-2">
           {[
-            { label: 'Follow us on Facebook', href: '#' },
-            { label: 'Follow us on Instagram', href: '#' },
-            { label: 'Connect on LinkedIn', href: '#' },
+            { label: 'Urmărește-ne pe Facebook', href: '#' },
+            { label: 'Urmărește-ne pe Instagram', href: '#' },
+            { label: 'Conectează-te pe LinkedIn', href: '#' },
           ].map(s => (
             <a key={s.label} href={s.href}
                className="block text-sm font-ui text-burgundy hover:underline uppercase tracking-wide">
@@ -201,7 +201,7 @@ function FAQ() {
     <section className="bg-gray-50 border-t border-gray-100 py-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="font-display text-h2 text-charcoal text-center mb-3">
-          Frequently Asked Questions
+          Întrebări Frecvente
         </h2>
         <div className="h-0.5 bg-burgundy w-12 mx-auto mb-10" />
 
@@ -239,11 +239,11 @@ export default function Contact() {
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Breadcrumb items={[{ label: 'Contact' }]} />
-          <h1 className="font-display text-h1 text-charcoal mt-4 mb-1">Contact Us</h1>
+          <h1 className="font-display text-h1 text-charcoal mt-4 mb-1">Contactează-ne</h1>
           <div className="h-0.5 bg-burgundy w-12 mt-3 mb-3" />
           <p className="font-sans text-sm text-charcoal-light max-w-xl leading-reading">
-            We welcome your enquiries and correspondence. Our editorial team is here
-            to assist readers, authors, and partners.
+            Suntem bucuroși să primim întrebările și corespondența dumneavoastră. Echipa noastră
+            editorială este disponibilă să asiste cititorii, autorii și partenerii.
           </p>
         </div>
       </div>

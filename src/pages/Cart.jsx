@@ -17,10 +17,10 @@ export default function Cart() {
     if (!discountInput.trim()) return;
     const ok = applyDiscount(discountInput.trim());
     if (ok) {
-      setDiscountMsg(`Code applied: ${cart.discountPercent}% discount.`);
+      setDiscountMsg(`Cod aplicat: ${cart.discountPercent}% reducere.`);
       setDiscountOk(true);
     } else {
-      setDiscountMsg('Invalid code. Try: PRINCE10, LITRO15, CARTE20');
+      setDiscountMsg('Cod invalid. Încearcă: PRINCE10, LITRO15, CARTE20');
       setDiscountOk(false);
     }
   };
@@ -29,18 +29,18 @@ export default function Cart() {
     <div className="fade-in min-h-screen bg-white">
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <Breadcrumb items={[{ label: 'Shopping Cart' }]} />
-          <h1 className="font-display text-h1 text-charcoal mt-4">Shopping Cart</h1>
+          <Breadcrumb items={[{ label: 'Coș de Cumpărături' }]} />
+          <h1 className="font-display text-h1 text-charcoal mt-4">Coș de Cumpărături</h1>
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-24 text-center">
         <p className="font-serif text-4xl text-gray-200 mb-2">❧</p>
-        <h2 className="font-display text-h2 text-charcoal-light italic mb-4">Your cart is empty</h2>
+        <h2 className="font-display text-h2 text-charcoal-light italic mb-4">Coșul tău este gol</h2>
         <p className="text-sm font-sans text-charcoal-lighter mb-8">
-          Browse our collection and add titles to your cart to begin.
+          Răsfoiește colecția noastră și adaugă titluri în coș pentru a începe.
         </p>
         <Link to="/collections" className="btn-primary px-8">
-          Explore the Collection
+          Explorează Colecția
         </Link>
       </div>
     </div>
@@ -50,11 +50,11 @@ export default function Cart() {
     <div className="fade-in min-h-screen bg-white">
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <Breadcrumb items={[{ label: 'Shopping Cart' }]} />
+          <Breadcrumb items={[{ label: 'Coș de Cumpărături' }]} />
           <h1 className="font-display text-h1 text-charcoal mt-4">
-            Shopping Cart
+            Coș de Cumpărături
             <span className="font-sans text-base font-normal text-charcoal-light ml-3">
-              ({cartCount} {cartCount === 1 ? 'item' : 'items'})
+              ({cartCount} {cartCount === 1 ? 'produs' : 'produse'})
             </span>
           </h1>
         </div>
@@ -63,26 +63,26 @@ export default function Cart() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* ── Cart table ── */}
+          {/* Tabel produse */}
           <div className="lg:col-span-2">
             <div className="bg-white border border-gray-200">
 
-              {/* Table header */}
+              {/* Antet tabel */}
               <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50
                               border-b border-gray-200 text-xs font-ui font-semibold uppercase tracking-wide
                               text-charcoal-lighter">
-                <div className="col-span-6">Product</div>
-                <div className="col-span-2 text-right">Price</div>
-                <div className="col-span-2 text-center">Qty</div>
+                <div className="col-span-6">Produs</div>
+                <div className="col-span-2 text-right">Preț</div>
+                <div className="col-span-2 text-center">Cant.</div>
                 <div className="col-span-2 text-right">Subtotal</div>
               </div>
 
-              {/* Rows */}
+              {/* Rânduri */}
               {cart.items.map(item => (
                 <div key={item.id}
                      className="grid grid-cols-12 gap-4 px-6 py-5 border-b border-gray-100
                                 last:border-0 items-center">
-                  {/* Product */}
+                  {/* Produs */}
                   <div className="col-span-12 sm:col-span-6 flex items-start gap-4">
                     <Link to={`/product/${item.id}`} className="flex-shrink-0">
                       <div className="w-12 h-16 flex items-center justify-center
@@ -106,17 +106,17 @@ export default function Cart() {
                         className="flex items-center gap-1 mt-2 text-xs font-ui text-burgundy
                                    hover:underline uppercase tracking-wide"
                       >
-                        <Trash2 className="w-3 h-3" /> Remove
+                        <Trash2 className="w-3 h-3" /> Șterge
                       </button>
                     </div>
                   </div>
 
-                  {/* Price */}
+                  {/* Preț */}
                   <div className="col-span-4 sm:col-span-2 text-right">
                     <span className="text-sm font-sans text-charcoal">{item.price.toFixed(2)} lei</span>
                   </div>
 
-                  {/* Qty */}
+                  {/* Cantitate */}
                   <div className="col-span-4 sm:col-span-2 flex items-center justify-center">
                     <div className="flex items-center border border-gray-200">
                       <button onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -147,48 +147,48 @@ export default function Cart() {
 
             <div className="mt-5">
               <Link to="/collections" className="btn-ghost text-sm">
-                ← Continue Shopping
+                ← Continuă Cumpărăturile
               </Link>
             </div>
           </div>
 
-          {/* ── Summary ── */}
+          {/* Rezumat comandă */}
           <div className="lg:col-span-1">
             <div className="bg-white border border-gray-200 sticky top-24">
               <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-                <h2 className="font-display text-xl text-charcoal">Order Summary</h2>
+                <h2 className="font-display text-xl text-charcoal">Rezumatul Comenzii</h2>
               </div>
 
               <div className="px-6 py-5 space-y-3">
                 <div className="flex justify-between text-sm font-sans">
-                  <span className="text-charcoal-light">Subtotal ({cartCount} items)</span>
+                  <span className="text-charcoal-light">Subtotal ({cartCount} {cartCount === 1 ? 'produs' : 'produse'})</span>
                   <span className="text-charcoal font-medium">{cartTotal.toFixed(2)} lei</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-sm font-sans">
-                    <span className="text-forest-800">Discount ({cart.discountPercent}%)</span>
+                    <span className="text-forest-800">Reducere ({cart.discountPercent}%)</span>
                     <span className="text-forest-800 font-medium">−{discountAmount.toFixed(2)} lei</span>
                   </div>
                 )}
                 <div className="flex justify-between text-sm font-sans">
-                  <span className="text-charcoal-light">Shipping</span>
+                  <span className="text-charcoal-light">Livrare</span>
                   <span className={shippingCost === 0 ? 'text-forest-800 font-medium' : 'text-charcoal'}>
-                    {shippingCost === 0 ? 'Free' : `${shippingCost.toFixed(2)} lei`}
+                    {shippingCost === 0 ? 'Gratuită' : `${shippingCost.toFixed(2)} lei`}
                   </span>
                 </div>
                 {cartTotal < 100 && (
                   <p className="text-xs font-sans text-charcoal-light bg-gray-50 border border-gray-200 p-2.5 italic">
-                    Add {(100 - cartTotal).toFixed(2)} lei more for free shipping.
+                    Mai adaugă {(100 - cartTotal).toFixed(2)} lei pentru livrare gratuită.
                   </p>
                 )}
               </div>
 
-              {/* Discount */}
+              {/* Cod reducere */}
               <div className="px-6 pb-5 border-t border-gray-100 pt-4">
-                <label className="field-label">Discount Code</label>
+                <label className="field-label">Cod Reducere</label>
                 {cart.discountCode ? (
                   <p className="text-xs font-ui text-forest-800 font-semibold uppercase tracking-wide">
-                    ✓ {cart.discountCode} applied
+                    ✓ {cart.discountCode} aplicat
                   </p>
                 ) : (
                   <div className="flex gap-0">
@@ -202,7 +202,7 @@ export default function Cart() {
                             className="px-3 py-2 bg-charcoal text-white text-xs font-ui font-semibold
                                        uppercase tracking-wide border border-charcoal
                                        hover:bg-gray-800 transition-colors whitespace-nowrap">
-                      Apply
+                      Aplică
                     </button>
                   </div>
                 )}
@@ -219,17 +219,17 @@ export default function Cart() {
                   <span className="font-ui text-sm font-semibold uppercase tracking-wide text-charcoal">Total</span>
                   <span className="font-display text-3xl text-burgundy">{finalTotal.toFixed(2)} lei</span>
                 </div>
-                <p className="text-xs font-sans text-charcoal-lighter mt-1">Includes 9% VAT</p>
+                <p className="text-xs font-sans text-charcoal-lighter mt-1">Include TVA 9%</p>
               </div>
 
               <div className="px-6 py-5">
                 <Link to="/checkout"
                       className="btn-primary w-full py-3.5 text-center block text-sm">
-                  Proceed to Checkout
+                  Continuă cu Plata
                   <ArrowRight className="w-4 h-4 inline ml-1" />
                 </Link>
                 <p className="text-xs font-sans text-charcoal-lighter text-center mt-3">
-                  Secure SSL encrypted checkout
+                  Plată securizată prin criptare SSL
                 </p>
               </div>
             </div>

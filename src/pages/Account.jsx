@@ -8,9 +8,9 @@ import BookCard from '../components/BookCard';
 
 const mockOrders = [
   {
-    id: 'PM-847291',
+    id: 'EP-847291',
     date: '18 Apr 2026',
-    status: 'Delivered',
+    status: 'Livrată',
     total: 84.00,
     items: [
       { title: 'Taina care mă apără', author: 'Grigore VIERU', price: 30.00, qty: 1, coverColor: '#5D4E60' },
@@ -19,9 +19,9 @@ const mockOrders = [
     ],
   },
   {
-    id: 'PM-614032',
+    id: 'EP-614032',
     date: '3 Mar 2026',
-    status: 'Delivered',
+    status: 'Livrată',
     total: 48.00,
     items: [
       { title: 'Lupta cu inerția', author: 'Nicolae LABIȘ',  price: 30.00, qty: 1, coverColor: '#2C3E50' },
@@ -29,9 +29,9 @@ const mockOrders = [
     ],
   },
   {
-    id: 'PM-501883',
+    id: 'EP-501883',
     date: '12 Feb 2026',
-    status: 'Processing',
+    status: 'În Procesare',
     total: 42.00,
     items: [
       { title: 'Cezar Ivănescu, transmodernul', author: 'Theodor CODREANU', price: 42.00, qty: 1, coverColor: '#2C3E50' },
@@ -40,19 +40,19 @@ const mockOrders = [
 ];
 
 const statusColors = {
-  Delivered:  'bg-green-50 text-forest-800 border-green-200',
-  Processing: 'bg-burgundy-50 text-burgundy border-burgundy-200',
-  Shipped:    'bg-blue-50 text-blue-700 border-blue-200',
-  Cancelled:  'bg-gray-100 text-charcoal-light border-gray-300',
+  'Livrată':       'bg-green-50 text-forest-800 border-green-200',
+  'În Procesare':  'bg-burgundy-50 text-burgundy border-burgundy-200',
+  'Expediată':     'bg-blue-50 text-blue-700 border-blue-200',
+  'Anulată':       'bg-gray-100 text-charcoal-light border-gray-300',
 };
 
-/* ── Sidebar nav ─────────────────────────────────────────────────── */
+/* ── Navigare cont ───────────────────────────────────────────────── */
 function AccountNav({ current }) {
   const links = [
-    { to: '/account',           icon: User,    label: 'Dashboard' },
-    { to: '/account/orders',    icon: Package, label: 'My Orders' },
-    { to: '/account/wishlist',  icon: Heart,   label: 'Wishlist' },
-    { to: '/account/settings',  icon: Settings,label: 'Settings' },
+    { to: '/account',           icon: User,    label: 'Panou de Control' },
+    { to: '/account/orders',    icon: Package, label: 'Comenzile Mele' },
+    { to: '/account/wishlist',  icon: Heart,   label: 'Lista de Dorințe' },
+    { to: '/account/settings',  icon: Settings,label: 'Setări' },
   ];
   return (
     <aside className="w-full lg:w-56 flex-shrink-0">
@@ -64,7 +64,7 @@ function AccountNav({ current }) {
             </div>
             <div>
               <p className="font-ui font-semibold text-sm text-charcoal">Ioan Ionescu</p>
-              <p className="text-xs font-sans text-charcoal-lighter">Member since 2023</p>
+              <p className="text-xs font-sans text-charcoal-lighter">Membru din 2023</p>
             </div>
           </div>
         </div>
@@ -94,24 +94,24 @@ function AccountNav({ current }) {
   );
 }
 
-/* ── Dashboard ───────────────────────────────────────────────────── */
+/* ── Panou de Control ────────────────────────────────────────────── */
 function Dashboard() {
   const { wishlist } = useApp();
   const stats = [
-    { label: 'Total Orders', value: mockOrders.length },
-    { label: 'Books Ordered', value: mockOrders.reduce((s, o) => s + o.items.reduce((ss, i) => ss + i.qty, 0), 0) },
-    { label: 'In Wishlist', value: wishlist.length },
-    { label: 'Total Spent', value: `${mockOrders.reduce((s, o) => s + o.total, 0).toFixed(0)} lei` },
+    { label: 'Total Comenzi',    value: mockOrders.length },
+    { label: 'Cărți Comandate',  value: mockOrders.reduce((s, o) => s + o.items.reduce((ss, i) => ss + i.qty, 0), 0) },
+    { label: 'În Liste Dorințe', value: wishlist.length },
+    { label: 'Total Cheltuit',   value: `${mockOrders.reduce((s, o) => s + o.total, 0).toFixed(0)} lei` },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-h2 text-charcoal mb-1">Welcome back, Ioan</h1>
-        <p className="font-sans text-sm text-charcoal-light">Here's an overview of your account activity.</p>
+        <h1 className="font-display text-h2 text-charcoal mb-1">Bine ai revenit, Ioan</h1>
+        <p className="font-sans text-sm text-charcoal-light">Iată o prezentare generală a activității contului tău.</p>
       </div>
 
-      {/* Stats */}
+      {/* Statistici */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map(s => (
           <div key={s.label} className="bg-white border border-gray-200 p-5 text-center hover:shadow-classic transition-shadow">
@@ -121,18 +121,20 @@ function Dashboard() {
         ))}
       </div>
 
-      {/* Recent orders */}
+      {/* Comenzi recente */}
       <div className="bg-white border border-gray-200">
         <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="font-display text-lg text-charcoal">Recent Orders</h2>
-          <Link to="/account/orders" className="btn-ghost text-xs">View all →</Link>
+          <h2 className="font-display text-lg text-charcoal">Comenzi Recente</h2>
+          <Link to="/account/orders" className="btn-ghost text-xs">Vezi toate →</Link>
         </div>
         <div className="divide-y divide-gray-100">
           {mockOrders.slice(0, 2).map(order => (
             <div key={order.id} className="flex items-center justify-between px-6 py-4 gap-4">
               <div>
                 <p className="font-ui font-semibold text-sm text-charcoal">#{order.id}</p>
-                <p className="text-xs font-sans text-charcoal-lighter mt-0.5">{order.date} · {order.items.length} item{order.items.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs font-sans text-charcoal-lighter mt-0.5">
+                  {order.date} · {order.items.length} {order.items.length === 1 ? 'produs' : 'produse'}
+                </p>
               </div>
               <span className={`text-xs font-ui font-semibold px-2.5 py-1 border uppercase tracking-wide ${statusColors[order.status]}`}>
                 {order.status}
@@ -143,12 +145,12 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Quick links */}
+      {/* Linkuri rapide */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { to: '/collections',       label: 'Browse Catalogue',    desc: 'Discover new titles' },
-          { to: '/account/wishlist',  label: 'View Wishlist',        desc: `${wishlist.length} saved titles` },
-          { to: '/account/settings',  label: 'Account Settings',     desc: 'Update your profile' },
+          { to: '/collections',       label: 'Răsfoiește Catalogul',    desc: 'Descoperă titluri noi' },
+          { to: '/account/wishlist',  label: 'Lista de Dorințe',         desc: `${wishlist.length} titluri salvate` },
+          { to: '/account/settings',  label: 'Setările Contului',        desc: 'Actualizează profilul' },
         ].map(item => (
           <Link key={item.to} to={item.to}
                 className="bg-white border border-gray-200 p-5 hover:border-burgundy hover:shadow-classic
@@ -165,22 +167,22 @@ function Dashboard() {
   );
 }
 
-/* ── My Orders ───────────────────────────────────────────────────── */
+/* ── Comenzile Mele ──────────────────────────────────────────────── */
 function Orders() {
   const [expandedOrder, setExpandedOrder] = useState(null);
-  const [statusFilter, setStatusFilter]   = useState('All');
-  const statuses = ['All', 'Delivered', 'Processing', 'Shipped', 'Cancelled'];
+  const [statusFilter, setStatusFilter]   = useState('Toate');
+  const statuses = ['Toate', 'Livrată', 'În Procesare', 'Expediată', 'Anulată'];
 
-  const filtered = statusFilter === 'All' ? mockOrders : mockOrders.filter(o => o.status === statusFilter);
+  const filtered = statusFilter === 'Toate' ? mockOrders : mockOrders.filter(o => o.status === statusFilter);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-h2 text-charcoal mb-1">My Orders</h1>
-        <p className="font-sans text-sm text-charcoal-light">{mockOrders.length} orders in your history</p>
+        <h1 className="font-display text-h2 text-charcoal mb-1">Comenzile Mele</h1>
+        <p className="font-sans text-sm text-charcoal-light">{mockOrders.length} comenzi în istoricul tău</p>
       </div>
 
-      {/* Filter */}
+      {/* Filtru */}
       <div className="flex items-center gap-2 flex-wrap">
         {statuses.map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
@@ -194,11 +196,11 @@ function Orders() {
         ))}
       </div>
 
-      {/* Orders list */}
+      {/* Listă comenzi */}
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-16 bg-gray-50 border border-gray-200">
-            <p className="font-display text-xl text-charcoal-light italic">No orders found</p>
+            <p className="font-display text-xl text-charcoal-light italic">Nicio comandă găsită</p>
           </div>
         ) : filtered.map(order => (
           <div key={order.id} className="bg-white border border-gray-200 overflow-hidden">
@@ -215,7 +217,7 @@ function Orders() {
                   {order.status}
                 </span>
                 <span className="text-xs font-sans text-charcoal-lighter hidden sm:block">
-                  {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+                  {order.items.length} {order.items.length === 1 ? 'produs' : 'produse'}
                 </span>
               </div>
               <div className="flex items-center gap-4">
@@ -248,11 +250,11 @@ function Orders() {
                 <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                   <div className="flex gap-3">
                     <button className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
-                      Track Order
+                      Urmărește Comanda
                     </button>
                     <span className="text-gray-300">|</span>
                     <button className="text-xs font-ui text-charcoal-light hover:text-burgundy uppercase tracking-wide">
-                      Request Return
+                      Solicită Returnare
                     </button>
                   </div>
                   <span className="font-ui font-semibold text-sm text-charcoal">
@@ -268,27 +270,27 @@ function Orders() {
   );
 }
 
-/* ── Wishlist ─────────────────────────────────────────────────────── */
+/* ── Lista de Dorințe ─────────────────────────────────────────────── */
 function Wishlist() {
   const { wishlist, toggleWishlist, addToCart } = useApp();
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-h2 text-charcoal mb-1">My Wishlist</h1>
+        <h1 className="font-display text-h2 text-charcoal mb-1">Lista Mea de Dorințe</h1>
         <p className="font-sans text-sm text-charcoal-light">
-          {wishlist.length} saved title{wishlist.length !== 1 ? 's' : ''}
+          {wishlist.length} {wishlist.length === 1 ? 'titlu salvat' : 'titluri salvate'}
         </p>
       </div>
 
       {wishlist.length === 0 ? (
         <div className="text-center py-20 bg-gray-50 border border-gray-200">
           <Heart className="w-10 h-10 text-gray-300 mx-auto mb-4" />
-          <p className="font-display text-xl text-charcoal-light italic mb-3">Your wishlist is empty</p>
+          <p className="font-display text-xl text-charcoal-light italic mb-3">Lista ta de dorințe este goală</p>
           <p className="text-sm font-sans text-charcoal-lighter mb-6">
-            Browse the collection and save titles for later.
+            Răsfoiește colecția și salvează titluri pentru mai târziu.
           </p>
-          <Link to="/collections" className="btn-primary">Explore the Collection</Link>
+          <Link to="/collections" className="btn-primary">Explorează Colecția</Link>
         </div>
       ) : (
         <>
@@ -297,7 +299,7 @@ function Wishlist() {
               onClick={() => wishlist.forEach(b => addToCart(b))}
               className="btn-primary text-sm py-2.5"
             >
-              Add All to Cart
+              Adaugă Toate în Coș
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -311,23 +313,23 @@ function Wishlist() {
   );
 }
 
-/* ── Settings ─────────────────────────────────────────────────────── */
+/* ── Setări Cont ──────────────────────────────────────────────────── */
 function AccountSettings() {
-  const [personal, setPersonal]       = useState({ firstName: 'Ioan', lastName: 'Ionescu', email: 'radu.r.andrei@outlook.com', phone: '+40 7XX XXX XXX' });
-  const [editPersonal, setEditPersonal] = useState(false);
+  const [personal, setPersonal]           = useState({ firstName: 'Ioan', lastName: 'Ionescu', email: 'radu.r.andrei@outlook.com', phone: '+40 7XX XXX XXX' });
+  const [editPersonal, setEditPersonal]   = useState(false);
   const [personalDraft, setPersonalDraft] = useState({ ...personal });
 
-  const [address, setAddress]         = useState({ street: 'Str. Exemplu, Nr. 5', city: 'Iași', county: 'Iași', zip: '700001' });
-  const [editAddress, setEditAddress] = useState(false);
-  const [addressDraft, setAddressDraft] = useState({ ...address });
+  const [address, setAddress]             = useState({ street: 'Str. Exemplu, Nr. 5', city: 'Iași', county: 'Iași', zip: '700001' });
+  const [editAddress, setEditAddress]     = useState(false);
+  const [addressDraft, setAddressDraft]   = useState({ ...address });
 
-  const [pwForm, setPwForm]           = useState({ current: '', next: '', confirm: '' });
-  const [showPw, setShowPw]           = useState({ current: false, next: false, confirm: false });
-  const [pwMsg, setPwMsg]             = useState('');
-  const [pwOk, setPwOk]               = useState(false);
-  const [expandPw, setExpandPw]       = useState(false);
+  const [pwForm, setPwForm]               = useState({ current: '', next: '', confirm: '' });
+  const [showPw, setShowPw]               = useState({ current: false, next: false, confirm: false });
+  const [pwMsg, setPwMsg]                 = useState('');
+  const [pwOk, setPwOk]                   = useState(false);
+  const [expandPw, setExpandPw]           = useState(false);
 
-  const [prefs, setPrefs]             = useState({ newsletter: true, orderEmails: true, promoEmails: false });
+  const [prefs, setPrefs]                 = useState({ newsletter: true, orderEmails: true, promoEmails: false });
 
   const savePersonal = () => {
     setPersonal({ ...personalDraft });
@@ -340,10 +342,10 @@ function AccountSettings() {
 
   const handlePw = e => {
     e.preventDefault();
-    if (!pwForm.current) { setPwMsg('Enter current password.'); setPwOk(false); return; }
-    if (pwForm.next.length < 8) { setPwMsg('New password must be at least 8 characters.'); setPwOk(false); return; }
-    if (pwForm.next !== pwForm.confirm) { setPwMsg('Passwords do not match.'); setPwOk(false); return; }
-    setPwMsg('Password changed successfully.'); setPwOk(true);
+    if (!pwForm.current) { setPwMsg('Introdu parola curentă.'); setPwOk(false); return; }
+    if (pwForm.next.length < 8) { setPwMsg('Parola nouă trebuie să aibă cel puțin 8 caractere.'); setPwOk(false); return; }
+    if (pwForm.next !== pwForm.confirm) { setPwMsg('Parolele nu coincid.'); setPwOk(false); return; }
+    setPwMsg('Parola a fost schimbată cu succes.'); setPwOk(true);
     setPwForm({ current: '', next: '', confirm: '' });
     setTimeout(() => setExpandPw(false), 1500);
   };
@@ -354,16 +356,16 @@ function AccountSettings() {
         <h2 className="font-display text-lg text-charcoal">{title}</h2>
         {editable && !editing && (
           <button onClick={onEdit} className="flex items-center gap-1.5 text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
-            <Edit2 className="w-3 h-3" /> Edit
+            <Edit2 className="w-3 h-3" /> Editează
           </button>
         )}
         {editing && (
           <div className="flex items-center gap-3">
             <button onClick={onSave} className="flex items-center gap-1 text-xs font-ui text-forest-800 uppercase tracking-wide hover:underline">
-              <Check className="w-3 h-3" /> Save
+              <Check className="w-3 h-3" /> Salvează
             </button>
             <button onClick={onCancel} className="flex items-center gap-1 text-xs font-ui text-charcoal-light uppercase tracking-wide hover:underline">
-              <X className="w-3 h-3" /> Cancel
+              <X className="w-3 h-3" /> Anulează
             </button>
           </div>
         )}
@@ -375,12 +377,12 @@ function AccountSettings() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-h2 text-charcoal mb-1">Account Settings</h1>
-        <p className="font-sans text-sm text-charcoal-light">Manage your personal details and preferences</p>
+        <h1 className="font-display text-h2 text-charcoal mb-1">Setările Contului</h1>
+        <p className="font-sans text-sm text-charcoal-light">Gestionează datele personale și preferințele</p>
       </div>
 
-      {/* Personal Info */}
-      <Section title="Personal Information" editable
+      {/* Informații Personale */}
+      <Section title="Informații Personale" editable
                editing={editPersonal}
                onEdit={() => { setPersonalDraft({ ...personal }); setEditPersonal(true); }}
                onSave={savePersonal}
@@ -388,10 +390,10 @@ function AccountSettings() {
         {editPersonal ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              { key: 'firstName', label: 'First Name' },
-              { key: 'lastName',  label: 'Last Name' },
-              { key: 'email',     label: 'Email Address' },
-              { key: 'phone',     label: 'Phone Number' },
+              { key: 'firstName', label: 'Prenume' },
+              { key: 'lastName',  label: 'Nume de Familie' },
+              { key: 'email',     label: 'Adresă de Email' },
+              { key: 'phone',     label: 'Număr de Telefon' },
             ].map(f => (
               <div key={f.key}>
                 <label className="field-label">{f.label}</label>
@@ -407,10 +409,10 @@ function AccountSettings() {
         ) : (
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              { label: 'First Name', value: personal.firstName },
-              { label: 'Last Name',  value: personal.lastName },
-              { label: 'Email',      value: personal.email },
-              { label: 'Phone',      value: personal.phone },
+              { label: 'Prenume',          value: personal.firstName },
+              { label: 'Nume de Familie',  value: personal.lastName },
+              { label: 'Email',            value: personal.email },
+              { label: 'Telefon',          value: personal.phone },
             ].map(item => (
               <div key={item.label}>
                 <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">{item.label}</dt>
@@ -421,8 +423,8 @@ function AccountSettings() {
         )}
       </Section>
 
-      {/* Delivery Address */}
-      <Section title="Delivery Address" editable
+      {/* Adresă de Livrare */}
+      <Section title="Adresă de Livrare" editable
                editing={editAddress}
                onEdit={() => { setAddressDraft({ ...address }); setEditAddress(true); }}
                onSave={saveAddress}
@@ -430,15 +432,15 @@ function AccountSettings() {
         {editAddress ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="field-label">Street Address</label>
+              <label className="field-label">Adresă Stradală</label>
               <input type="text" value={addressDraft.street}
                      onChange={e => setAddressDraft(d => ({ ...d, street: e.target.value }))}
                      className="field" />
             </div>
             {[
-              { key: 'city',   label: 'City' },
-              { key: 'county', label: 'County' },
-              { key: 'zip',    label: 'Postal Code' },
+              { key: 'city',   label: 'Oraș' },
+              { key: 'county', label: 'Județ' },
+              { key: 'zip',    label: 'Cod Poștal' },
             ].map(f => (
               <div key={f.key}>
                 <label className="field-label">{f.label}</label>
@@ -457,22 +459,22 @@ function AccountSettings() {
         )}
       </Section>
 
-      {/* Change Password */}
+      {/* Schimbă Parola */}
       <div className="bg-white border border-gray-200">
         <button
           onClick={() => setExpandPw(v => !v)}
           className="w-full bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
         >
-          <h2 className="font-display text-lg text-charcoal">Change Password</h2>
+          <h2 className="font-display text-lg text-charcoal">Schimbă Parola</h2>
           {expandPw ? <ChevronUp className="w-4 h-4 text-charcoal-lighter" /> : <ChevronDown className="w-4 h-4 text-charcoal-lighter" />}
         </button>
 
         {expandPw && (
           <form onSubmit={handlePw} className="px-6 py-5 space-y-4">
             {[
-              { key: 'current', label: 'Current Password' },
-              { key: 'next',    label: 'New Password' },
-              { key: 'confirm', label: 'Confirm New Password' },
+              { key: 'current', label: 'Parola Curentă' },
+              { key: 'next',    label: 'Parola Nouă' },
+              { key: 'confirm', label: 'Confirmă Parola Nouă' },
             ].map(f => (
               <div key={f.key}>
                 <label className="field-label">{f.label}</label>
@@ -495,22 +497,22 @@ function AccountSettings() {
               <p className={`text-xs font-sans ${pwOk ? 'text-forest-800' : 'text-burgundy'}`}>{pwMsg}</p>
             )}
             <button type="submit" className="btn-primary text-sm py-2.5">
-              Update Password
+              Actualizează Parola
             </button>
           </form>
         )}
       </div>
 
-      {/* Email Preferences */}
+      {/* Preferințe Email */}
       <div className="bg-white border border-gray-200">
         <div className="bg-gray-50 border-b border-gray-200 px-6 py-4">
-          <h2 className="font-display text-lg text-charcoal">Email Preferences</h2>
+          <h2 className="font-display text-lg text-charcoal">Preferințe Email</h2>
         </div>
         <div className="px-6 py-5 space-y-4">
           {[
-            { key: 'newsletter',   label: 'Newsletter & literary notes',    desc: 'Monthly literary updates and new title announcements' },
-            { key: 'orderEmails',  label: 'Order confirmations',            desc: 'Receive emails for order status updates' },
-            { key: 'promoEmails',  label: 'Promotions & offers',            desc: 'Occasional discount codes and special offers' },
+            { key: 'newsletter',   label: 'Buletin informativ și note literare', desc: 'Noutăți literare lunare și anunțuri de apariții' },
+            { key: 'orderEmails',  label: 'Confirmări de comandă',              desc: 'Primești emailuri pentru actualizări de stare a comenzii' },
+            { key: 'promoEmails',  label: 'Promoții și oferte',                 desc: 'Coduri de reducere ocazionale și oferte speciale' },
           ].map(pref => (
             <div key={pref.key} className="flex items-start justify-between gap-6">
               <div>
@@ -532,18 +534,18 @@ function AccountSettings() {
         </div>
       </div>
 
-      {/* Danger zone */}
+      {/* Zonă periculoasă */}
       <div className="bg-white border border-burgundy-200">
         <div className="bg-burgundy-50 border-b border-burgundy-200 px-6 py-4">
-          <h2 className="font-display text-lg text-burgundy">Danger Zone</h2>
+          <h2 className="font-display text-lg text-burgundy">Zonă Periculoasă</h2>
         </div>
         <div className="px-6 py-5">
           <p className="text-sm font-sans text-charcoal-light mb-4">
-            Permanently delete your account and all associated data. This action cannot be undone.
+            Șterge permanent contul și toate datele asociate. Această acțiune nu poate fi anulată.
           </p>
           <button className="text-sm font-ui font-semibold text-burgundy border-2 border-burgundy px-4 py-2
                              hover:bg-burgundy hover:text-white transition-colors uppercase tracking-wide">
-            Delete Account
+            Șterge Contul
           </button>
         </div>
       </div>
@@ -551,17 +553,17 @@ function AccountSettings() {
   );
 }
 
-/* ── Page shell ───────────────────────────────────────────────────── */
+/* ── Pagina principală ────────────────────────────────────────────── */
 export default function Account() {
   const location = useLocation();
   const path = location.pathname;
 
-  const subLabel = path === '/account/orders'   ? 'My Orders'
-                 : path === '/account/wishlist'  ? 'Wishlist'
-                 : path === '/account/settings'  ? 'Settings'
-                 : 'Dashboard';
+  const subLabel = path === '/account/orders'   ? 'Comenzile Mele'
+                 : path === '/account/wishlist'  ? 'Lista de Dorințe'
+                 : path === '/account/settings'  ? 'Setări'
+                 : 'Panou de Control';
 
-  const breadcrumbs = [{ label: 'Account', to: '/account' }];
+  const breadcrumbs = [{ label: 'Cont', to: '/account' }];
   if (path !== '/account') breadcrumbs.push({ label: subLabel });
 
   return (
@@ -569,7 +571,7 @@ export default function Account() {
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb items={breadcrumbs} />
-          <h1 className="font-display text-h1 text-charcoal mt-4">My Account</h1>
+          <h1 className="font-display text-h1 text-charcoal mt-4">Contul Meu</h1>
         </div>
       </div>
 

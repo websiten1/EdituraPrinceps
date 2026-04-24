@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-gray-50 text-gray-900;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    text-align: left;
+    border: none;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-purple-800 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:opacity-90 hover:scale-105 active:scale-95 cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-purple-800 border-2 border-purple-800 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-purple-800 hover:text-white cursor-pointer;
+  }
+
+  .btn-gold {
+    @apply bg-gradient-to-r from-yellow-600 to-yellow-500 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:opacity-90 hover:scale-105 cursor-pointer;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white text-gray-900;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-gray-800;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-500 mt-3 max-w-2xl;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-800 to-blue-700 bg-clip-text text-transparent;
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .star-rating {
+    @apply flex items-center gap-0.5;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6B21A8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4A1272;
+}
+
+.page-transition {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.hero-overlay {
+  background: linear-gradient(135deg, rgba(74, 18, 114, 0.92) 0%, rgba(30, 64, 175, 0.85) 50%, rgba(31, 41, 55, 0.9) 100%);
+}
+
+.book-card:hover .book-overlay {
+  opacity: 1;
+}
+
+.book-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #6B21A8;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(107, 33, 168, 0.4);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #6B21A8;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(107, 33, 168, 0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

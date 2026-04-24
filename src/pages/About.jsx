@@ -13,7 +13,7 @@ function Divider() {
 }
 
 const milestones = [
-  { year: '1999', title: 'Founded in Iași',        desc: 'Prince\'s Multimedia is established with a singular mission: to publish and preserve the finest works of Romanian literary heritage.' },
+  { year: '1999', title: 'Founded in Iași',        desc: 'Editura Princeps is established with a singular mission: to publish and preserve the finest works of Romanian literary heritage.' },
   { year: '2004', title: 'First Major Collection',  desc: 'Our first collection of 20 volumes dedicated to classical Romanian poetry is received with critical acclaim.' },
   { year: '2010', title: 'National Distribution',   desc: 'Partnership agreements with over 200 bookshops across Romania allow us to reach readers in every region.' },
   { year: '2015', title: 'Audiobook Programme',     desc: 'We launch our premium audiobook collection, bringing Romanian literature to a new generation of listeners.' },
@@ -53,7 +53,7 @@ export default function About() {
               Established 1999
             </p>
             <h1 className="font-display text-h1 text-charcoal leading-tight mb-4">
-              About Prince's Multimedia
+              About Editura Princeps
             </h1>
             <div className="h-0.5 bg-burgundy w-12 mb-5" />
             <p className="font-quote-italic text-xl text-charcoal-light leading-reading">
@@ -76,7 +76,7 @@ export default function About() {
               <div className="h-0.5 bg-burgundy w-12 mb-6" />
               <div className="space-y-4 font-sans text-sm text-charcoal leading-reading">
                 <p>
-                  Prince's Multimedia was founded in Iași in 1999 by a group of scholars and
+                  Editura Princeps was founded in Iași in 1999 by a group of scholars and
                   literature enthusiasts who shared a common conviction: that the great works of
                   Romanian literature deserved editions worthy of their significance.
                 </p>

@@ -133,8 +133,8 @@ function ContactInfo() {
         },
         {
           heading: 'Electronic Mail',
-          lines: ['contact@princesmultimedia.ro', 'comenzi@princesmultimedia.ro'],
-          action: { label: 'Send email →', href: 'mailto:contact@princesmultimedia.ro' },
+          lines: ['contact@edituraprinceps.ro', 'comenzi@edituraprinceps.ro'],
+          action: { label: 'Send email →', href: 'mailto:contact@edituraprinceps.ro' },
         },
         {
           heading: 'Office Hours',

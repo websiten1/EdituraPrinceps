@@ -49,7 +49,7 @@ function Hero() {
 
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl text-charcoal
                        leading-tight mb-4">
-          Prince's Multimedia
+          Editura Princeps
         </h1>
 
         <p className="font-serif-italic text-2xl sm:text-3xl text-charcoal-light mb-2">
@@ -343,7 +343,7 @@ function Newsletter() {
           <h2 className="font-display text-h2 text-charcoal mb-3">Subscribe to Our Newsletter</h2>
           <p className="font-sans text-sm text-charcoal-light leading-reading mb-8">
             Receive news of new publications, literary notes, and exclusive offers from
-            Prince's Multimedia — delivered with care to your inbox.
+            Editura Princeps — delivered with care to your inbox.
           </p>
 
           {done ? (

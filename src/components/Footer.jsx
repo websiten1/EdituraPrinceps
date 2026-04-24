@@ -57,7 +57,7 @@ export default function Footer() {
 
         {/* About */}
         <div>
-          <h4 className="font-display text-lg text-charcoal mb-1">Prince's Multimedia</h4>
+          <h4 className="font-display text-lg text-charcoal mb-1">Editura Princeps</h4>
           <div className="h-px bg-gray-200 w-full mb-4" />
           <p className="text-sm font-sans text-charcoal-light leading-reading mb-5">
             A distinguished Romanian publishing house dedicated to preserving and celebrating the
@@ -134,7 +134,7 @@ export default function Footer() {
             {[
               { label: 'Address', value: 'Str. Literaturii 12, Iași, România' },
               { label: 'Phone', value: '+40 232 XXX XXX' },
-              { label: 'Email', value: 'contact@princesmultimedia.ro' },
+              { label: 'Email', value: 'contact@edituraprinceps.ro' },
               { label: 'Hours', value: 'Mon–Fri 9:00–18:00' },
             ].map(item => (
               <div key={item.label}>
@@ -153,7 +153,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5
                         flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs font-sans text-charcoal-lighter">
-            © {new Date().getFullYear()} Prince's Multimedia. All rights reserved.
+            © {new Date().getFullYear()} Editura Princeps. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {['Visa', 'Mastercard', 'PayPal', 'Bank Transfer'].map(m => (

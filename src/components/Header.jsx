@@ -79,7 +79,7 @@ export default function Header() {
           <Link to="/" className="flex flex-col leading-none group">
             <span className="font-display text-xl lg:text-2xl text-charcoal tracking-wide
                              group-hover:text-burgundy transition-colors duration-200">
-              Prince's Multimedia
+              Editura Princeps
             </span>
             <span className="text-xs font-ui text-charcoal-lighter tracking-widest uppercase mt-0.5 hidden sm:block">
               Editură Literară · Est. 1999

@@ -594,7 +594,7 @@ export const testimonials = [
     name: 'Maria Ionescu',
     role: 'Profesoară de Literatură',
     rating: 5,
-    text: 'Prince\'s Multimedia este o comoară pentru orice iubitor de carte românească. Calitatea edițiilor este excepțională, iar selecția de titluri este impresionantă. Recomand cu entuziasm!',
+    text: 'Editura Princeps este o comoară pentru orice iubitor de carte românească. Calitatea edițiilor este excepțională, iar selecția de titluri este impresionantă. Recomand cu entuziasm!',
     avatar: 'MI',
   },
   {
@@ -628,7 +628,7 @@ export const teamMembers = [
     id: 2,
     name: 'Dr. Ana Marinescu',
     role: 'Director Artistic',
-    bio: 'Specialist în design editorial și identitate vizuală, Ana Marinescu garantează că fiecare carte Prince\'s Multimedia este o operă de artă.',
+    bio: 'Specialist în design editorial și identitate vizuală, Ana Marinescu garantează că fiecare carte Editura Princeps este o operă de artă.',
     initials: 'AM',
     coverColor: '#8B5A5A',
   },
@@ -644,7 +644,7 @@ export const teamMembers = [
     id: 4,
     name: 'Laura Constantin',
     role: 'Manager Relații Clienți',
-    bio: 'Laura Constantin se asigură că fiecare cititor are o experiență de neuitat în relația cu Prince\'s Multimedia.',
+    bio: 'Laura Constantin se asigură că fiecare cititor are o experiență de neuitat în relația cu Editura Princeps.',
     initials: 'LC',
     coverColor: '#2D5A4D',
   },
@@ -669,7 +669,7 @@ export const faqs = [
   },
   {
     question: 'Cum pot contacta serviciul clienți?',
-    answer: 'Ne puteți contacta prin email la contact@princesmultimedia.ro, telefon la 0232 XXX XXX sau prin formularul de contact de pe site.',
+    answer: 'Ne puteți contacta prin email la contact@edituraprinceps.ro, telefon la 0232 XXX XXX sau prin formularul de contact de pe site.',
   },
   {
     question: 'Oferiți facturi fiscale?',

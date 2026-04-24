@@ -108,7 +108,7 @@ const seedReviews = [
     content: 'A beautifully produced volume with a thoughtful critical apparatus. The edition is well-prepared and the text impeccably rendered.',
     helpful: 8,  verified: true },
   { id: 3, author: 'Elena G.',     rating: 5, date: '20 Jan 2024', title: 'Exquisite edition',
-    content: 'Prince\'s Multimedia consistently produce editions of the highest quality. The paper is fine, the binding sturdy, the presentation elegant.',
+    content: 'Editura Princeps consistently produce editions of the highest quality. The paper is fine, the binding sturdy, the presentation elegant.',
     helpful: 5,  verified: false },
 ];
 

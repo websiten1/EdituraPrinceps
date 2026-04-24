@@ -4,10 +4,10 @@ import Breadcrumb from '../components/Breadcrumb';
 import { faqs } from '../data/books';
 
 function ContactForm() {
-  const [form, setForm]       = useState({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' });
-  const [errors, setErrors]   = useState({});
+  const [form, setForm]         = useState({ name: '', email: '', phone: '', subject: '', message: '', captcha: '' });
+  const [errors, setErrors]     = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
 
   const validate = () => {
     const e = {};
@@ -32,14 +32,14 @@ function ContactForm() {
     <div>
       <label className="field-label">{label}{required && ' *'}</label>
       {children}
-      {error && <p className="text-xs font-sans text-burgundy-700 mt-1">{error}</p>}
+      {error && <p className="text-xs font-sans text-burgundy mt-1">{error}</p>}
     </div>
   );
 
   if (submitted) return (
-    <div className="bg-cream border border-forest-800 p-10 text-center">
-      <CheckCircle className="w-12 h-12 text-forest-700 mx-auto mb-4" />
-      <h3 className="font-serif text-h3 text-charcoal mb-2">Message Received</h3>
+    <div className="bg-white border border-gray-200 p-10 text-center">
+      <CheckCircle className="w-12 h-12 text-forest-800 mx-auto mb-4" />
+      <h3 className="font-display text-h3 text-charcoal mb-2">Message Received</h3>
       <p className="text-sm font-sans text-charcoal-light leading-reading max-w-xs mx-auto mb-6">
         Thank you for writing to us. We will reply within one business day.
       </p>
@@ -51,25 +51,22 @@ function ContactForm() {
   );
 
   return (
-    <div className="bg-cream border border-paper p-6 sm:p-8">
-      <h2 className="font-serif text-h3 text-charcoal mb-1">Send Us a Message</h2>
-      <div className="flex items-center gap-3 mb-6">
-        <div className="h-px bg-gold/60 w-8" />
-        <span className="text-gold text-xs">◆</span>
-      </div>
+    <div className="bg-white border border-gray-200 p-6 sm:p-8">
+      <h2 className="font-display text-h3 text-charcoal mb-1">Send Us a Message</h2>
+      <div className="h-0.5 bg-burgundy w-12 mb-6" />
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Field name="name" label="Full Name" required error={errors.name}>
             <input type="text" value={form.name}
                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                   className={`field ${errors.name ? 'border-burgundy-600' : ''}`}
+                   className={`field ${errors.name ? 'border-burgundy' : ''}`}
                    placeholder="Ioan Ionescu" />
           </Field>
           <Field name="email" label="Email Address" required error={errors.email}>
             <input type="email" value={form.email}
                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                   className={`field ${errors.email ? 'border-burgundy-600' : ''}`}
+                   className={`field ${errors.email ? 'border-burgundy' : ''}`}
                    placeholder="email@example.com" />
           </Field>
         </div>
@@ -77,13 +74,13 @@ function ContactForm() {
           <Field name="phone" label="Phone (optional)" error={errors.phone}>
             <input type="tel" value={form.phone}
                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                   className={`field ${errors.phone ? 'border-burgundy-600' : ''}`}
+                   className={`field ${errors.phone ? 'border-burgundy' : ''}`}
                    placeholder="+40 7XX XXX XXX" />
           </Field>
           <Field name="subject" label="Subject" required error={errors.subject}>
             <select value={form.subject}
                     onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
-                    className={`field ${errors.subject ? 'border-burgundy-600' : ''}`}>
+                    className={`field ${errors.subject ? 'border-burgundy' : ''}`}>
               <option value="">Select a subject</option>
               <option value="general">General Enquiry</option>
               <option value="order">Order Issue</option>
@@ -96,14 +93,14 @@ function ContactForm() {
         <Field name="message" label="Message" required error={errors.message}>
           <textarea rows={5} value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                    className={`field resize-none ${errors.message ? 'border-burgundy-600' : ''}`}
+                    className={`field resize-none ${errors.message ? 'border-burgundy' : ''}`}
                     placeholder="Please describe your enquiry in detail…" />
           <p className="text-xs font-sans text-charcoal-lighter mt-1">{form.message.length} chars (min 20)</p>
         </Field>
         <Field name="captcha" label="Verification: What is 3 + 5?" required error={errors.captcha}>
           <input type="number" value={form.captcha}
                  onChange={e => setForm(f => ({ ...f, captcha: e.target.value }))}
-                 className={`field w-28 ${errors.captcha ? 'border-burgundy-600' : ''}`}
+                 className={`field w-28 ${errors.captcha ? 'border-burgundy' : ''}`}
                  placeholder="Answer" />
         </Field>
         <button type="submit" disabled={loading}
@@ -119,11 +116,8 @@ function ContactInfo() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-serif text-h3 text-charcoal mb-1">Contact Information</h2>
-        <div className="flex items-center gap-3 mb-5">
-          <div className="h-px bg-gold/60 w-8" />
-          <span className="text-gold text-xs">◆</span>
-        </div>
+        <h2 className="font-display text-h3 text-charcoal mb-1">Contact Information</h2>
+        <div className="h-0.5 bg-burgundy w-12 mb-5" />
       </div>
 
       {[
@@ -147,9 +141,9 @@ function ContactInfo() {
           lines: ['Monday – Friday: 9:00 – 18:00', 'Saturday: 10:00 – 14:00', 'Sunday: Closed'],
         },
       ].map(card => (
-        <div key={card.heading} className="bg-cream border border-paper p-5">
-          <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-gold mb-3 pb-2
-                         border-b border-gold/30">
+        <div key={card.heading} className="bg-white border border-gray-200 p-5">
+          <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2
+                         border-b border-gray-100">
             {card.heading}
           </h3>
           {card.lines.map(line => (
@@ -159,7 +153,7 @@ function ContactInfo() {
             <a href={card.action.href}
                target={card.action.href.startsWith('http') ? '_blank' : undefined}
                rel="noreferrer"
-               className="inline-block mt-2 text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+               className="inline-block mt-2 text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
               {card.action.label}
             </a>
           )}
@@ -167,21 +161,20 @@ function ContactInfo() {
       ))}
 
       {/* Map placeholder */}
-      <div className="bg-paper h-44 border border-paper flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-paper to-cream-dark" />
-        <div className="relative z-10 text-center">
-          <p className="font-sans text-xs text-charcoal-light uppercase tracking-widest mb-1">Location</p>
+      <div className="bg-gray-100 h-44 border border-gray-200 flex items-center justify-center relative overflow-hidden">
+        <div className="text-center">
+          <p className="font-ui text-xs text-charcoal-lighter uppercase tracking-wide mb-1">Location</p>
           <p className="font-serif text-lg text-charcoal-light italic">Iași, România</p>
           <a href="https://maps.google.com" target="_blank" rel="noreferrer"
-             className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider mt-1 block">
+             className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide mt-1 block">
             Open Google Maps →
           </a>
         </div>
       </div>
 
       {/* Social */}
-      <div className="bg-cream border border-paper p-5">
-        <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-gold mb-3 pb-2 border-b border-gold/30">
+      <div className="bg-white border border-gray-200 p-5">
+        <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2 border-b border-gray-100">
           Follow Us
         </h3>
         <div className="space-y-2">
@@ -191,7 +184,7 @@ function ContactInfo() {
             { label: 'Connect on LinkedIn', href: '#' },
           ].map(s => (
             <a key={s.label} href={s.href}
-               className="block text-sm font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+               className="block text-sm font-ui text-burgundy hover:underline uppercase tracking-wide">
               {s.label}
             </a>
           ))}
@@ -205,36 +198,30 @@ function FAQ() {
   const [open, setOpen] = useState(null);
 
   return (
-    <section className="bg-cream-dark border-t border-paper py-16">
+    <section className="bg-gray-50 border-t border-gray-100 py-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="font-serif text-h2 text-charcoal text-center mb-3">
+        <h2 className="font-display text-h2 text-charcoal text-center mb-3">
           Frequently Asked Questions
         </h2>
-        <div className="flex justify-center mb-10">
-          <div className="flex items-center gap-3">
-            <div className="h-px bg-gold/60 w-12" />
-            <span className="text-gold text-xs">◆</span>
-            <div className="h-px bg-gold/60 w-12" />
-          </div>
-        </div>
+        <div className="h-0.5 bg-burgundy w-12 mx-auto mb-10" />
 
         <div className="space-y-2">
           {faqs.map((faq, i) => (
-            <div key={i} className="bg-cream border border-paper overflow-hidden">
+            <div key={i} className="bg-white border border-gray-200 overflow-hidden">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
                 className="w-full flex items-center justify-between px-6 py-4 text-left
-                           hover:bg-cream-dark transition-colors duration-200"
+                           hover:bg-gray-50 transition-colors duration-200"
               >
                 <span className="font-serif text-base text-charcoal pr-4">{faq.question}</span>
                 {open === i
-                  ? <ChevronUp className="w-4 h-4 text-burgundy-700 flex-shrink-0" />
+                  ? <ChevronUp className="w-4 h-4 text-burgundy flex-shrink-0" />
                   : <ChevronDown className="w-4 h-4 text-charcoal-lighter flex-shrink-0" />
                 }
               </button>
               {open === i && (
                 <div className="px-6 pb-5 pt-1 text-sm font-sans text-charcoal-light
-                                leading-reading border-t border-paper">
+                                leading-reading border-t border-gray-100">
                   {faq.answer}
                 </div>
               )}
@@ -248,16 +235,12 @@ function FAQ() {
 
 export default function Contact() {
   return (
-    <div className="fade-in min-h-screen bg-cream">
-      {/* Page header */}
-      <div className="bg-cream-dark border-b border-paper">
+    <div className="fade-in min-h-screen bg-white">
+      <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Breadcrumb items={[{ label: 'Contact' }]} />
-          <h1 className="font-serif text-h1 text-charcoal mt-4 mb-1">Contact Us</h1>
-          <div className="flex items-center gap-3 mt-3 mb-3">
-            <div className="h-px bg-gold/60 w-12" />
-            <span className="text-gold text-xs">◆</span>
-          </div>
+          <h1 className="font-display text-h1 text-charcoal mt-4 mb-1">Contact Us</h1>
+          <div className="h-0.5 bg-burgundy w-12 mt-3 mb-3" />
           <p className="font-sans text-sm text-charcoal-light max-w-xl leading-reading">
             We welcome your enquiries and correspondence. Our editorial team is here
             to assist readers, authors, and partners.

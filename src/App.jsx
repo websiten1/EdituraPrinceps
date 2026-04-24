@@ -11,6 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Account from './pages/Account';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -75,6 +76,10 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/account/orders" element={<Account />} />
+            <Route path="/account/wishlist" element={<Account />} />
+            <Route path="/account/settings" element={<Account />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

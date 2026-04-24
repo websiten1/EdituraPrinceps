@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Heart, Minus, Plus, Check, AlertCircle, ThumbsUp, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Heart, Minus, Plus, Check, AlertCircle, ThumbsUp } from 'lucide-react';
 import { books } from '../data/books';
 import { useApp } from '../context/AppContext';
 import Breadcrumb from '../components/Breadcrumb';
 import BookCard, { StarRow } from '../components/BookCard';
 
-/* ── Stars (interactive or static) ──────────────────────────────── */
 function Stars({ value, size = 'sm', interactive = false, onChange }) {
   const [hover, setHover] = useState(0);
   const sz = size === 'lg' ? 'text-2xl' : size === 'md' ? 'text-lg' : 'text-base';
@@ -17,7 +16,7 @@ function Stars({ value, size = 'sm', interactive = false, onChange }) {
           key={s}
           className={`transition-colors ${
             s <= (interactive ? hover || value : Math.floor(value))
-              ? 'text-gold' : 'text-paper-dark'
+              ? 'text-burgundy-400' : 'text-gray-200'
           } ${interactive ? 'cursor-pointer' : ''}`}
           onMouseEnter={() => interactive && setHover(s)}
           onMouseLeave={() => interactive && setHover(0)}
@@ -28,17 +27,16 @@ function Stars({ value, size = 'sm', interactive = false, onChange }) {
   );
 }
 
-/* ── Review modal ────────────────────────────────────────────────── */
 function ReviewModal({ onClose, onSubmit }) {
   const [form, setForm]     = useState({ rating: 0, title: '', content: '', name: '' });
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const e = {};
-    if (!form.rating)              e.rating  = 'Please select a rating.';
-    if (!form.title.trim())        e.title   = 'Title is required.';
-    if (form.content.length < 20)  e.content = 'Review must be at least 20 characters.';
-    if (!form.name.trim())         e.name    = 'Name is required.';
+    if (!form.rating)             e.rating  = 'Please select a rating.';
+    if (!form.title.trim())       e.title   = 'Title is required.';
+    if (form.content.length < 20) e.content = 'Review must be at least 20 characters.';
+    if (!form.name.trim())        e.name    = 'Name is required.';
     return e;
   };
 
@@ -51,12 +49,12 @@ function ReviewModal({ onClose, onSubmit }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-charcoal/50" onClick={onClose} />
-      <div className="relative bg-cream border border-paper shadow-classic-lg w-full max-w-lg
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative bg-white border border-gray-200 shadow-classic-lg w-full max-w-lg
                       max-h-[90vh] overflow-y-auto">
-        <div className="bg-cream-dark border-b border-paper px-6 py-4 flex items-center justify-between">
-          <h3 className="font-serif text-h3 text-charcoal">Write a Review</h3>
-          <button onClick={onClose} className="text-charcoal-light hover:text-charcoal font-sans text-xs uppercase tracking-widest">
+        <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <h3 className="font-display text-xl text-charcoal">Write a Review</h3>
+          <button onClick={onClose} className="text-charcoal-light hover:text-charcoal font-ui text-xs uppercase tracking-wide">
             Close
           </button>
         </div>
@@ -64,7 +62,7 @@ function ReviewModal({ onClose, onSubmit }) {
           <div>
             <label className="field-label">Your Rating *</label>
             <Stars value={form.rating} size="lg" interactive onChange={r => setForm(f => ({ ...f, rating: r }))} />
-            {errors.rating && <p className="text-burgundy-700 text-xs font-sans mt-1">{errors.rating}</p>}
+            {errors.rating && <p className="text-burgundy text-xs font-sans mt-1">{errors.rating}</p>}
           </div>
           {[
             { name: 'title',   label: 'Review Title *',  type: 'input',    ph: 'Summarise your thoughts' },
@@ -77,18 +75,18 @@ function ReviewModal({ onClose, onSubmit }) {
                 <input
                   type="text" value={form[field.name]}
                   onChange={e => setForm(f => ({ ...f, [field.name]: e.target.value }))}
-                  className={`field ${errors[field.name] ? 'border-burgundy-600' : ''}`}
+                  className={`field ${errors[field.name] ? 'border-burgundy' : ''}`}
                   placeholder={field.ph}
                 />
               ) : (
                 <textarea rows={4} value={form[field.name]}
                   onChange={e => setForm(f => ({ ...f, [field.name]: e.target.value }))}
-                  className={`field resize-none ${errors[field.name] ? 'border-burgundy-600' : ''}`}
+                  className={`field resize-none ${errors[field.name] ? 'border-burgundy' : ''}`}
                   placeholder={field.ph}
                 />
               )}
               {errors[field.name] && (
-                <p className="text-burgundy-700 text-xs font-sans mt-1">{errors[field.name]}</p>
+                <p className="text-burgundy text-xs font-sans mt-1">{errors[field.name]}</p>
               )}
             </div>
           ))}
@@ -115,18 +113,18 @@ const seedReviews = [
 ];
 
 export default function ProductDetail() {
-  const { id }        = useParams();
-  const navigate      = useNavigate();
+  const { id }      = useParams();
+  const navigate    = useNavigate();
   const { addToCart, toggleWishlist, wishlist, addToRecentlyViewed, addToast } = useApp();
-  const [quantity,    setQuantity]    = useState(1);
-  const [expanded,    setExpanded]    = useState(false);
-  const [showModal,   setShowModal]   = useState(false);
-  const [reviews,     setReviews]     = useState(seedReviews);
-  const [copied,      setCopied]      = useState(false);
+  const [quantity,  setQuantity]  = useState(1);
+  const [expanded,  setExpanded]  = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [reviews,   setReviews]   = useState(seedReviews);
+  const [copied,    setCopied]    = useState(false);
 
-  const book      = books.find(b => b.id === parseInt(id));
-  const related   = books.filter(b => b.id !== book?.id && b.category === book?.category).slice(0, 4);
-  const inWish    = wishlist.some(b => b.id === book?.id);
+  const book    = books.find(b => b.id === parseInt(id));
+  const related = books.filter(b => b.id !== book?.id && b.category === book?.category).slice(0, 4);
+  const inWish  = wishlist.some(b => b.id === book?.id);
 
   useEffect(() => {
     if (book) { addToRecentlyViewed(book); }
@@ -134,9 +132,9 @@ export default function ProductDetail() {
   }, [id]);
 
   if (!book) return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="text-center">
-        <p className="font-serif text-3xl text-charcoal-light italic mb-4">Title not found</p>
+        <p className="font-display text-3xl text-charcoal-light italic mb-4">Title not found</p>
         <button onClick={() => navigate('/collections')} className="btn-primary">
           Return to Collections
         </button>
@@ -144,13 +142,13 @@ export default function ProductDetail() {
     </div>
   );
 
-  const avg       = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
-  const dist      = [5, 4, 3, 2, 1].map(r => ({
+  const avg      = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const dist     = [5, 4, 3, 2, 1].map(r => ({
     star: r,
     count: reviews.filter(x => x.rating === r).length,
     pct: Math.round(reviews.filter(x => x.rating === r).length / reviews.length * 100),
   }));
-  const discount  = book.originalPrice ? Math.round((1 - book.price / book.originalPrice) * 100) : null;
+  const discount = book.originalPrice ? Math.round((1 - book.price / book.originalPrice) * 100) : null;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -171,10 +169,9 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="fade-in min-h-screen bg-cream">
+    <div className="fade-in min-h-screen bg-white">
 
-      {/* Breadcrumb strip */}
-      <div className="bg-cream-dark border-b border-paper">
+      <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Breadcrumb items={[
             { label: 'Collections', to: '/collections' },
@@ -187,30 +184,30 @@ export default function ProductDetail() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* ── Main product block ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 bg-cream border border-paper p-6 sm:p-10">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 bg-white border border-gray-200 p-6 sm:p-10">
 
           {/* LEFT: Cover */}
           <div className="lg:col-span-2 flex flex-col items-center gap-5">
-            {/* Main cover */}
-            <div className="w-52 h-72 bg-forest-800 relative flex flex-col items-center
-                            justify-center text-cream/20 shadow-classic-lg">
+            <div className="w-52 h-72 relative flex flex-col items-center
+                            justify-center text-white/20 shadow-classic-lg"
+                 style={{ backgroundColor: book.coverColor }}>
               <div className="absolute inset-0 px-7 py-6 flex flex-col justify-between">
-                <div className="h-px bg-cream/15" />
+                <div className="h-px bg-white/20" />
                 <div className="text-center">
-                  <p className="font-serif text-sm text-cream/60 italic leading-snug px-1">
+                  <p className="font-serif text-sm text-white/70 italic leading-snug px-1">
                     {book.title}
                   </p>
-                  <div className="h-px bg-cream/15 mt-3 mx-4" />
-                  <p className="font-sans text-xs text-cream/30 mt-2 uppercase tracking-widest">
+                  <div className="h-px bg-white/20 mt-3 mx-4" />
+                  <p className="font-ui text-xs text-white/40 mt-2 uppercase tracking-widest">
                     {book.author.split(' ').pop()}
                   </p>
                 </div>
-                <div className="h-px bg-cream/15" />
+                <div className="h-px bg-white/20" />
               </div>
-              <span className="font-serif text-7xl text-cream/10 absolute">❧</span>
+              <span className="font-serif text-7xl text-white/10 absolute">❧</span>
               {discount && (
-                <span className="absolute top-2 left-2 bg-burgundy-700 text-cream
-                                 text-xs font-sans font-bold px-2 py-0.5">
+                <span className="absolute top-2 left-2 bg-burgundy text-white
+                                 text-xs font-ui font-semibold px-2 py-0.5">
                   -{discount}%
                 </span>
               )}
@@ -220,22 +217,26 @@ export default function ProductDetail() {
             <div className="flex items-center gap-2">
               {[1, 2, 3].map((_, i) => (
                 <div key={i}
-                     className={`w-12 h-16 bg-forest-800 cursor-pointer border-2 transition-colors
-                       ${i === 0 ? 'border-gold' : 'border-transparent hover:border-forest-600'}`} />
+                     className={`w-12 h-16 cursor-pointer border-2 transition-colors`}
+                     style={{
+                       backgroundColor: book.coverColor,
+                       borderColor: i === 0 ? '#8B3A3A' : 'transparent',
+                       opacity: i === 0 ? 1 : 0.6,
+                     }} />
               ))}
             </div>
 
             {/* Share */}
             <div className="text-center">
-              <p className="text-xs font-sans text-charcoal-lighter uppercase tracking-widest mb-2">
+              <p className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-2">
                 Share this title
               </p>
-              <div className="flex items-center justify-center gap-4 text-xs font-sans">
-                <a href="#" className="text-burgundy-700 hover:underline uppercase tracking-wider">Facebook</a>
-                <span className="text-paper-dark">|</span>
-                <a href="#" className="text-burgundy-700 hover:underline uppercase tracking-wider">Twitter</a>
-                <span className="text-paper-dark">|</span>
-                <button onClick={handleCopy} className="text-burgundy-700 hover:underline uppercase tracking-wider">
+              <div className="flex items-center justify-center gap-4 text-xs font-ui">
+                <a href="#" className="text-burgundy hover:underline uppercase tracking-wide">Facebook</a>
+                <span className="text-gray-300">|</span>
+                <a href="#" className="text-burgundy hover:underline uppercase tracking-wide">Twitter</a>
+                <span className="text-gray-300">|</span>
+                <button onClick={handleCopy} className="text-burgundy hover:underline uppercase tracking-wide">
                   {copied ? 'Copied!' : 'Copy link'}
                 </button>
               </div>
@@ -245,37 +246,34 @@ export default function ProductDetail() {
           {/* RIGHT: Info */}
           <div className="lg:col-span-3">
 
-            {/* Category + badges */}
             <div className="flex items-center flex-wrap gap-2 mb-4">
               <Link to={`/collections?category=${book.category}`}
-                    className="badge-classic border-forest-800 text-forest-800 bg-transparent text-xs
-                               hover:bg-forest-800 hover:text-cream transition-colors">
+                    className="badge border-burgundy text-burgundy bg-transparent text-xs
+                               hover:bg-burgundy hover:text-white transition-colors">
                 {book.category}
               </Link>
               {book.bestseller && (
-                <span className="badge-classic border-gold text-gold bg-transparent text-xs">
+                <span className="badge border-gray-300 text-charcoal-light bg-transparent text-xs">
                   Bestseller
                 </span>
               )}
             </div>
 
-            <h1 className="font-serif text-h1 text-charcoal leading-tight mb-2">{book.title}</h1>
-            <p className="font-sans text-base text-charcoal-light uppercase tracking-widest mb-4">{book.author}</p>
+            <h1 className="font-display text-h1 text-charcoal leading-tight mb-2">{book.title}</h1>
+            <p className="font-ui text-base text-charcoal-lighter uppercase tracking-wide mb-4">{book.author}</p>
 
-            {/* Rating row */}
             <div className="flex items-center gap-3 mb-6">
               <Stars value={book.rating} size="md" />
               <span className="font-sans text-sm text-charcoal-light">
                 {book.rating} · {book.reviewCount} reviews
               </span>
-              <a href="#reviews" className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-wider">
+              <a href="#reviews" className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
                 Read reviews
               </a>
             </div>
 
-            {/* Price */}
-            <div className="flex items-baseline gap-3 py-4 border-t border-b border-paper mb-6">
-              <span className="font-serif text-4xl text-burgundy-700">{book.price.toFixed(2)}</span>
+            <div className="flex items-baseline gap-3 py-4 border-t border-b border-gray-100 mb-6">
+              <span className="font-display text-4xl text-burgundy">{book.price.toFixed(2)}</span>
               <span className="font-sans text-base text-charcoal-light">lei</span>
               {book.originalPrice && (
                 <span className="font-sans text-lg text-charcoal-lighter line-through">
@@ -284,33 +282,31 @@ export default function ProductDetail() {
               )}
             </div>
 
-            {/* Stock */}
             <div className="flex items-center gap-2 mb-5">
               {book.stock > 5 ? (
-                <><Check className="w-4 h-4 text-forest-700" />
-                  <span className="text-sm font-sans text-forest-700">In Stock — ships in 3–5 business days</span></>
+                <><Check className="w-4 h-4 text-forest-800" />
+                  <span className="text-sm font-sans text-forest-800">In Stock — ships in 3–5 business days</span></>
               ) : book.stock > 0 ? (
-                <><AlertCircle className="w-4 h-4 text-gold" />
-                  <span className="text-sm font-sans text-gold">Only {book.stock} copies remaining</span></>
+                <><AlertCircle className="w-4 h-4 text-charcoal-light" />
+                  <span className="text-sm font-sans text-charcoal-light">Only {book.stock} copies remaining</span></>
               ) : (
                 <><AlertCircle className="w-4 h-4 text-charcoal-lighter" />
                   <span className="text-sm font-sans text-charcoal-lighter">Currently out of stock</span></>
               )}
             </div>
 
-            {/* Quantity */}
             <div className="flex items-center gap-4 mb-5">
-              <span className="text-xs font-sans font-bold text-charcoal uppercase tracking-widest">Quantity</span>
-              <div className="flex items-center border border-paper">
+              <span className="text-xs font-ui font-semibold text-charcoal uppercase tracking-wide">Quantity</span>
+              <div className="flex items-center border border-gray-200">
                 <button onClick={() => setQuantity(q => Math.max(1, q - 1))}
                         className="w-9 h-9 flex items-center justify-center text-charcoal-light
-                                   hover:text-charcoal hover:bg-cream-dark transition-colors border-r border-paper">
+                                   hover:text-charcoal hover:bg-gray-50 transition-colors border-r border-gray-200">
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="w-12 text-center text-sm font-sans font-bold text-charcoal">{quantity}</span>
+                <span className="w-12 text-center text-sm font-ui font-semibold text-charcoal">{quantity}</span>
                 <button onClick={() => setQuantity(q => Math.min(book.stock || 1, q + 1))}
                         className="w-9 h-9 flex items-center justify-center text-charcoal-light
-                                   hover:text-charcoal hover:bg-cream-dark transition-colors border-l border-paper">
+                                   hover:text-charcoal hover:bg-gray-50 transition-colors border-l border-gray-200">
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -319,7 +315,6 @@ export default function ProductDetail() {
               </span>
             </div>
 
-            {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <button
                 onClick={() => addToCart(book, quantity)}
@@ -331,45 +326,44 @@ export default function ProductDetail() {
               </button>
               <button
                 onClick={() => toggleWishlist(book)}
-                className={`flex items-center justify-center gap-2 py-3.5 px-6 border-2 font-sans
-                            font-bold text-sm uppercase tracking-widest transition-colors duration-200
+                className={`flex items-center justify-center gap-2 py-3.5 px-6 border-2 font-ui
+                            font-semibold text-sm uppercase tracking-wide transition-colors duration-200
                             ${inWish
-                              ? 'border-burgundy-700 bg-burgundy-50 text-burgundy-700'
-                              : 'border-paper text-charcoal hover:border-burgundy-700 hover:text-burgundy-700'
+                              ? 'border-burgundy bg-burgundy-50 text-burgundy'
+                              : 'border-gray-200 text-charcoal hover:border-burgundy hover:text-burgundy'
                             }`}
               >
-                <Heart className={`w-4 h-4 ${inWish ? 'fill-burgundy-700' : ''}`} />
+                <Heart className={`w-4 h-4 ${inWish ? 'fill-burgundy' : ''}`} />
                 {inWish ? 'In Wishlist' : 'Add to Wishlist'}
               </button>
             </div>
 
             <Link to="/checkout" onClick={() => addToCart(book, quantity)}
-                  className="block w-full text-center py-3 bg-charcoal text-cream
-                             font-sans font-bold text-sm uppercase tracking-widest
-                             border border-charcoal hover:bg-forest-950 transition-colors mb-6">
+                  className="block w-full text-center py-3 bg-charcoal text-white
+                             font-ui font-semibold text-sm uppercase tracking-wide
+                             border border-charcoal hover:bg-gray-800 transition-colors mb-6">
               Buy Now
             </Link>
 
-            {/* Specifications */}
-            <div className="border-t border-paper pt-5">
-              <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-charcoal mb-3">
+            <div className="border-t border-gray-100 pt-5">
+              <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-charcoal mb-3">
                 Bibliographic Details
               </h3>
               <table className="w-full text-sm">
                 <tbody>
                   {[
-                    { label: 'ISBN',            value: book.isbn },
-                    { label: 'Published',       value: book.publicationDate },
-                    { label: 'Pages',           value: book.pages },
-                    { label: 'Language',        value: book.language },
-                    { label: 'Binding',         value: book.binding },
-                    { label: 'Category',        value: book.category },
+                    { label: 'ISBN',      value: book.isbn },
+                    { label: 'Published', value: book.publicationDate },
+                    { label: 'Pages',     value: book.pages },
+                    { label: 'Language',  value: book.language },
+                    { label: 'Binding',   value: book.binding },
+                    { label: 'Category',  value: book.category },
                   ].map(row => (
-                    <tr key={row.label} className="border-b border-paper last:border-0">
-                      <td className="py-2 pr-4 font-sans text-xs text-charcoal-light uppercase tracking-wider w-1/3">
+                    <tr key={row.label} className="border-b border-gray-100 last:border-0">
+                      <td className="py-2 pr-4 font-ui text-xs text-charcoal-lighter uppercase tracking-wide w-1/3">
                         {row.label}
                       </td>
-                      <td className="py-2 font-sans text-sm text-charcoal font-medium">
+                      <td className="py-2 font-sans text-sm text-charcoal">
                         {row.value}
                       </td>
                     </tr>
@@ -381,24 +375,23 @@ export default function ProductDetail() {
         </div>
 
         {/* Description */}
-        <div className="bg-cream border border-paper border-t-0 px-6 sm:px-10 py-8">
-          <h2 className="font-serif text-h3 text-charcoal mb-4">About This Book</h2>
+        <div className="bg-white border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
+          <h2 className="font-display text-xl text-charcoal mb-4">About This Book</h2>
           <div className={`font-sans text-sm text-charcoal leading-reading ${!expanded ? 'line-clamp-4' : ''}`}>
             <p className="mb-3">{book.description}</p>
             {book.longDescription && <p>{book.longDescription}</p>}
           </div>
-          <button onClick={() => setExpanded(e => !e)}
-                  className="mt-3 btn-ghost text-sm">
+          <button onClick={() => setExpanded(e => !e)} className="mt-3 btn-ghost text-sm">
             {expanded ? 'Read less ↑' : 'Read more ↓'}
           </button>
         </div>
 
         {/* Author box */}
-        <div className="bg-cream-dark border border-paper border-t-0 px-6 sm:px-10 py-8">
-          <h2 className="font-serif text-h3 text-charcoal mb-4">About the Author</h2>
+        <div className="bg-gray-50 border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
+          <h2 className="font-display text-xl text-charcoal mb-4">About the Author</h2>
           <div className="flex items-start gap-5">
-            <div className="w-14 h-14 bg-forest-800 flex items-center justify-center
-                            text-cream/30 font-serif text-2xl flex-shrink-0">
+            <div className="w-14 h-14 bg-burgundy flex items-center justify-center
+                            text-white font-display text-xl flex-shrink-0">
               {book.author.charAt(0)}
             </div>
             <div>
@@ -417,71 +410,67 @@ export default function ProductDetail() {
         </div>
 
         {/* Reviews */}
-        <div id="reviews" className="bg-cream border border-paper border-t-0 px-6 sm:px-10 py-8">
+        <div id="reviews" className="bg-white border border-gray-200 border-t-0 px-6 sm:px-10 py-8">
           <div className="flex items-center justify-between flex-wrap gap-4 mb-7">
-            <h2 className="font-serif text-h3 text-charcoal">
-              Reader Reviews <span className="text-charcoal-lighter font-sans text-base">({reviews.length})</span>
+            <h2 className="font-display text-xl text-charcoal">
+              Reader Reviews <span className="text-charcoal-lighter font-sans text-base font-normal">({reviews.length})</span>
             </h2>
             <button onClick={() => setShowModal(true)} className="btn-ghost text-sm">
               Write a review →
             </button>
           </div>
 
-          {/* Rating summary */}
-          <div className="flex flex-col sm:flex-row gap-8 p-6 bg-cream-dark border border-paper mb-7">
+          <div className="flex flex-col sm:flex-row gap-8 p-6 bg-gray-50 border border-gray-200 mb-7">
             <div className="text-center flex-shrink-0">
-              <div className="font-serif text-6xl text-charcoal">{avg.toFixed(1)}</div>
+              <div className="font-display text-6xl text-charcoal">{avg.toFixed(1)}</div>
               <Stars value={avg} size="md" />
-              <p className="text-xs font-sans text-charcoal-light mt-1">
-                {reviews.length} reviews
-              </p>
+              <p className="text-xs font-sans text-charcoal-lighter mt-1">{reviews.length} reviews</p>
             </div>
             <div className="flex-1 space-y-2">
               {dist.map(({ star, count, pct }) => (
                 <div key={star} className="flex items-center gap-3">
                   <span className="text-xs font-sans text-charcoal-light w-4">{star}</span>
-                  <span className="text-gold text-xs">★</span>
-                  <div className="flex-1 bg-paper h-2">
-                    <div className="h-full bg-gold transition-all duration-500" style={{ width: `${pct}%` }} />
+                  <span className="text-burgundy-400 text-xs">★</span>
+                  <div className="flex-1 bg-gray-200 h-2">
+                    <div className="h-full bg-burgundy transition-all duration-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="text-xs font-sans text-charcoal-light w-5">{count}</span>
+                  <span className="text-xs font-sans text-charcoal-lighter w-5">{count}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Review list */}
           <div className="space-y-6">
             {reviews.map(r => (
-              <div key={r.id} className="border-b border-paper last:border-0 pb-6 last:pb-0">
+              <div key={r.id} className="border-b border-gray-100 last:border-0 pb-6 last:pb-0">
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-forest-800 flex items-center justify-center
-                                    text-cream text-sm font-serif flex-shrink-0">
+                    <div className="w-9 h-9 bg-burgundy flex items-center justify-center
+                                    text-white text-sm font-ui font-semibold flex-shrink-0">
                       {r.author.charAt(0)}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-sans font-bold text-charcoal uppercase tracking-wider">
+                        <span className="text-sm font-ui font-semibold text-charcoal uppercase tracking-wide">
                           {r.author}
                         </span>
                         {r.verified && (
-                          <span className="text-xs font-sans text-forest-700 border border-forest-700 px-1.5 py-0.5">
+                          <span className="text-xs font-ui text-forest-800 border border-forest-800 px-1.5 py-0.5">
                             Verified
                           </span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         <Stars value={r.rating} />
-                        <span className="text-xs font-sans text-charcoal-light">{r.date}</span>
+                        <span className="text-xs font-sans text-charcoal-lighter">{r.date}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <h4 className="font-serif text-base text-charcoal mb-1">{r.title}</h4>
                 <p className="text-sm font-sans text-charcoal-light leading-reading mb-3">{r.content}</p>
-                <button className="flex items-center gap-1.5 text-xs font-sans text-charcoal-lighter
-                                   hover:text-forest-800 transition-colors uppercase tracking-wider">
+                <button className="flex items-center gap-1.5 text-xs font-ui text-charcoal-lighter
+                                   hover:text-burgundy transition-colors uppercase tracking-wide">
                   <ThumbsUp className="w-3 h-3" /> Helpful ({r.helpful})
                 </button>
               </div>
@@ -489,10 +478,9 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Related */}
         {related.length > 0 && (
           <div className="mt-12">
-            <h2 className="font-serif text-h3 text-charcoal mb-6 pb-3 border-b border-paper">
+            <h2 className="font-display text-xl text-charcoal mb-6 pb-3 border-b border-gray-200">
               Related Titles
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

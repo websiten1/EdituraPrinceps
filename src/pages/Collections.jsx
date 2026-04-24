@@ -25,17 +25,16 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
   ].filter(Boolean).length;
 
   return (
-    <div className="bg-cream border border-paper">
+    <div className="bg-white border border-gray-200">
 
-      {/* Sidebar header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-paper bg-cream-dark">
-        <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-charcoal">
-          Refine Results {activeCount > 0 && <span className="text-burgundy-700">({activeCount})</span>}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50">
+        <h3 className="font-ui text-xs font-semibold uppercase tracking-wide text-charcoal">
+          Refine Results {activeCount > 0 && <span className="text-burgundy">({activeCount})</span>}
         </h3>
         <div className="flex items-center gap-3">
           {activeCount > 0 && (
             <button onClick={onClear}
-                    className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-widest">
+                    className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
               Clear all
             </button>
           )}
@@ -51,8 +50,8 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
 
         {/* Category */}
         <div>
-          <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-forest-800 mb-3 pb-2
-                         border-b border-gold/40">
+          <h4 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2
+                         border-b border-gray-200">
             Category
           </h4>
           <div className="space-y-2">
@@ -65,10 +64,10 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
                       type="checkbox"
                       checked={filters.category === cat}
                       onChange={() => onChange('category', filters.category === cat ? '' : cat)}
-                      className="w-3.5 h-3.5 border-paper-dark text-forest-800
-                                 focus:ring-forest-800 cursor-pointer"
+                      className="w-3.5 h-3.5 border-gray-300 text-burgundy
+                                 focus:ring-burgundy cursor-pointer accent-burgundy"
                     />
-                    <span className="text-sm font-sans text-charcoal group-hover:text-forest-800
+                    <span className="text-sm font-sans text-charcoal group-hover:text-burgundy
                                      transition-colors">
                       {cat}
                     </span>
@@ -82,8 +81,8 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
 
         {/* Price */}
         <div>
-          <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-forest-800 mb-3 pb-2
-                         border-b border-gold/40">
+          <h4 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2
+                         border-b border-gray-200">
             Price Range
           </h4>
           <input
@@ -94,14 +93,14 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
           />
           <div className="flex justify-between text-xs font-sans text-charcoal-light mt-1">
             <span>0 lei</span>
-            <span className="font-bold text-forest-800">Up to {filters.maxPrice} lei</span>
+            <span className="font-semibold text-burgundy font-ui">Up to {filters.maxPrice} lei</span>
           </div>
         </div>
 
         {/* Rating */}
         <div>
-          <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-forest-800 mb-3 pb-2
-                         border-b border-gold/40">
+          <h4 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2
+                         border-b border-gray-200">
             Minimum Rating
           </h4>
           <div className="space-y-2">
@@ -110,9 +109,9 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
                 <input
                   type="radio" checked={filters.minRating === r}
                   onChange={() => onChange('minRating', filters.minRating === r ? 0 : r)}
-                  className="w-3.5 h-3.5 text-forest-800 focus:ring-forest-800 cursor-pointer"
+                  className="w-3.5 h-3.5 text-burgundy focus:ring-burgundy cursor-pointer accent-burgundy"
                 />
-                <span className="text-gold text-sm tracking-tighter">
+                <span className="text-burgundy-400 text-sm tracking-tighter">
                   {'★'.repeat(r)}{'☆'.repeat(5 - r)}
                 </span>
                 <span className="text-xs font-sans text-charcoal-light">& above</span>
@@ -123,8 +122,8 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
 
         {/* Authors */}
         <div>
-          <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-forest-800 mb-3 pb-2
-                         border-b border-gold/40">
+          <h4 className="font-ui text-xs font-semibold uppercase tracking-wide text-burgundy mb-3 pb-2
+                         border-b border-gray-200">
             Author
           </h4>
           <div className="space-y-2 max-h-44 overflow-y-auto scrollbar-thin">
@@ -138,9 +137,9 @@ function FilterSidebar({ filters, onChange, onClear, onClose, isMobile }) {
                       : [...filters.authors, author];
                     onChange('authors', next);
                   }}
-                  className="w-3.5 h-3.5 text-forest-800 focus:ring-forest-800 cursor-pointer flex-shrink-0"
+                  className="w-3.5 h-3.5 text-burgundy focus:ring-burgundy cursor-pointer flex-shrink-0 accent-burgundy"
                 />
-                <span className="text-xs font-sans text-charcoal group-hover:text-forest-800 transition-colors">
+                <span className="text-xs font-sans text-charcoal group-hover:text-burgundy transition-colors">
                   {author}
                 </span>
               </label>
@@ -218,20 +217,16 @@ export default function Collections() {
   };
 
   return (
-    <div className="fade-in min-h-screen bg-cream">
+    <div className="fade-in min-h-screen bg-white">
 
       {/* Page header */}
-      <div className="bg-cream-dark border-b border-paper">
+      <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <Breadcrumb items={[{ label: 'Collections' }]} />
-          <h1 className="font-serif text-h1 text-charcoal mt-4 mb-1">
+          <h1 className="font-display text-h1 text-charcoal mt-4 mb-1">
             Our Complete Collection
           </h1>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="h-px bg-gold/60 w-12" />
-            <span className="text-gold text-xs">◆</span>
-            <div className="h-px bg-gold/60 w-12" />
-          </div>
+          <div className="h-0.5 bg-burgundy w-12 mt-3 mb-3" />
           <p className="font-sans text-sm text-charcoal-light mt-3">
             {books.length} titles across poetry, prose, philosophy, and literary criticism
           </p>
@@ -259,28 +254,28 @@ export default function Collections() {
           </div>
 
           <select value={sort} onChange={e => setSort(e.target.value)}
-                  className="field w-auto text-sm">
+                  className="field w-auto text-sm font-ui">
             {sortOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
 
           {/* View toggle */}
-          <div className="flex border border-paper overflow-hidden">
+          <div className="flex border border-gray-200 overflow-hidden">
             <button onClick={() => setView('grid')}
                     className={`p-2.5 transition-colors ${view === 'grid'
-                      ? 'bg-forest-800 text-cream'
-                      : 'text-charcoal-light hover:bg-cream-dark'}`}>
+                      ? 'bg-burgundy text-white'
+                      : 'text-charcoal-light hover:bg-gray-50'}`}>
               <Grid3X3 className="w-4 h-4" />
             </button>
             <button onClick={() => setView('list')}
-                    className={`p-2.5 border-l border-paper transition-colors ${view === 'list'
-                      ? 'bg-forest-800 text-cream'
-                      : 'text-charcoal-light hover:bg-cream-dark'}`}>
+                    className={`p-2.5 border-l border-gray-200 transition-colors ${view === 'list'
+                      ? 'bg-burgundy text-white'
+                      : 'text-charcoal-light hover:bg-gray-50'}`}>
               <List className="w-4 h-4" />
             </button>
           </div>
 
           <button onClick={() => setMobileFilter(true)}
-                  className="lg:hidden flex items-center gap-2 field text-sm font-sans font-bold uppercase tracking-widest whitespace-nowrap">
+                  className="lg:hidden flex items-center gap-2 field text-sm font-ui font-semibold uppercase tracking-wide whitespace-nowrap">
             <SlidersHorizontal className="w-4 h-4" /> Filters
           </button>
         </div>
@@ -288,17 +283,17 @@ export default function Collections() {
         {/* Active filter tags */}
         {activeFilters.length > 0 && (
           <div className="flex items-center flex-wrap gap-2 mb-5">
-            <span className="text-xs font-sans text-charcoal-light uppercase tracking-widest">Active:</span>
+            <span className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide">Active:</span>
             {activeFilters.map(f => (
               <button key={f.key} onClick={() => removeTag(f.key)}
-                      className="flex items-center gap-1.5 text-xs font-sans font-bold
-                                 bg-cream-dark border border-forest-800 text-forest-800
-                                 px-2.5 py-1 hover:bg-forest-800 hover:text-cream transition-colors">
+                      className="flex items-center gap-1.5 text-xs font-ui font-semibold
+                                 bg-burgundy-50 border border-burgundy text-burgundy
+                                 px-2.5 py-1 hover:bg-burgundy hover:text-white transition-colors">
                 {f.label} <X className="w-2.5 h-2.5" />
               </button>
             ))}
             <button onClick={clearFilters}
-                    className="text-xs font-sans text-burgundy-700 hover:underline uppercase tracking-widest">
+                    className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide">
               Clear all
             </button>
           </div>
@@ -315,7 +310,7 @@ export default function Collections() {
           {/* Mobile sidebar */}
           {mobileFilter && (
             <div className="lg:hidden fixed inset-0 z-50 flex">
-              <div className="absolute inset-0 bg-charcoal/40" onClick={() => setMobileFilter(false)} />
+              <div className="absolute inset-0 bg-black/40" onClick={() => setMobileFilter(false)} />
               <div className="relative ml-auto w-72 h-full overflow-y-auto">
                 <FilterSidebar filters={filters} onChange={updateFilter}
                                onClear={clearFilters} onClose={() => setMobileFilter(false)} isMobile />
@@ -325,14 +320,14 @@ export default function Collections() {
 
           {/* Results */}
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-sans text-charcoal-light uppercase tracking-widest mb-5">
+            <p className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-5">
               Showing <strong className="text-charcoal">{filtered.length}</strong> result{filtered.length !== 1 ? 's' : ''}
-              {search && <> for "<strong className="text-forest-800">{search}</strong>"</>}
+              {search && <> for "<strong className="text-burgundy">{search}</strong>"</>}
             </p>
 
             {paged.length === 0 ? (
-              <div className="text-center py-20 bg-cream border border-paper">
-                <p className="font-serif text-2xl text-charcoal-light italic mb-3">No titles found</p>
+              <div className="text-center py-20 bg-gray-50 border border-gray-200">
+                <p className="font-display text-2xl text-charcoal-light italic mb-3">No titles found</p>
                 <p className="text-sm font-sans text-charcoal-lighter mb-6">
                   Try adjusting your search or filter criteria.
                 </p>
@@ -352,8 +347,8 @@ export default function Collections() {
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-1 mt-10">
                     <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                            className="w-9 h-9 border border-paper flex items-center justify-center
-                                       text-charcoal-light hover:border-forest-800 hover:text-forest-800
+                            className="w-9 h-9 border border-gray-200 flex items-center justify-center
+                                       text-charcoal-light hover:border-burgundy hover:text-burgundy
                                        disabled:opacity-30 transition-colors">
                       <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -362,10 +357,10 @@ export default function Collections() {
                       if (p === 1 || p === totalPages || Math.abs(p - page) <= 1)
                         return (
                           <button key={p} onClick={() => setPage(p)}
-                                  className={`w-9 h-9 border text-sm font-sans font-bold transition-colors
+                                  className={`w-9 h-9 border text-sm font-ui font-semibold transition-colors
                                     ${page === p
-                                      ? 'bg-forest-800 border-forest-800 text-cream'
-                                      : 'border-paper text-charcoal hover:border-forest-800 hover:text-forest-800'
+                                      ? 'bg-burgundy border-burgundy text-white'
+                                      : 'border-gray-200 text-charcoal hover:border-burgundy hover:text-burgundy'
                                     }`}>
                             {p}
                           </button>
@@ -374,8 +369,8 @@ export default function Collections() {
                       return null;
                     })}
                     <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                            className="w-9 h-9 border border-paper flex items-center justify-center
-                                       text-charcoal-light hover:border-forest-800 hover:text-forest-800
+                            className="w-9 h-9 border border-gray-200 flex items-center justify-center
+                                       text-charcoal-light hover:border-burgundy hover:text-burgundy
                                        disabled:opacity-30 transition-colors">
                       <ChevronRight className="w-4 h-4" />
                     </button>

@@ -5,16 +5,16 @@ import { useApp } from '../context/AppContext';
 import { books } from '../data/books';
 
 export default function Header() {
-  const [scrolled, setScrolled]         = useState(false);
-  const [mobileOpen, setMobileOpen]     = useState(false);
-  const [searchOpen, setSearchOpen]     = useState(false);
-  const [searchValue, setSearchValue]   = useState('');
+  const [scrolled, setScrolled]           = useState(false);
+  const [mobileOpen, setMobileOpen]       = useState(false);
+  const [searchOpen, setSearchOpen]       = useState(false);
+  const [searchValue, setSearchValue]     = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const { cartCount }   = useApp();
-  const navigate        = useNavigate();
-  const location        = useLocation();
-  const searchRef       = useRef(null);
+  const [userMenuOpen, setUserMenuOpen]   = useState(false);
+  const { cartCount } = useApp();
+  const navigate      = useNavigate();
+  const location      = useLocation();
+  const searchRef     = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -66,24 +66,23 @@ export default function Header() {
   };
 
   return (
-    <header className={`sticky top-0 z-50 transition-shadow duration-300
-      bg-cream border-b border-paper
-      ${scrolled ? 'shadow-classic' : ''}`}>
+    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300
+      ${scrolled ? 'shadow-classic-md' : 'border-b border-gray-200'}`}>
 
-      {/* Top thin gold line */}
-      <div className="h-0.5 bg-gold w-full" />
+      {/* Top burgundy accent line */}
+      <div className="h-0.5 bg-burgundy w-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
 
           {/* ── Logo ─────────────────────────────────────── */}
           <Link to="/" className="flex flex-col leading-none group">
-            <span className="font-serif text-xl lg:text-2xl text-forest-800 tracking-wide
-                             group-hover:text-forest-900 transition-colors duration-200">
+            <span className="font-display text-xl lg:text-2xl text-charcoal tracking-wide
+                             group-hover:text-burgundy transition-colors duration-200">
               Prince's Multimedia
             </span>
-            <span className="text-xs font-sans text-gold tracking-widest uppercase mt-0.5 hidden sm:block">
-              Editură Literară
+            <span className="text-xs font-ui text-charcoal-lighter tracking-widest uppercase mt-0.5 hidden sm:block">
+              Editură Literară · Est. 1999
             </span>
           </Link>
 
@@ -93,10 +92,10 @@ export default function Header() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`font-sans text-sm uppercase tracking-widest transition-colors duration-200
+                className={`font-ui text-sm uppercase tracking-wide transition-colors duration-200
                   ${isActive(link.to)
-                    ? 'text-forest-800 border-b-2 border-gold pb-0.5'
-                    : 'text-charcoal hover:text-forest-800'
+                    ? 'text-burgundy border-b-2 border-burgundy pb-0.5'
+                    : 'text-charcoal-light hover:text-burgundy'
                   }`}
               >
                 {link.label}
@@ -105,23 +104,23 @@ export default function Header() {
           </nav>
 
           {/* ── Actions ──────────────────────────────────── */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
 
             {/* Search */}
             <div ref={searchRef} className="relative">
               <button
                 onClick={() => setSearchOpen(v => !v)}
-                className="p-2 text-charcoal hover:text-forest-800 transition-colors duration-200"
+                className="p-2 text-charcoal-light hover:text-burgundy transition-colors duration-200"
                 aria-label="Search"
               >
                 <Search className="w-4 h-4" />
               </button>
 
               {searchOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-cream border border-paper shadow-classic-md z-50">
-                  <form onSubmit={handleSearch} className="p-3 border-b border-paper">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-gray-200 shadow-classic-md z-50">
+                  <form onSubmit={handleSearch} className="p-3 border-b border-gray-100">
                     <div className="flex items-center gap-2">
-                      <Search className="w-4 h-4 text-charcoal-light flex-shrink-0" />
+                      <Search className="w-4 h-4 text-charcoal-lighter flex-shrink-0" />
                       <input
                         autoFocus
                         type="text"
@@ -132,7 +131,7 @@ export default function Header() {
                       />
                       {searchValue && (
                         <button type="button" onClick={() => setSearchValue('')}>
-                          <X className="w-3.5 h-3.5 text-charcoal-light" />
+                          <X className="w-3.5 h-3.5 text-charcoal-lighter" />
                         </button>
                       )}
                     </div>
@@ -145,20 +144,21 @@ export default function Header() {
                           key={book.id}
                           to={`/product/${book.id}`}
                           onClick={() => { setSearchOpen(false); setSearchValue(''); }}
-                          className="flex items-start gap-3 px-4 py-3 hover:bg-cream-dark
-                                     border-b border-paper last:border-0 transition-colors"
+                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50
+                                     border-b border-gray-100 last:border-0 transition-colors"
                         >
-                          <div className="w-8 h-11 bg-forest-800 flex-shrink-0 flex items-center
-                                          justify-center text-cream text-xs font-serif">
+                          <div className="w-8 h-11 flex-shrink-0 flex items-center
+                                          justify-center text-white/40 text-xs font-serif"
+                               style={{ backgroundColor: book.coverColor }}>
                             ❧
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-serif text-charcoal leading-snug truncate">
                               {book.title}
                             </p>
-                            <p className="text-xs text-charcoal-light font-sans mt-0.5">{book.author}</p>
+                            <p className="text-xs text-charcoal-lighter font-sans mt-0.5">{book.author}</p>
                           </div>
-                          <span className="text-xs font-sans text-burgundy-700 font-bold flex-shrink-0 ml-auto pt-0.5">
+                          <span className="text-xs font-ui text-burgundy font-semibold flex-shrink-0 ml-auto pt-0.5">
                             {book.price.toFixed(2)} lei
                           </span>
                         </Link>
@@ -166,11 +166,11 @@ export default function Header() {
                       <Link
                         to={`/collections?search=${encodeURIComponent(searchValue)}`}
                         onClick={() => { setSearchOpen(false); setSearchValue(''); }}
-                        className="block px-4 py-2.5 text-xs font-sans text-forest-800 font-bold
-                                   uppercase tracking-widest hover:bg-cream-dark text-center
-                                   transition-colors border-t border-paper"
+                        className="block px-4 py-2.5 text-xs font-ui text-burgundy font-semibold
+                                   uppercase tracking-wide hover:bg-gray-50 text-center
+                                   transition-colors border-t border-gray-100"
                       >
-                        View all results
+                        View all results →
                       </Link>
                     </div>
                   )}
@@ -188,33 +188,37 @@ export default function Header() {
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setUserMenuOpen(v => !v)}
-                className="flex items-center gap-1 p-2 text-charcoal hover:text-forest-800 transition-colors"
+                className="flex items-center gap-1 p-2 text-charcoal-light hover:text-burgundy transition-colors"
               >
                 <User className="w-4 h-4" />
                 <ChevronDown className="w-3 h-3" />
               </button>
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-44 bg-cream border border-paper shadow-classic z-50">
-                  {['My Account', 'My Orders', 'Wishlist', 'Settings'].map(item => (
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-classic-md z-50">
+                  {[
+                    { label: 'My Account', to: '/account' },
+                    { label: 'My Orders', to: '/account/orders' },
+                    { label: 'Wishlist', to: '/account/wishlist' },
+                    { label: 'Settings', to: '/account/settings' },
+                  ].map(item => (
                     <Link
-                      key={item}
-                      to="#"
+                      key={item.label}
+                      to={item.to}
                       onClick={() => setUserMenuOpen(false)}
                       className="block px-4 py-2.5 text-sm font-sans text-charcoal
-                                 hover:bg-cream-dark hover:text-forest-800 transition-colors
-                                 border-b border-paper last:border-0"
+                                 hover:bg-gray-50 hover:text-burgundy transition-colors
+                                 border-b border-gray-100 last:border-0"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   ))}
-                  <Link
-                    to="#"
+                  <button
                     onClick={() => setUserMenuOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-sans text-burgundy-700
+                    className="w-full text-left block px-4 py-2.5 text-sm font-sans text-burgundy
                                hover:bg-burgundy-50 transition-colors"
                   >
                     Sign Out
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
@@ -223,16 +227,16 @@ export default function Header() {
             <Link
               to="/cart"
               className="relative flex items-center gap-2 px-4 py-2
-                         bg-forest-800 text-cream text-sm font-sans font-bold
-                         uppercase tracking-widest
-                         border border-forest-800
-                         hover:bg-forest-900 transition-colors duration-200"
+                         bg-burgundy text-white text-sm font-ui font-semibold
+                         uppercase tracking-wide
+                         border border-burgundy
+                         hover:bg-burgundy-800 transition-colors duration-200"
             >
               <ShoppingCart className="w-4 h-4" />
               <span className="hidden sm:inline">Cart</span>
               {cartCount > 0 && (
-                <span className="w-5 h-5 bg-gold text-forest-900 text-xs font-bold
-                                 flex items-center justify-center">
+                <span className="w-5 h-5 bg-white text-burgundy text-xs font-bold
+                                 flex items-center justify-center rounded-full">
                   {cartCount}
                 </span>
               )}
@@ -240,7 +244,7 @@ export default function Header() {
 
             {/* Mobile hamburger */}
             <button
-              className="lg:hidden p-2 text-charcoal hover:text-forest-800 transition-colors"
+              className="lg:hidden p-2 text-charcoal-light hover:text-burgundy transition-colors"
               onClick={() => setMobileOpen(v => !v)}
               aria-label="Toggle menu"
             >
@@ -252,28 +256,32 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-cream border-t border-paper shadow-classic-md">
-          <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1">
+        <div className="lg:hidden bg-white border-t border-gray-200 shadow-classic-md">
+          <nav className="max-w-7xl mx-auto px-4 py-3 space-y-0">
             {navLinks.map(link => (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`block px-4 py-3 text-sm font-sans uppercase tracking-widest
-                  transition-colors duration-200 border-b border-paper last:border-0
+                className={`block px-3 py-3 text-sm font-ui uppercase tracking-wide
+                  transition-colors duration-200 border-b border-gray-100 last:border-0
                   ${isActive(link.to)
-                    ? 'text-forest-800 font-bold'
-                    : 'text-charcoal hover:text-forest-800'
+                    ? 'text-burgundy font-semibold'
+                    : 'text-charcoal hover:text-burgundy'
                   }`}
               >
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/account"
+              className="block px-3 py-3 text-sm font-ui uppercase tracking-wide
+                text-charcoal hover:text-burgundy transition-colors"
+            >
+              My Account
+            </Link>
           </nav>
         </div>
       )}
-
-      {/* Bottom gold line */}
-      <div className="h-px bg-gold/30 w-full" />
     </header>
   );
 }

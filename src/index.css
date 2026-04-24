@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,8 +11,8 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Lato', 'Open Sans', system-ui, sans-serif;
-    background-color: #F5F1E8;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #FFFFFF;
     color: #2D3436;
     line-height: 1.75;
     -webkit-font-smoothing: antialiased;
@@ -31,10 +31,16 @@
     flex-direction: column;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  h1, h2 {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
     color: #2D3436;
-    line-height: 1.25;
+    line-height: 1.15;
+  }
+
+  h3, h4, h5, h6 {
+    font-family: 'Crimson Text', Georgia, serif;
+    color: #2D3436;
+    line-height: 1.3;
   }
 
   a { color: inherit; text-decoration: none; }
@@ -48,88 +54,63 @@
   /* Buttons */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
-           bg-forest-800 text-cream px-6 py-3
-           font-sans font-bold text-sm tracking-wide
-           border border-forest-800
-           transition-all duration-300
-           hover:bg-forest-900 hover:border-forest-900;
-    letter-spacing: 0.06em;
+           bg-burgundy text-white px-6 py-3
+           font-ui font-semibold text-sm
+           border border-burgundy
+           transition-all duration-200
+           hover:bg-burgundy-800 hover:border-burgundy-800;
+    letter-spacing: 0.04em;
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
-           bg-transparent text-forest-800 px-6 py-3
-           font-sans font-bold text-sm
-           border-2 border-forest-800
-           transition-all duration-300
-           hover:bg-forest-800 hover:text-cream;
-    letter-spacing: 0.06em;
-  }
-
-  .btn-burgundy {
-    @apply inline-flex items-center justify-center gap-2
-           bg-burgundy-700 text-cream px-6 py-3
-           font-sans font-bold text-sm
-           border border-burgundy-700
-           transition-all duration-300
-           hover:bg-burgundy-800 hover:border-burgundy-800;
-    letter-spacing: 0.06em;
+           bg-transparent text-burgundy px-6 py-3
+           font-ui font-semibold text-sm
+           border-2 border-burgundy
+           transition-all duration-200
+           hover:bg-burgundy hover:text-white;
+    letter-spacing: 0.04em;
   }
 
   .btn-ghost {
     @apply inline-flex items-center gap-1
-           text-burgundy-700 text-sm font-sans font-bold
+           text-burgundy text-sm font-ui font-medium
            border-b border-transparent
            transition-colors duration-200
-           hover:border-burgundy-700;
+           hover:border-burgundy;
   }
 
   /* Form fields */
   .field {
     @apply w-full px-4 py-3 bg-white
-           border border-paper-dark
+           border border-gray-200
            text-charcoal text-sm font-sans
            transition-colors duration-200
-           focus:outline-none focus:border-forest-800;
+           focus:outline-none focus:border-burgundy;
   }
 
   .field-label {
-    @apply block text-xs font-sans font-bold text-charcoal
+    @apply block text-xs font-ui font-semibold text-charcoal
            uppercase tracking-widest mb-2;
   }
 
   /* Cards */
-  .card-classic {
-    @apply bg-cream border border-paper
+  .card {
+    @apply bg-white border border-gray-200
            transition-shadow duration-300
            hover:shadow-classic-md;
   }
 
-  /* Section heading */
-  .section-heading {
-    @apply font-serif text-h2 text-charcoal;
-  }
-
-  /* Gold ornament line */
-  .ornament-line {
-    @apply flex items-center gap-3 my-4;
-  }
-  .ornament-line::before,
-  .ornament-line::after {
-    content: '';
-    @apply flex-1 h-px bg-gold;
-  }
-
   /* Classic badge */
-  .badge-classic {
+  .badge {
     @apply inline-block px-2 py-0.5
-           text-xs font-sans font-bold uppercase tracking-widest
+           text-xs font-ui font-semibold uppercase tracking-wide
            border;
   }
 
   /* Price text */
   .price {
-    @apply font-serif text-xl text-burgundy-700 font-semibold;
+    @apply font-serif text-xl text-burgundy font-semibold;
   }
 
   /* Section wrapper */
@@ -144,47 +125,49 @@
 
 /* ─── Utilities ───────────────────────────────────────────────────── */
 @layer utilities {
-  .font-serif-italic { font-family: 'EB Garamond', Georgia, serif; font-style: italic; }
+  .font-serif-italic { font-family: 'Crimson Text', Georgia, serif; font-style: italic; }
+  .font-quote-italic { font-family: 'Merriweather', Georgia, serif; font-style: italic; }
+  .font-display-normal { font-family: 'Playfair Display', Georgia, serif; }
 
   .text-reading { line-height: 1.75; }
 
-  .border-gold-b { border-bottom: 1px solid #B8860B; }
-  .border-gold-t { border-top: 1px solid #B8860B; }
+  .border-burgundy-b { border-bottom: 2px solid #8B3A3A; }
+  .border-burgundy-t { border-top: 2px solid #8B3A3A; }
 
   .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-  .scrollbar-thin::-webkit-scrollbar-track { background: #E8E6E1; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: #1B4332; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: #F4F4F5; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #8B3A3A; }
 }
 
 /* ─── Global scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #E8E6E1; }
-::-webkit-scrollbar-thumb { background: #1B4332; border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: #0D2219; }
+::-webkit-scrollbar-track { background: #F4F4F5; }
+::-webkit-scrollbar-thumb { background: #8B3A3A; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #7D3333; }
 
 /* ─── Range input ─────────────────────────────────────────────────── */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
-  background: #E8E6E1;
+  height: 3px;
+  background: #E5E7EB;
   outline: none;
   border-radius: 0;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px; height: 16px;
-  background: #1B4332;
+  background: #8B3A3A;
   cursor: pointer;
-  border: 2px solid #F5F1E8;
-  outline: 1px solid #1B4332;
+  border: 2px solid #FFFFFF;
+  outline: 1px solid #8B3A3A;
 }
 input[type="range"]::-moz-range-thumb {
   width: 16px; height: 16px;
-  background: #1B4332;
+  background: #8B3A3A;
   cursor: pointer;
-  border: 2px solid #F5F1E8;
-  outline: 1px solid #1B4332;
+  border: 2px solid #FFFFFF;
+  outline: 1px solid #8B3A3A;
 }
 
 /* ─── Transitions ─────────────────────────────────────────────────── */
@@ -195,14 +178,24 @@ input[type="range"]::-moz-range-thumb {
 
 .fade-in { animation: fadeIn 0.35s ease-out both; }
 
-/* ─── Ornamental elements ─────────────────────────────────────────── */
-.ornament-fleuron::before { content: '❧'; }
-.ornament-star::before    { content: '✦'; }
-.ornament-diamond::before { content: '◆'; }
-
 /* ─── Toast ───────────────────────────────────────────────────────── */
 @keyframes slideUp {
   from { transform: translateY(16px); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
 .toast-enter { animation: slideUp 0.25s ease-out both; }
+
+/* ─── Burgundy rule divider ───────────────────────────────────────── */
+.rule-burgundy {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.rule-burgundy::before,
+.rule-burgundy::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #D1D5DB;
+}

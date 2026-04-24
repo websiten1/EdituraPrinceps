@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingCart } from 'lucide-react';
-import { books, featuredCollections, testimonials } from '../data/books';
+import { books, testimonials } from '../data/books';
 import BookCard, { StarRow } from '../components/BookCard';
 import { useApp } from '../context/AppContext';
 
-/* ── Ornamental divider ──────────────────────────────────────────── */
-function GoldDivider({ symbol = '◆' }) {
+function Divider() {
   return (
-    <div className="flex items-center gap-3 my-2">
-      <div className="flex-1 h-px bg-gold/40" />
-      <span className="text-gold text-xs">{symbol}</span>
-      <div className="flex-1 h-px bg-gold/40" />
+    <div className="flex items-center gap-4 my-4">
+      <div className="flex-1 h-px bg-gray-200" />
+      <span className="text-burgundy-300 text-xs">◆</span>
+      <div className="flex-1 h-px bg-gray-200" />
     </div>
   );
 }
@@ -20,17 +19,13 @@ function SectionHeader({ eyebrow, title, centered = false }) {
   return (
     <div className={`mb-10 ${centered ? 'text-center' : ''}`}>
       {eyebrow && (
-        <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-3">
+        <p className="text-xs font-ui font-semibold text-burgundy uppercase tracking-wide mb-3">
           {eyebrow}
         </p>
       )}
-      <h2 className="font-serif text-h2 text-charcoal">{title}</h2>
+      <h2 className="font-display text-h2 text-charcoal">{title}</h2>
       <div className={`mt-3 ${centered ? 'flex justify-center' : ''}`}>
-        <div className="flex items-center gap-3">
-          <div className="h-px bg-gold/60 w-12" />
-          <span className="text-gold text-xs">◆</span>
-          <div className="h-px bg-gold/60 w-12" />
-        </div>
+        <div className="h-0.5 bg-burgundy w-12" />
       </div>
     </div>
   );
@@ -39,34 +34,32 @@ function SectionHeader({ eyebrow, title, centered = false }) {
 /* ── Hero ────────────────────────────────────────────────────────── */
 function Hero() {
   return (
-    <section className="bg-cream border-b border-paper">
+    <section className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
 
-        <p className="text-xs font-sans font-bold text-gold uppercase tracking-widest mb-8">
+        <p className="text-xs font-ui font-semibold text-burgundy uppercase tracking-widest mb-8">
           Est. 1999 · Iași, România
         </p>
 
-        {/* Ornamental rule */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <div className="h-px bg-gold/60 w-16" />
-          <span className="text-gold font-serif text-lg">❧</span>
-          <div className="h-px bg-gold/60 w-16" />
+        <div className="flex items-center justify-center gap-6 mb-8">
+          <div className="h-px bg-gray-200 w-20" />
+          <span className="text-burgundy-300 font-serif text-xl">❧</span>
+          <div className="h-px bg-gray-200 w-20" />
         </div>
 
-        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl text-charcoal
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl text-charcoal
                        leading-tight mb-4">
           Prince's Multimedia
         </h1>
 
-        <p className="font-serif text-xl sm:text-2xl text-charcoal-light italic mb-2">
+        <p className="font-serif-italic text-2xl sm:text-3xl text-charcoal-light mb-2">
           Treasures of Romanian Literary Heritage
         </p>
 
-        {/* Ornamental rule */}
-        <div className="flex items-center justify-center gap-4 mt-6 mb-10">
-          <div className="h-px bg-gold/60 w-16" />
-          <span className="text-gold font-serif text-lg">❧</span>
-          <div className="h-px bg-gold/60 w-16" />
+        <div className="flex items-center justify-center gap-6 mt-6 mb-10">
+          <div className="h-px bg-gray-200 w-20" />
+          <span className="text-burgundy-300 font-serif text-xl">❧</span>
+          <div className="h-px bg-gray-200 w-20" />
         </div>
 
         <p className="text-base font-sans text-charcoal-light max-w-xl mx-auto leading-reading mb-10">
@@ -83,13 +76,12 @@ function Hero() {
           </Link>
         </div>
 
-        {/* Bottom ornament */}
         <div className="flex items-center justify-center gap-4 mt-16">
-          <div className="h-px bg-paper-dark w-24" />
-          <span className="text-charcoal-lighter font-sans text-xs uppercase tracking-widest">
+          <div className="h-px bg-gray-100 w-24" />
+          <span className="text-charcoal-lighter font-ui text-xs uppercase tracking-widest">
             25 years of literary excellence
           </span>
-          <div className="h-px bg-paper-dark w-24" />
+          <div className="h-px bg-gray-100 w-24" />
         </div>
       </div>
     </section>
@@ -105,6 +97,7 @@ function FeaturedCollections() {
       desc:     'From Eminescu to the present day — the essential verse of Romanian literature, curated for the discerning reader.',
       link:     '/collections?category=Poetry',
       count:    14,
+      color:    '#6B4C4C',
     },
     {
       title:    'Philosophy & Thought',
@@ -112,6 +105,7 @@ function FeaturedCollections() {
       desc:     'The foundational philosophical works that shaped Romanian intellectual life, in authoritative editions.',
       link:     '/collections?category=Philosophy',
       count:    4,
+      color:    '#2C3E50',
     },
     {
       title:    'Literary Criticism',
@@ -119,11 +113,12 @@ function FeaturedCollections() {
       desc:     'Critical studies and essays by Romania\'s foremost literary scholars — essential reading for any serious student.',
       link:     '/collections?category=Literary Criticism',
       count:    6,
+      color:    '#8B6F47',
     },
   ];
 
   return (
-    <section className="section bg-cream border-b border-paper">
+    <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
         <SectionHeader eyebrow="Curated with Care" title="Our Collections" />
 
@@ -131,24 +126,22 @@ function FeaturedCollections() {
           {colData.map(col => (
             <div
               key={col.title}
-              className="bg-cream border-2 border-paper hover:border-forest-800
+              className="bg-white border border-gray-200 hover:border-burgundy
                          transition-colors duration-300 p-7 flex flex-col
-                         relative overflow-hidden group"
+                         relative overflow-hidden group hover:shadow-classic-md"
             >
-              {/* Gold accent bottom bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold/40
-                              group-hover:bg-gold transition-colors duration-300" />
+              <div className="w-10 h-1 mb-4 transition-all duration-300 group-hover:w-full"
+                   style={{ backgroundColor: col.color }} />
 
-              <p className="text-xs font-sans text-gold uppercase tracking-widest mb-1">
+              <p className="text-xs font-ui text-burgundy uppercase tracking-wide mb-1">
                 {col.subtitle}
               </p>
-              <h3 className="font-serif text-h3 text-charcoal mb-3">{col.title}</h3>
-              <GoldDivider />
-              <p className="text-sm font-sans text-charcoal-light leading-reading flex-1 mt-3">
+              <h3 className="font-display text-xl text-charcoal mb-3">{col.title}</h3>
+              <p className="text-sm font-sans text-charcoal-light leading-reading flex-1">
                 {col.desc}
               </p>
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-paper">
-                <span className="text-xs font-sans text-charcoal-lighter uppercase tracking-widest">
+              <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+                <span className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide">
                   {col.count} titles
                 </span>
                 <Link to={col.link} className="btn-ghost text-sm">
@@ -167,7 +160,7 @@ function FeaturedCollections() {
 function LatestReleases() {
   const latest = books.slice(0, 8);
   return (
-    <section className="section bg-cream-dark border-b border-paper">
+    <section className="section bg-white border-b border-gray-100">
       <div className="container">
         <div className="flex items-end justify-between mb-10">
           <SectionHeader eyebrow="Recently Published" title="Latest Releases" />
@@ -194,7 +187,7 @@ function Bestsellers() {
   const { addToCart } = useApp();
 
   return (
-    <section className="section bg-cream border-b border-paper">
+    <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
         <SectionHeader eyebrow="Most Sought After" title="Bestsellers" />
 
@@ -202,46 +195,43 @@ function Bestsellers() {
           {best.map((book, i) => (
             <div
               key={book.id}
-              className="flex items-center gap-6 py-5 border-b border-paper
-                         last:border-0 hover:bg-cream-dark transition-colors duration-200 px-4 -mx-4"
+              className="flex items-center gap-6 py-5 border-b border-gray-100
+                         last:border-0 hover:bg-white transition-colors duration-200 px-4 -mx-4 rounded"
             >
-              {/* Rank */}
               <div className="w-8 flex-shrink-0 text-center">
-                <span className="font-serif text-2xl text-gold/50">{i + 1}</span>
+                <span className="font-display text-2xl text-burgundy-200">{i + 1}</span>
               </div>
 
-              {/* Mini cover */}
               <Link to={`/product/${book.id}`} className="flex-shrink-0">
-                <div className="w-14 h-20 bg-forest-800 flex items-center
-                                justify-center text-cream/20 text-2xl font-serif">
+                <div className="w-14 h-20 flex items-center
+                                justify-center text-white/20 text-2xl font-serif"
+                     style={{ backgroundColor: book.coverColor }}>
                   ❧
                 </div>
               </Link>
 
-              {/* Info */}
               <div className="flex-1 min-w-0">
                 <Link to={`/product/${book.id}`}>
-                  <h3 className="font-serif text-base text-charcoal hover:text-forest-800
+                  <h3 className="font-serif text-base text-charcoal hover:text-burgundy
                                  transition-colors leading-snug">
                     {book.title}
                   </h3>
                 </Link>
-                <p className="text-xs font-sans text-charcoal-light uppercase tracking-wider mt-0.5">
+                <p className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mt-0.5">
                   {book.author}
                 </p>
                 <StarRow rating={book.rating} />
               </div>
 
-              {/* Price + action */}
               <div className="flex-shrink-0 text-right">
-                <p className="font-serif text-lg text-burgundy-700 font-semibold mb-2">
+                <p className="font-serif text-lg text-burgundy font-semibold mb-2">
                   {book.price.toFixed(2)} lei
                 </p>
                 <button
                   onClick={() => addToCart(book)}
-                  className="flex items-center gap-1.5 text-xs font-sans font-bold
-                             text-forest-800 border border-forest-800 px-3 py-1.5
-                             hover:bg-forest-800 hover:text-cream transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-ui font-semibold
+                             text-burgundy border border-burgundy px-3 py-1.5
+                             hover:bg-burgundy hover:text-white transition-colors"
                 >
                   <ShoppingCart className="w-3 h-3" />
                   Add
@@ -258,27 +248,27 @@ function Bestsellers() {
 /* ── Statistics ──────────────────────────────────────────────────── */
 function Statistics() {
   const stats = [
-    { value: '500+',    label: 'Published Titles',   sub: 'Across all categories' },
-    { value: '10,000+', label: 'Readers Served',     sub: 'Across Romania & beyond' },
+    { value: '500+',    label: 'Published Titles',    sub: 'Across all categories' },
+    { value: '10,000+', label: 'Readers Served',      sub: 'Across Romania & beyond' },
     { value: '25+',     label: 'Years of Excellence', sub: 'Established 1999' },
   ];
 
   return (
-    <section className="bg-forest-800 border-b border-forest-700">
+    <section className="bg-charcoal border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-0">
           {stats.map((s, i) => (
             <div
               key={s.label}
               className={`text-center py-10 px-8
-                ${i < stats.length - 1 ? 'border-b sm:border-b-0 sm:border-r border-forest-700' : ''}`}
+                ${i < stats.length - 1 ? 'border-b sm:border-b-0 sm:border-r border-gray-700' : ''}`}
             >
-              <div className="text-5xl font-serif text-cream mb-2">{s.value}</div>
-              <div className="h-px bg-gold/40 w-12 mx-auto my-3" />
-              <div className="text-base font-sans font-bold text-cream/90 uppercase tracking-widest mb-1">
+              <div className="text-5xl font-display text-white mb-2">{s.value}</div>
+              <div className="h-0.5 bg-burgundy w-10 mx-auto my-3" />
+              <div className="text-sm font-ui font-semibold text-white/80 uppercase tracking-wide mb-1">
                 {s.label}
               </div>
-              <div className="text-sm font-sans text-cream/50 italic">{s.sub}</div>
+              <div className="text-sm font-sans text-white/40 italic">{s.sub}</div>
             </div>
           ))}
         </div>
@@ -290,7 +280,7 @@ function Statistics() {
 /* ── Testimonials ────────────────────────────────────────────────── */
 function Testimonials() {
   return (
-    <section className="section bg-cream-dark border-b border-paper">
+    <section className="section bg-white border-b border-gray-100">
       <div className="container">
         <SectionHeader eyebrow="Reader Voices" title="What Our Readers Say" centered />
 
@@ -298,19 +288,25 @@ function Testimonials() {
           {testimonials.map(t => (
             <div
               key={t.id}
-              className="bg-cream border border-paper p-7
+              className="bg-gray-50 border border-gray-200 p-7
                          hover:shadow-classic transition-shadow duration-300"
             >
-              <div className="text-gold font-serif text-4xl leading-none mb-4 opacity-40">"</div>
-              <p className="font-serif-italic text-base text-charcoal leading-reading mb-6">
+              <div className="text-burgundy-200 font-display text-5xl leading-none mb-4">"</div>
+              <p className="font-quote text-sm text-charcoal leading-reading mb-6 italic">
                 {t.text}
               </p>
-              <GoldDivider symbol="◆" />
-              <div className="mt-4">
-                <p className="font-sans font-bold text-sm text-charcoal uppercase tracking-widest">
-                  {t.name}
-                </p>
-                <p className="font-sans text-xs text-charcoal-light mt-0.5">{t.role}</p>
+              <div className="h-px bg-gray-200 mb-4" />
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-burgundy text-white flex items-center justify-center
+                                text-xs font-ui font-semibold flex-shrink-0">
+                  {t.avatar}
+                </div>
+                <div>
+                  <p className="font-ui font-semibold text-sm text-charcoal uppercase tracking-wide">
+                    {t.name}
+                  </p>
+                  <p className="font-sans text-xs text-charcoal-lighter mt-0.5">{t.role}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -322,9 +318,9 @@ function Testimonials() {
 
 /* ── Newsletter ──────────────────────────────────────────────────── */
 function Newsletter() {
-  const [email, setEmail]   = useState('');
-  const [done, setDone]     = useState(false);
-  const [error, setError]   = useState('');
+  const [email, setEmail] = useState('');
+  const [done, setDone]   = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -336,22 +332,22 @@ function Newsletter() {
   };
 
   return (
-    <section className="section bg-forest-950 border-b border-forest-900">
+    <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px bg-gold/40 w-12" />
-            <span className="text-gold font-serif text-lg">❧</span>
-            <div className="h-px bg-gold/40 w-12" />
+          <div className="flex items-center justify-center gap-6 mb-6">
+            <div className="h-px bg-gray-200 w-16" />
+            <span className="text-burgundy-300 font-serif text-xl">❧</span>
+            <div className="h-px bg-gray-200 w-16" />
           </div>
-          <h2 className="font-serif text-h2 text-cream mb-3">Subscribe to Our Newsletter</h2>
-          <p className="font-sans text-sm text-cream/60 leading-reading mb-8">
+          <h2 className="font-display text-h2 text-charcoal mb-3">Subscribe to Our Newsletter</h2>
+          <p className="font-sans text-sm text-charcoal-light leading-reading mb-8">
             Receive news of new publications, literary notes, and exclusive offers from
             Prince's Multimedia — delivered with care to your inbox.
           </p>
 
           {done ? (
-            <p className="font-serif-italic text-gold text-lg">
+            <p className="font-quote text-burgundy text-lg italic">
               Thank you. We look forward to corresponding with you.
             </p>
           ) : (
@@ -361,15 +357,16 @@ function Newsletter() {
                 value={email}
                 onChange={e => { setEmail(e.target.value); setError(''); }}
                 placeholder="Your email address"
-                className={`flex-1 px-4 py-3 bg-forest-900 border text-sm font-sans
-                            text-cream placeholder-cream/30
-                            focus:outline-none focus:border-gold transition-colors
-                            ${error ? 'border-burgundy-600' : 'border-forest-700'}`}
+                className={`flex-1 px-4 py-3 bg-white border text-sm font-sans
+                            text-charcoal placeholder-charcoal-lighter
+                            focus:outline-none focus:border-burgundy transition-colors
+                            border-r-0
+                            ${error ? 'border-burgundy' : 'border-gray-200'}`}
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-burgundy-700 text-cream text-sm font-sans font-bold
-                           uppercase tracking-widest border border-burgundy-700
+                className="px-6 py-3 bg-burgundy text-white text-sm font-ui font-semibold
+                           uppercase tracking-wide border border-burgundy
                            hover:bg-burgundy-800 transition-colors duration-200 whitespace-nowrap"
               >
                 Subscribe
@@ -377,9 +374,9 @@ function Newsletter() {
             </form>
           )}
           {error && (
-            <p className="text-burgundy-400 text-xs font-sans mt-2">{error}</p>
+            <p className="text-burgundy text-xs font-sans mt-2">{error}</p>
           )}
-          <p className="text-xs font-sans text-cream/30 mt-4">
+          <p className="text-xs font-sans text-charcoal-lighter mt-4">
             Your privacy is respected. Unsubscribe at any time.
           </p>
         </div>

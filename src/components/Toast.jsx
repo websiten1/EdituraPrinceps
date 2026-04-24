@@ -2,9 +2,9 @@ import { X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const styles = {
-  success: { bar: 'bg-forest-800', text: 'text-forest-800', bg: 'bg-cream border-forest-800' },
-  error:   { bar: 'bg-burgundy-700', text: 'text-burgundy-700', bg: 'bg-cream border-burgundy-700' },
-  info:    { bar: 'bg-gold', text: 'text-gold', bg: 'bg-cream border-gold' },
+  success: { bar: 'bg-forest-800',  text: 'text-forest-800',  bg: 'bg-white border-gray-200' },
+  error:   { bar: 'bg-burgundy',    text: 'text-burgundy',    bg: 'bg-white border-gray-200' },
+  info:    { bar: 'bg-charcoal',    text: 'text-charcoal',    bg: 'bg-white border-gray-200' },
 };
 
 export default function ToastContainer() {
@@ -21,7 +21,7 @@ export default function ToastContainer() {
           >
             <div className={`w-1 flex-shrink-0 ${s.bar}`} />
             <div className="flex items-center justify-between gap-3 px-4 py-3 flex-1">
-              <p className={`text-sm font-sans font-bold ${s.text}`}>{toast.message}</p>
+              <p className={`text-sm font-sans font-medium ${s.text}`}>{toast.message}</p>
               <button onClick={() => removeToast(toast.id)} className="text-charcoal-lighter hover:text-charcoal flex-shrink-0">
                 <X className="w-3.5 h-3.5" />
               </button>

@@ -138,19 +138,42 @@ export default function Footer() {
             <h4 className="font-display text-lg text-charcoal mb-1">Contact</h4>
             <div className="h-px bg-gray-200 w-full mb-4" />
             <dl className="space-y-3">
-              {[
-                { label: 'Adresă',   value: 'Str. Literaturii 12, Iași, România' },
-                { label: 'Telefon',  value: '+40 232 XXX XXX' },
-                { label: 'Email',    value: 'contact@edituraprinceps.ro' },
-                { label: 'Program',  value: 'Lun–Vin 9:00–18:00' },
-              ].map(item => (
-                <div key={item.label}>
-                  <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">
-                    {item.label}
-                  </dt>
-                  <dd className="text-sm font-sans text-charcoal">{item.value}</dd>
-                </div>
-              ))}
+              <div>
+                <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">Adresă</dt>
+                <dd className="text-sm font-sans text-charcoal">
+                  <a href="https://maps.google.com/?q=Iași+Strada+Păcurari+4+700511+România"
+                     target="_blank" rel="noreferrer"
+                     className="hover:text-burgundy transition-colors duration-200">
+                    Strada Păcurari nr. 4, Iași, 700511
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">Telefon</dt>
+                <dd className="text-sm font-sans text-charcoal space-y-0.5">
+                  <a href="tel:0332409829" className="block hover:text-burgundy transition-colors duration-200">0332/409829</a>
+                  <a href="tel:0332409830" className="block hover:text-burgundy transition-colors duration-200">0332/409830 (Fax)</a>
+                  <a href="tel:0745404435" className="block hover:text-burgundy transition-colors duration-200">0745404435</a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">Email</dt>
+                <dd className="text-sm font-sans text-charcoal">
+                  <a href="mailto:princepsmultimedia@gmail.com"
+                     className="hover:text-burgundy transition-colors duration-200">
+                    princepsmultimedia@gmail.com
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mb-0.5">Website</dt>
+                <dd className="text-sm font-sans text-charcoal">
+                  <a href="http://www.princepsmultimedia.ro" target="_blank" rel="noreferrer"
+                     className="hover:text-burgundy transition-colors duration-200">
+                    www.princepsmultimedia.ro
+                  </a>
+                </dd>
+              </div>
             </dl>
           </div>
         </div>

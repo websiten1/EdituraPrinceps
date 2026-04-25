@@ -123,22 +123,23 @@ function ContactInfo() {
       {[
         {
           heading: 'Adresă',
-          lines: ['Str. Literaturii, Nr. 12', 'Iași, 700XXX', 'România'],
-          action: { label: 'Vezi pe Google Maps →', href: 'https://maps.google.com' },
+          lines: ['Strada Păcurari nr. 4', 'Iași, Cod Poștal: 700511', 'România'],
+          action: { label: 'Vezi pe Google Maps →', href: 'https://maps.google.com/?q=Iași+Strada+Păcurari+4+700511+România' },
         },
         {
           heading: 'Telefon',
-          lines: ['+40 232 XXX XXX (Birou)', '+40 7XX XXX XXX (Mobil)'],
-          action: { label: 'Sună-ne →', href: 'tel:+40232XXXXXX' },
+          lines: ['0332/409829', '0332/409830 (Fax)', '0745404435 – Director: Filomena Corbu'],
+          action: { label: 'Sună-ne →', href: 'tel:0332409829' },
         },
         {
           heading: 'Poștă Electronică',
-          lines: ['contact@edituraprinceps.ro', 'comenzi@edituraprinceps.ro'],
-          action: { label: 'Trimite email →', href: 'mailto:contact@edituraprinceps.ro' },
+          lines: ['princepsmultimedia@gmail.com'],
+          action: { label: 'Trimite email →', href: 'mailto:princepsmultimedia@gmail.com' },
         },
         {
-          heading: 'Program de Lucru',
-          lines: ['Luni – Vineri: 9:00 – 18:00', 'Sâmbătă: 10:00 – 14:00', 'Duminică: Închis'],
+          heading: 'Website',
+          lines: ['www.princepsmultimedia.ro'],
+          action: { label: 'Deschide site-ul →', href: 'http://www.princepsmultimedia.ro' },
         },
       ].map(card => (
         <div key={card.heading} className="bg-white border border-gray-200 p-5">
@@ -164,8 +165,8 @@ function ContactInfo() {
       <div className="bg-gray-100 h-44 border border-gray-200 flex items-center justify-center relative overflow-hidden">
         <div className="text-center">
           <p className="font-ui text-xs text-charcoal-lighter uppercase tracking-wide mb-1">Locație</p>
-          <p className="font-serif text-lg text-charcoal-light italic">Iași, România</p>
-          <a href="https://maps.google.com" target="_blank" rel="noreferrer"
+          <p className="font-serif text-lg text-charcoal-light italic">Strada Păcurari nr. 4, Iași</p>
+          <a href="https://maps.google.com/?q=Iași+Strada+Păcurari+4+700511+România" target="_blank" rel="noreferrer"
              className="text-xs font-ui text-burgundy hover:underline uppercase tracking-wide mt-1 block">
             Deschide Google Maps →
           </a>

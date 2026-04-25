@@ -1,29 +1,31 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { books, testimonials } from '../data/books';
-import BookCard, { StarRow } from '../components/BookCard';
-import { useApp } from '../context/AppContext';
+import { LandscapeCard } from '../components/BookCard';
 
-function Divider() {
+/* ── Helpers ─────────────────────────────────────────────────────────── */
+function OrnamentLine() {
   return (
-    <div className="flex items-center gap-4 my-4">
-      <div className="flex-1 h-px bg-gray-200" />
-      <span className="text-burgundy-300 text-xs">◆</span>
-      <div className="flex-1 h-px bg-gray-200" />
+    <div className="flex items-center justify-center gap-4">
+      <div className="h-px bg-gray-200 w-16 sm:w-24" />
+      <span className="text-burgundy font-serif text-xl select-none leading-none">❧</span>
+      <div className="h-px bg-gray-200 w-16 sm:w-24" />
     </div>
   );
 }
 
-function SectionHeader({ eyebrow, title, centered = false }) {
+function SectionHeader({ eyebrow, title, subtitle, centered = false }) {
   return (
-    <div className={`mb-10 ${centered ? 'text-center' : ''}`}>
+    <div className={centered ? 'text-center' : ''}>
       {eyebrow && (
-        <p className="text-xs font-ui font-semibold text-burgundy uppercase tracking-wide mb-3">
+        <p className="text-xs font-ui font-semibold text-burgundy uppercase tracking-widest mb-2">
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-h2 text-charcoal">{title}</h2>
+      <h2 className="font-display text-h2 text-charcoal leading-tight">{title}</h2>
+      {subtitle && (
+        <p className="text-sm font-sans text-charcoal-light mt-1.5">{subtitle}</p>
+      )}
       <div className={`mt-3 ${centered ? 'flex justify-center' : ''}`}>
         <div className="h-0.5 bg-burgundy w-12" />
       </div>
@@ -31,226 +33,226 @@ function SectionHeader({ eyebrow, title, centered = false }) {
   );
 }
 
-/* ── Hero ────────────────────────────────────────────────────────── */
+function BookGrid({ items }) {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+      {items.map(book => <LandscapeCard key={book.id} book={book} />)}
+    </div>
+  );
+}
+
+/* ── 1. Hero ─────────────────────────────────────────────────────────── */
 function Hero() {
   return (
     <section className="bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 text-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 md:py-36 text-center">
 
-        <p className="text-xs font-ui font-semibold text-burgundy uppercase tracking-widest mb-8">
+        <p className="font-ui text-xs text-burgundy uppercase tracking-widest font-semibold mb-7">
           Est. 1999 · Iași, România
         </p>
 
-        <div className="flex items-center justify-center gap-6 mb-8">
-          <div className="h-px bg-gray-200 w-20" />
-          <span className="text-burgundy-300 font-serif text-xl">❧</span>
-          <div className="h-px bg-gray-200 w-20" />
-        </div>
+        <OrnamentLine />
 
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl text-charcoal
-                       leading-tight mb-4">
-          Editura Princeps
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-charcoal
+                       leading-none tracking-tight mt-8 mb-5">
+          Prince's Multimedia
         </h1>
 
-        <p className="font-serif-italic text-2xl sm:text-3xl text-charcoal-light mb-2">
-          Comorile Patrimoniului Literar Român
+        <p className="font-serif text-xl sm:text-2xl text-charcoal-light italic mb-7">
+          Colecția Patrimoniului Literar Român
         </p>
 
-        <div className="flex items-center justify-center gap-6 mt-6 mb-10">
-          <div className="h-px bg-gray-200 w-20" />
-          <span className="text-burgundy-300 font-serif text-xl">❧</span>
-          <div className="h-px bg-gray-200 w-20" />
-        </div>
+        <OrnamentLine />
 
-        <p className="text-base font-sans text-charcoal-light max-w-xl mx-auto leading-reading mb-10">
-          O distinsă editură română care selectează cele mai valoroase opere de poezie,
-          proză, filozofie și critică literară din 1999.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/collections" className="btn-primary px-8 py-3.5">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+          <Link to="/collections" className="btn-primary px-8 py-3.5 w-full sm:w-auto text-center">
             Explorează Colecția
           </Link>
-          <Link to="/about" className="btn-ghost text-base">
+          <Link to="/about"
+                className="font-ui text-sm text-burgundy uppercase tracking-wide font-semibold
+                           border-b border-transparent hover:border-burgundy transition-colors
+                           w-full sm:w-auto text-center py-2">
             Povestea Noastră →
           </Link>
         </div>
 
-        <div className="flex items-center justify-center gap-4 mt-16">
-          <div className="h-px bg-gray-100 w-24" />
-          <span className="text-charcoal-lighter font-ui text-xs uppercase tracking-widest">
-            25 de ani de excelență literară
-          </span>
-          <div className="h-px bg-gray-100 w-24" />
-        </div>
+        <p className="font-ui text-xs text-charcoal-lighter uppercase tracking-widest mt-14">
+          25 de ani de excelență literară
+        </p>
       </div>
     </section>
   );
 }
 
-/* ── Colecții în Evidență ─────────────────────────────────────────── */
-function FeaturedCollections() {
-  const colData = [
-    {
-      title:    'Poezia Română',
-      subtitle: 'Voci ale Unei Națiuni',
-      desc:     'De la Eminescu până în zilele noastre — versurile esențiale ale literaturii române, selectate pentru cititorul avizat.',
-      link:     '/collections?category=Poezie',
-      count:    14,
-      color:    '#6B4C4C',
-    },
-    {
-      title:    'Filozofie și Gândire',
-      subtitle: 'Moștenire Intelectuală Română',
-      desc:     'Operele filozofice fundamentale care au modelat viața intelectuală românească, în ediții de referință.',
-      link:     '/collections?category=Filozofie',
-      count:    4,
-      color:    '#2C3E50',
-    },
-    {
-      title:    'Critică Literară',
-      subtitle: 'Erudiție și Analiză',
-      desc:     'Studii critice și eseuri semnate de cei mai importanți cercetători literari români — lectură esențială pentru orice student serios.',
-      link:     '/collections?category=Critică Literară',
-      count:    6,
-      color:    '#8B6F47',
-    },
-  ];
-
+/* ── 2. Banner Colecție Specială ──────────────────────────────────────── */
+function PromoBanner() {
   return (
-    <section className="section bg-gray-50 border-b border-gray-100">
-      <div className="container">
-        <SectionHeader eyebrow="Selectate cu Grijă" title="Colecțiile Noastre" />
+    <section className="border-b border-gray-100" style={{ backgroundColor: '#FAF6F0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-8 items-center">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {colData.map(col => (
-            <div
-              key={col.title}
-              className="bg-white border border-gray-200 hover:border-burgundy
-                         transition-colors duration-300 p-7 flex flex-col
-                         relative overflow-hidden group hover:shadow-classic-md"
-            >
-              <div className="w-10 h-1 mb-4 transition-all duration-300 group-hover:w-full"
-                   style={{ backgroundColor: col.color }} />
+          {/* Text */}
+          <div className="sm:col-span-3">
+            <p className="font-ui text-xs text-burgundy uppercase tracking-widest font-semibold mb-3">
+              Colecția Specială · 2024
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-charcoal leading-tight mb-3">
+              Patrimoniul Literar Român
+            </h2>
+            <div className="h-0.5 bg-burgundy w-10 mb-4" />
+            <p className="font-serif text-base sm:text-lg text-charcoal-light leading-reading italic mb-6">
+              Titluri reprezentative care au definit literatura română din ultimul secol —
+              ediții de referință cu prezentări erudite.
+            </p>
+            <Link to="/collections" className="btn-primary px-6 py-2.5 inline-flex">
+              Descoperă mai mult
+            </Link>
+          </div>
 
-              <p className="text-xs font-ui text-burgundy uppercase tracking-wide mb-1">
-                {col.subtitle}
-              </p>
-              <h3 className="font-display text-xl text-charcoal mb-3">{col.title}</h3>
-              <p className="text-sm font-sans text-charcoal-light leading-reading flex-1">
-                {col.desc}
-              </p>
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-                <span className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide">
-                  {col.count} titluri
-                </span>
-                <Link to={col.link} className="btn-ghost text-sm">
-                  Răsfoi →
-                </Link>
-              </div>
-            </div>
-          ))}
+          {/* Mini coperte decorative */}
+          <div className="hidden sm:grid sm:col-span-2 grid-cols-3 gap-2">
+            {books.slice(0, 3).map(b => (
+              <Link key={b.id} to={`/product/${b.id}`} className="group block">
+                <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center"
+                     style={{ backgroundColor: b.coverColor }}>
+                  <span className="font-serif text-white/10 text-3xl">❧</span>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
+                  <div className="absolute inset-x-2 top-2 border-t border-white/10 pointer-events-none" />
+                  <div className="absolute inset-x-2 bottom-2 border-b border-white/10 pointer-events-none" />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ── Apariții Recente ────────────────────────────────────────────── */
+/* ── 3. Apariții Recente ──────────────────────────────────────────────── */
 function LatestReleases() {
   const latest = books.slice(0, 8);
   return (
     <section className="section bg-white border-b border-gray-100">
       <div className="container">
-        <div className="flex items-end justify-between mb-10">
-          <SectionHeader eyebrow="Publicate Recent" title="Apariții Recente" />
-          <Link to="/collections" className="btn-ghost hidden sm:flex">
+        <div className="flex items-end justify-between mb-8 gap-4">
+          <SectionHeader
+            eyebrow="Publicate Recent"
+            title="Apariții Recente"
+            subtitle="Noile titluri din colecția noastră"
+          />
+          <Link to="/collections" className="btn-ghost hidden sm:flex shrink-0">
+            Vezi toate →
+          </Link>
+        </div>
+        <BookGrid items={latest} />
+        <div className="mt-8 text-center sm:hidden">
+          <Link to="/collections" className="btn-ghost text-sm">
             Vezi toate titlurile →
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {latest.map(book => <BookCard key={book.id} book={book} />)}
-        </div>
-        <div className="text-center mt-10">
-          <Link to="/collections" className="btn-primary px-8">
-            Vezi Catalogul Complet
-          </Link>
-        </div>
       </div>
     </section>
   );
 }
 
-/* ── Bestselleri ─────────────────────────────────────────────────── */
-function Bestsellers() {
-  const best = books.filter(b => b.bestseller);
-  const { addToCart } = useApp();
+/* ── 4. Colecția Clasicilor (banner + cărți) ──────────────────────────── */
+function FeaturedCategory() {
+  const prozaBooks = books.filter(b => b.category === 'Proză');
+  const display = prozaBooks.length >= 4 ? prozaBooks.slice(0, 8) : books.slice(8, 16);
 
   return (
-    <section className="section bg-gray-50 border-b border-gray-100">
-      <div className="container">
-        <SectionHeader eyebrow="Cele Mai Căutate" title="Bestselleri" />
+    <section className="border-b border-gray-100">
+      {/* Banner întunecat */}
+      <div className="bg-charcoal">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <div className="max-w-2xl">
+            <p className="font-ui text-xs text-burgundy-300 uppercase tracking-widest font-semibold mb-3">
+              Colecția Lunii
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-white leading-tight mb-3">
+              Colecția Clasicilor Români
+            </h2>
+            <div className="h-0.5 bg-burgundy w-10 mb-4" />
+            <p className="font-serif text-base text-white/50 leading-reading italic mb-6">
+              Opere fundamentale ale prozei românești — de la romanele interbelice
+              până la capodoperele contemporane.
+            </p>
+            <Link to="/collections?category=Proză"
+                  className="inline-flex items-center gap-2
+                             border border-white/30 text-white text-xs font-ui font-semibold
+                             uppercase tracking-wide px-5 py-2.5
+                             hover:bg-white hover:text-charcoal transition-colors duration-200">
+              Răsfoiește Proza →
+            </Link>
+          </div>
+        </div>
+      </div>
 
-        <div className="max-w-3xl">
-          {best.map((book, i) => (
-            <div
-              key={book.id}
-              className="flex items-center gap-6 py-5 border-b border-gray-100
-                         last:border-0 hover:bg-white transition-colors duration-200 px-4 -mx-4 rounded"
-            >
-              <div className="w-8 flex-shrink-0 text-center">
-                <span className="font-display text-2xl text-burgundy-200">{i + 1}</span>
-              </div>
-
-              <Link to={`/product/${book.id}`} className="flex-shrink-0">
-                <div className="w-14 h-20 flex items-center
-                                justify-center text-white/20 text-2xl font-serif"
-                     style={{ backgroundColor: book.coverColor }}>
-                  ❧
-                </div>
-              </Link>
-
-              <div className="flex-1 min-w-0">
-                <Link to={`/product/${book.id}`}>
-                  <h3 className="font-serif text-base text-charcoal hover:text-burgundy
-                                 transition-colors leading-snug">
-                    {book.title}
-                  </h3>
-                </Link>
-                <p className="text-xs font-ui text-charcoal-lighter uppercase tracking-wide mt-0.5">
-                  {book.author}
-                </p>
-                <StarRow rating={book.rating} />
-              </div>
-
-              <div className="flex-shrink-0 text-right">
-                <p className="font-serif text-lg text-burgundy font-semibold mb-2">
-                  {book.price.toFixed(2)} lei
-                </p>
-                <button
-                  onClick={() => addToCart(book)}
-                  className="flex items-center gap-1.5 text-xs font-ui font-semibold
-                             text-burgundy border border-burgundy px-3 py-1.5
-                             hover:bg-burgundy hover:text-white transition-colors"
-                >
-                  <ShoppingCart className="w-3 h-3" />
-                  Adaugă
-                </button>
-              </div>
-            </div>
-          ))}
+      {/* Grila de cărți */}
+      <div className="bg-gray-50 py-10 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BookGrid items={display} />
         </div>
       </div>
     </section>
   );
 }
 
-/* ── Statistici ──────────────────────────────────────────────────── */
+/* ── 5. Bestselleri ───────────────────────────────────────────────────── */
+function Bestsellers() {
+  const best = books.filter(b => b.bestseller);
+  const rest  = books.filter(b => !b.bestseller);
+  const display = [...best, ...rest].slice(0, 8);
+
+  return (
+    <section className="section bg-white border-b border-gray-100">
+      <div className="container">
+        <div className="flex items-end justify-between mb-8 gap-4">
+          <SectionHeader
+            eyebrow="Cele Mai Căutate"
+            title="Bestselleri Săptămânii"
+          />
+          <Link to="/collections" className="btn-ghost hidden sm:flex shrink-0">
+            Vezi toate →
+          </Link>
+        </div>
+        <BookGrid items={display} />
+      </div>
+    </section>
+  );
+}
+
+/* ── 6. Cărți în Promoție ────────────────────────────────────────────── */
+function PromoCollection() {
+  const promo = books.filter(b => b.originalPrice);
+  if (!promo.length) return null;
+
+  return (
+    <section className="section border-b border-gray-100" style={{ backgroundColor: '#FAF6F0' }}>
+      <div className="container">
+        <div className="flex items-end justify-between mb-8 gap-4">
+          <SectionHeader
+            eyebrow="Oferte Limitate"
+            title="Cărți în Promoție"
+            subtitle="Reduceri la titluri selectate"
+          />
+          <Link to="/collections" className="btn-ghost hidden sm:flex shrink-0">
+            Toate ofertele →
+          </Link>
+        </div>
+        <BookGrid items={promo.slice(0, 8)} />
+      </div>
+    </section>
+  );
+}
+
+/* ── 7. Statistici ───────────────────────────────────────────────────── */
 function Statistics() {
   const stats = [
-    { value: '500+',    label: 'Titluri Publicate',     sub: 'Toate categoriile' },
-    { value: '10.000+', label: 'Cititori Serviți',      sub: 'În România și diaspora' },
-    { value: '25+',     label: 'Ani de Excelență',      sub: 'Fondată în 1999' },
+    { value: '500+',    label: 'Titluri Publicate',  sub: 'Toate categoriile' },
+    { value: '10.000+', label: 'Cititori Serviți',   sub: 'În România și diaspora' },
+    { value: '25+',     label: 'Ani de Excelență',   sub: 'Fondată în 1999' },
   ];
 
   return (
@@ -277,13 +279,14 @@ function Statistics() {
   );
 }
 
-/* ── Mărturii ────────────────────────────────────────────────────── */
+/* ── 8. Mărturii ─────────────────────────────────────────────────────── */
 function Testimonials() {
   return (
     <section className="section bg-white border-b border-gray-100">
       <div className="container">
-        <SectionHeader eyebrow="Voci Cititori" title="Ce Spun Cititorii Noștri" centered />
-
+        <div className="mb-10">
+          <SectionHeader eyebrow="Voci Cititori" title="Ce Spun Cititorii Noștri" centered />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map(t => (
             <div
@@ -316,10 +319,10 @@ function Testimonials() {
   );
 }
 
-/* ── Buletin informativ ──────────────────────────────────────────── */
+/* ── 9. Newsletter ───────────────────────────────────────────────────── */
 function Newsletter() {
   const [email, setEmail] = useState('');
-  const [done, setDone]   = useState(false);
+  const [done,  setDone]  = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = e => {
@@ -335,17 +338,14 @@ function Newsletter() {
     <section className="section bg-gray-50 border-b border-gray-100">
       <div className="container">
         <div className="max-w-2xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            <div className="h-px bg-gray-200 w-16" />
-            <span className="text-burgundy-300 font-serif text-xl">❧</span>
-            <div className="h-px bg-gray-200 w-16" />
-          </div>
-          <h2 className="font-display text-h2 text-charcoal mb-3">Abonează-te la Buletinul Nostru</h2>
+          <OrnamentLine />
+          <h2 className="font-display text-h2 text-charcoal mt-6 mb-3">
+            Abonează-te la Buletinul Nostru
+          </h2>
           <p className="font-sans text-sm text-charcoal-light leading-reading mb-8">
             Primești noutăți despre apariții, note literare și oferte exclusive de la
-            Editura Princeps — livrate cu grijă în căsuța ta poștală.
+            Prince's Multimedia — livrate cu grijă în căsuța ta poștală.
           </p>
-
           {done ? (
             <p className="font-quote text-burgundy text-lg italic">
               Mulțumim. Așteptăm cu plăcere corespondența dumneavoastră.
@@ -373,9 +373,7 @@ function Newsletter() {
               </button>
             </form>
           )}
-          {error && (
-            <p className="text-burgundy text-xs font-sans mt-2">{error}</p>
-          )}
+          {error && <p className="text-burgundy text-xs font-sans mt-2">{error}</p>}
           <p className="text-xs font-sans text-charcoal-lighter mt-4">
             Intimitatea ta este respectată. Te poți dezabona oricând.
           </p>
@@ -385,14 +383,16 @@ function Newsletter() {
   );
 }
 
-/* ── Pagina ──────────────────────────────────────────────────────── */
+/* ── Pagina ──────────────────────────────────────────────────────────── */
 export default function Home() {
   return (
     <div className="fade-in">
       <Hero />
-      <FeaturedCollections />
+      <PromoBanner />
       <LatestReleases />
+      <FeaturedCategory />
       <Bestsellers />
+      <PromoCollection />
       <Statistics />
       <Testimonials />
       <Newsletter />

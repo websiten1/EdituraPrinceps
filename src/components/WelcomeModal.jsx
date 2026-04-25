@@ -44,7 +44,7 @@ function Screen1() {
       </p>
       <p className="font-sans text-sm sm:text-base text-charcoal-light leading-relaxed max-w-sm mx-auto">
         Acesta este un website DEMO — o prezentare completă și funcțională a platformei
-        noastre de comerț electronic pentru cărți și audiobook-uri.
+        voastre de comerț electronic pentru cărți și audiobook-uri.
       </p>
     </div>
   );

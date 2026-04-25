@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, X, Grid3X3, List, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { books, categories } from '../data/books';
-import BookCard from '../components/BookCard';
+import BookCard, { LandscapeCard } from '../components/BookCard';
 import Breadcrumb from '../components/Breadcrumb';
 
 const sortOptions = [
@@ -338,9 +338,13 @@ export default function Collections() {
             ) : (
               <>
                 <div className={view === 'grid'
-                  ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'
+                  ? 'grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5'
                   : 'space-y-4'}>
-                  {paged.map(book => <BookCard key={book.id} book={book} view={view} />)}
+                  {paged.map(book =>
+                    view === 'grid'
+                      ? <LandscapeCard key={book.id} book={book} />
+                      : <BookCard key={book.id} book={book} view="list" />
+                  )}
                 </div>
 
                 {/* Paginare */}

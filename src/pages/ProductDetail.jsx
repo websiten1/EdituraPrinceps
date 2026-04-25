@@ -108,7 +108,7 @@ const seedReviews = [
     content: 'Un volum frumos realizat, cu un aparat critic atent. Ediția este bine pregătită, iar textul impecabil redat.',
     helpful: 8,  verified: true },
   { id: 3, author: 'Elena G.',     rating: 5, date: '20 Ian 2024', title: 'Ediție desăvârșită',
-    content: 'Editura Princeps realizează constant ediții de cea mai înaltă calitate. Hârtia este fină, legătura solidă, prezentarea elegantă.',
+    content: 'Editura Princeps Multimedia realizează constant ediții de cea mai înaltă calitate. Hârtia este fină, legătura solidă, prezentarea elegantă.',
     helpful: 5,  verified: false },
 ];
 

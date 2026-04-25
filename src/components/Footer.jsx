@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* Despre */}
           <div>
-            <h4 className="font-display text-lg text-charcoal mb-1">Prince's Multimedia</h4>
+            <h4 className="font-display text-lg text-charcoal mb-1">Editura Princeps Multimedia</h4>
             <div className="h-px bg-gray-200 w-full mb-4" />
             <p className="text-sm font-sans text-charcoal-light leading-reading mb-5">
               O distinsă editură română dedicată păstrării și celebrării patrimoniului literar
@@ -159,7 +159,7 @@ export default function Footer() {
       {/* ── Mobil: footer minimal (vizibil doar pe mobil) ── */}
       <div className="block sm:hidden px-6 pt-8 pb-4 text-center">
         <h4 className="font-display text-2xl text-charcoal mb-2">
-          Prince's Multimedia
+          Editura Princeps Multimedia
         </h4>
         <p className="text-xs font-sans text-charcoal-light leading-relaxed mb-5 max-w-[220px] mx-auto">
           Editură dedicată patrimoniului literar român din 1999.
@@ -184,7 +184,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5
                         flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs font-sans text-charcoal-lighter text-center">
-            © {new Date().getFullYear()} Prince's Multimedia. Toate drepturile rezervate.
+            © {new Date().getFullYear()} Editura Princeps Multimedia. Toate drepturile rezervate.
           </p>
           <div className="hidden sm:flex items-center gap-6">
             {['Visa', 'Mastercard', 'PayPal', 'Transfer Bancar'].map(m => (

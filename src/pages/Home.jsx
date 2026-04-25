@@ -55,7 +55,7 @@ function Hero() {
 
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-charcoal
                        leading-none tracking-tight mt-8 mb-5">
-          Prince's Multimedia
+          Editura Princeps Multimedia
         </h1>
 
         <p className="font-serif text-xl sm:text-2xl text-charcoal-light italic mb-7">
@@ -344,7 +344,7 @@ function Newsletter() {
           </h2>
           <p className="font-sans text-sm text-charcoal-light leading-reading mb-8">
             Primești noutăți despre apariții, note literare și oferte exclusive de la
-            Prince's Multimedia — livrate cu grijă în căsuța ta poștală.
+            Editura Princeps Multimedia — livrate cu grijă în căsuța ta poștală.
           </p>
           {done ? (
             <p className="font-quote text-burgundy text-lg italic">

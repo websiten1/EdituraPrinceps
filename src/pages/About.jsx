@@ -3,7 +3,7 @@ import { teamMembers } from '../data/books';
 import Breadcrumb from '../components/Breadcrumb';
 
 const milestones = [
-  { year: '1999', title: 'Fondată în Iași',            desc: 'Editura Princeps este înființată cu o misiune singulară: publicarea și păstrarea celor mai valoroase opere ale patrimoniului literar român.' },
+  { year: '1999', title: 'Fondată în Iași',            desc: 'Editura Princeps Multimedia este înființată cu o misiune singulară: publicarea și păstrarea celor mai valoroase opere ale patrimoniului literar român.' },
   { year: '2004', title: 'Prima Colecție Majoră',      desc: 'Prima noastră colecție de 20 de volume dedicate poeziei române clasice este primită cu entuziasm de critica literară.' },
   { year: '2010', title: 'Distribuție Națională',      desc: 'Acorduri de parteneriat cu peste 200 de librării din România ne permit să ajungem la cititori din toate regiunile țării.' },
   { year: '2015', title: 'Programul Audiobook',        desc: 'Lansăm colecția premium de audiobook-uri, aducând literatura română la o nouă generație de ascultători.' },
@@ -43,7 +43,7 @@ export default function About() {
               Fondată în 1999
             </p>
             <h1 className="font-display text-h1 text-charcoal leading-tight mb-4">
-              Despre Editura Princeps
+              Despre Editura Princeps Multimedia
             </h1>
             <div className="h-0.5 bg-burgundy w-12 mb-5" />
             <p className="font-quote-italic text-xl text-charcoal-light leading-reading">
@@ -66,7 +66,7 @@ export default function About() {
               <div className="h-0.5 bg-burgundy w-12 mb-6" />
               <div className="space-y-4 font-sans text-sm text-charcoal leading-reading">
                 <p>
-                  Editura Princeps a fost fondată în Iași în 1999 de un grup de cercetători
+                  Editura Princeps Multimedia a fost fondată în Iași în 1999 de un grup de cercetători
                   și iubitori de literatură care împărtășeau o convingere comună: că marile opere
                   ale literaturii române merită ediții demne de importanța lor.
                 </p>

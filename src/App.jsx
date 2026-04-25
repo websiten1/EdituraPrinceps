@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ToastContainer from './components/Toast';
+import WelcomeModal from './components/WelcomeModal';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import ProductDetail from './pages/ProductDetail';
@@ -30,6 +31,7 @@ function Layout({ children }) {
       </main>
       <Footer />
       <ToastContainer />
+      <WelcomeModal />
     </div>
   );
 }
